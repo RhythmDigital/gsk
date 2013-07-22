@@ -1,0 +1,52 @@
+8
+
+dir
+3
+https://simplestagevideo.googlecode.com/svn/trunk/SimpleStageVideo/src/org/bytearray/video/events
+https://simplestagevideo.googlecode.com/svn
+
+
+
+2010-12-28T10:57:33.770175Z
+3
+thibault.imbert@gmail.com
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+f4cf98d3-f4a5-f5df-fa64-2adb9d835c9a
+
+SimpleStageVideoEvent.as
+file
+
+
+
+
+2010-12-28T07:32:32.000000Z
+6cc9c240e4a84e1b8c9f1bac6e49e3f2
+2010-12-28T10:57:33.770175Z
+3
+thibault.imbert@gmail.com
+
+SimpleStageVideoToggleEvent.as
+file
+10
+
+
+
+2010-12-29T02:47:12.000000Z
+eb39f12781754a5b3163d3187a090a63
+2010-12-29T05:01:28.605133Z
+10
+thibault.imbert@gmail.com
+
