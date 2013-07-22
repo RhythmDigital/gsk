@@ -119,7 +119,7 @@ package com.cuepointvideo
 			
 			if(cuePoints && cuePoints.length) {
 				if(clock.time >= cuePoints[0].inTimeMS) {
-					if(cuePoints[0].outTimeMS !== -1) currentPoint = cuePoints[0];
+					if(cuePoints[0].outTimeMS !== null) currentPoint = cuePoints[0];
 					processCuePoint(cuePoints.shift(), CuePoint.CUE_IN);
 				}
 			}

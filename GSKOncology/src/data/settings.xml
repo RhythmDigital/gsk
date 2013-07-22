@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <settings>
-	<test></test>
+	<brands>
+		<brand file="taflinar.xml" />
+		<brand file="tyverb.xml" />
+		<brand file="votrient.xml" />
+	</brands>
 </settings>
