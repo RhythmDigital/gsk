@@ -46,7 +46,6 @@ package
 			lm.insert(new XMLLoader(File.applicationDirectory.url+"data/settings.xml", {name:"settings"}));
 			lm.insert(new XMLLoader(File.applicationDirectory.url+"data/test.xml", {name:"content"}));
 			lm.load();
-			
 		}
 		
 		private function onXMLLoaded(e:LoaderEvent):void

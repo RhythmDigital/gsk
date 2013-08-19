@@ -5,11 +5,13 @@ package com.wehaverhythm.gsk.oncology
 	import com.cuepointvideo.CuePointVideoPlayer;
 	
 	import flash.display.Sprite;
+	import com.wehaverhythm.gsk.oncology.menu.Menu;
 	
 	public class OncologyMain extends Sprite
 	{
 		private var settings:XML;
 		private var video:CuePointVideoPlayer;
+		private var menu:Menu;
 		
 		public function OncologyMain()
 		{
@@ -17,15 +19,14 @@ package com.wehaverhythm.gsk.oncology
 		}
 		
 		public function init(settingsXML:XML, contentXML:XML):void {
-			with(graphics) {
-				beginFill(0xffffff, 1);
-				drawRect(0,0,stage.stageWidth, stage.stageHeight);
-				endFill();
-			}
 			
 			video = new CuePointVideoPlayer(GlobalSettings.STAGE_WIDTH, GlobalSettings.STAGE_HEIGHT);
 			video.addEventListener(CuePointEvent.CUE_POINT_TRIGGER, onCuePointTriggered);
 			addChild(video);
+			
+			menu = new Menu();
+			addChild(menu);
+			menu.init(settingsXML);
 			
 			initSection(0, contentXML);
 		}
