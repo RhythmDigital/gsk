@@ -20,6 +20,7 @@ package com.cuepointvideo
 		private var currentPoint:CuePoint;
 		private var listeningForCuePoints:Boolean;
 		private var clock:Date;
+		private var verbose:Boolean;
 		
 		public function CuePointVideoPlayer(width:int, height:int)
 		{
@@ -58,10 +59,11 @@ package com.cuepointvideo
 			stream.client = customClient;
 			
 			customClient["onMetaData"] = function(infoObject):void {
-			/*	for (var propName:String in infoObject) {
-					trace(propName + " = " + infoObject[propName]);
+				if(verbose) {
+					for (var propName:String in infoObject) {
+						trace(propName + " = " + infoObject[propName]);
+					}
 				}
-			*/
 				vid.rotation = 90;
 				var bounds:Rectangle = vid.getBounds(stage);
 				vid.x = -bounds.x;
@@ -98,7 +100,7 @@ package com.cuepointvideo
 			}
 			
 			for(var s:String in e.info) {
-				trace(s+": " + e.info[s]);
+				if(verbose) trace(s+": " + e.info[s]);
 			}
 		}
 		
@@ -134,7 +136,7 @@ package com.cuepointvideo
 		
 		private function processCuePoint(cuePoint:CuePoint, type:String):void
 		{
-			trace("CUE  " + cuePoint.id + " >> " + type);	
+			if(verbose) trace("CUE  " + cuePoint.id + " >> " + type);	
 			dispatchEvent(new CuePointEvent(CuePointEvent.CUE_POINT_TRIGGER, type, cuePoint.id, {}));
 		}
 		

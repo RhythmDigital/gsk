@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<brand>
+	<title><![CDATA[Votrient]]></title>
+	<colour><![CDATA[#ff0000]]></colour>
+	<logo>ExampleLogoFile.jpg</logo>
+
+	<menu>
+		<!-- Advanced Renal Cell Carcinoma (aRCC) -->
+		<item id="0"><![CDATA[ADVANCED RENAL CELL CARCINOMA (aRCC)]]></item>
+			<item id="0.0"><![CDATA[COMPARZ STUDY DESIGN]]></item>
+			<item id="0.1"><![CDATA[COMPARABLE EFFICACY TO SUBITINIB]]></item>
+			<item id="0.2"><![CDATA[DIFFERENTIATED SAFETY PROFILE FROM SUBITINIB]]></item>
+			<item id="0.3"><![CDATA[LOWER IMPACT ON QoL THAN SUNITINIB]]></item>
+			<item id="0.4"><![CDATA[PISCES STUDY DESIGN]]></item>
+			<item id="0.5"><![CDATA[PREFERRED OVER SUNITINIB IN THE PISCES STUDY]]></item>
+		
+		<!-- Advanced Soft Tissue Sarcoma (aSTS) -->
+		<item id="1"><![CDATA[ADVANCED SOFT TISSUE SARCOMA (aSTS)]]></item>
+			<item id="1.0"><![CDATA[PHASE III DATA IN SECOND-LINE aSTS]]></item>
+			<item id="1.1"><![CDATA[PFS IMPROVEMENT VS. PLACEBO]]></item>
+			<item id="1.2"><![CDATA[CONSISTENT BENEFIT ACCROSS SUBTYPES]]></item>
+			<item id="1.3"><![CDATA[WELL-ESTABLISHED SAFETY PROFILE]]></item>
+			<item id="1.4"><![CDATA[MAINTAINS HRQoL VS. PLACEBO]]></item>
+			
+		<!-- Once-Daily Oral Dosing -->
+		<item id="2"><![CDATA[ONCE-DAILY ORAL DOSING]]></item>
+		
+		<!-- Prescribing Information -->
+		<item id="3"><![CDATA[PRESCRIBING INFORMATION]]></item>
+	</menu>
+</brand>

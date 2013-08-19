@@ -21,7 +21,7 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		public function init(settingsXML:XML):void
 		{
-			trace("initialising menu with : " + settingsXML);
+		//	trace("initialising menu with : " + settingsXML);
 			menuXML = new LoaderMax({onComplete:onMenuXMLLoaded});
 			menus = [];
 			menuLookup = [];
@@ -37,17 +37,17 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		private function addMainMenu(menu:XML):void
 		{
-			trace("Adding menu: " + menu);
+			//("Adding menu: " + menu);
 			var nextMenu:Array = [];
-
-			for(var i:int = 0; i < menu.buttons.button.length(); ++i)
+			
+			for(var i:int = 0; i < menu.menu.item.length(); ++i)
 			{
-				var nextBtn:XML = menu.buttons.button[i];
+				var nextBtn:XML = menu.menu.item[i];
 				var location:String = String(nextBtn.@id);
 				var locationParent:String = location.substr(0, location.lastIndexOf("."));
 				var locationRoot:String = location.split(".")[0];
 				
-				trace("id: " + location + " / parent: " + locationParent + " / root: " + locationRoot);
+				//trace("id: " + location + " / parent: " + locationParent + " / root: " + locationRoot);
 				
 				nextMenu.push({btn:nextBtn, id:nextBtn.@id, parent:locationParent, root:locationRoot, menuID:menuLookup.length});
 			}
@@ -56,19 +56,50 @@ package com.wehaverhythm.gsk.oncology.menu
 			
 		}
 		
-		private function renderButtonsFor(m:int, id:String):void
+		private function showRootMenu():void
 		{
-			trace("render buttons for: " + id);
-			
+			trace("render buttons for main menu");
 			var newButtons:Vector.<MenuButton> = new Vector.<MenuButton>();
-			var idLen:int = id.split(".").length;
 			
-			for(var i:int = 0; i < menuLookup[m].length; ++i) {
-				var itemIdLen:int = menuLookup[m][i].id.split(".").length;
-				var valid:Boolean = (String(menuLookup[m][i].id).indexOf(id) == 0) && itemIdLen == idLen+1;
+			
+			for(var i:int = 0; i < menus.length; ++i) {
+				//trace("Menu " + i);
+				//trace(menus[i].content);
+				addButton(newButtons, i, null, i, menus[i].content.title);
+			}
+			
+			
+			if(!newButtons.length) {
+				trace("There are no buttons for this item!");
+			} else {
+				destroyButtons();
+				buttons = newButtons;
+			}
+		}
+		
+		private function renderButtonsFor(m:int, mid:int, id:String = null):void
+		{			
+			var newButtons:Vector.<MenuButton> = new Vector.<MenuButton>();
+		
+			if(id != null){
+				var idLen:int = id.split(".").length;
+			}
+
+			for(var i:int = 0; i < menuLookup[mid].length; ++i) {
+				
+				var valid:Boolean;
+				var itemIdLen:int = menuLookup[mid][i].id.split(".").length;
+				
+				if(id == null && itemIdLen == 1) {
+					// root item.
+					valid = true;
+				} else {
+					valid = (String(menuLookup[mid][i].id).indexOf(id) == 0) && itemIdLen == idLen+1;
+				}
+				
 				if(valid) {
-					trace(menuLookup[m][i].id + ": " + valid);
-					addButton(newButtons, menuLookup[m][i].id, m);
+					var xml:XMLList = XMLList(menus[mid].content.menu.item.(@id==id));
+					addButton(newButtons, i, menuLookup[mid][i].id, mid, menus[mid].content.menu.item[i], xml);
 				}
 				
 			}
@@ -93,9 +124,9 @@ package com.wehaverhythm.gsk.oncology.menu
 			}
 		}
 		
-		private function addButton(vec:Vector.<MenuButton>, id:String, menuID:int):void
-		{
-			var b:MenuButton = new MenuButton(id, menuID, 400, 150);
+		private function addButton(vec:Vector.<MenuButton>, buttonID:int, xmlID:String, menuID:int, label:String, xml:XMLList = null):void
+		{	
+			var b:MenuButton = new MenuButton(buttonID, xmlID, menuID, label, xml);
 			b.y = vec.length*(b.height+4);
 			addChild(b);
 			vec.push(b);
@@ -103,8 +134,8 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		private function destroyButtons():void
 		{
-			trace("Killing current buttons");
 			while(buttons.length) {
+				buttons[0].destroy();
 				removeChild(buttons[0]);
 				buttons.shift();
 			}
@@ -112,21 +143,25 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		private function onMenuXMLLoaded(e:LoaderEvent):void
 		{
-			trace("Menu xml loaded.");
-			
 			// init menus
 			for each(var menu:XMLLoader in menus) {
 				addMainMenu(XML(menu.content));
 			}
 			
 			addEventListener(MenuEvent.SELECT_ITEM, onMenuItemSelected);
-			renderButtonsFor(0, "0");
+			showRootMenu();
 		}
 		
 		protected function onMenuItemSelected(e:MenuEvent):void
 		{
-			trace("Item selected");
-			renderButtonsFor(menuLookup[e.target.menu], e.target.id);
+			trace("Item selected: " + e.target.menu + " / " + e.target.xmlID);
+			renderButtonsFor(menuLookup[e.target.menu], e.target.menu, e.target.xmlID);
+			
+			if(e.target.hasOwnProperty("menu") && e.target.hasOwnProperty("id") && e.target.id !== null)
+			{
+				trace("button xml: " + menus[e.target.menu][e.target.buttonID]);
+			}
+			
 		}
 	}
 }

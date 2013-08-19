@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<brand>
+	<title><![CDATA[Tyverb]]></title>
+	<colour><![CDATA[#ff0000]]></colour>
+	<logo>ExampleLogoFile.jpg</logo>
+
+	<menu>
+		<!-- LANDSCAPE AND PRODUCT OVERVIEW -->
+		<item id="0"><![CDATA[LANDSCAPE AND PRODUCT OVERVIEW]]></item>
+
+		<!-- TREATMENT SEQUENCE OF HER2+ MBC -->
+		<item id="1"><![CDATA[TREATMENT SEQUENCE OF HER2+ MBC]]></item>
+			<item id="1.0"><![CDATA[NOW APPROVED IN HER2+/HR- DISEASE]]></item>
+			<item id="1.1"><![CDATA[STUDY DESIGN AND RESULTS]]></item>
+			<item id="1.2"><![CDATA[MECHANISM OF ACTION]]></item>
+			<item id="1.3"><![CDATA[SAFETY AND DOSING]]></item>
+			
+		<!-- TYVERB PLUS AROMATASE INHIBATOR -->
+		<item id="2"><![CDATA[TYVERB PLUS AROMATASE INHIBATOR]]></item>
+
+		<!-- TYVERB PLUS CAPECITABINE -->
+		<item id="3"><![CDATA[TYVERB PLUS CAPECITABINE]]></item>
+
+		<!-- TYVERB IN COMBINATION WITH TRASTUZUMAB -->
+		<item id="4"><![CDATA[TYVERB IN COMBINATION WITH TRASTUZUMAB]]></item>
+			<item id="4.0"><![CDATA[NOW APPROVED IN HER2+/HR- DISEASE]]></item>
+			<item id="4.1"><![CDATA[STUDY DESIGN AND RESULTS]]></item>
+			<item id="4.2"><![CDATA[MECHANISM OF ACTION]]></item>
+			<item id="4.3"><![CDATA[SAFETY AND DOSING]]></item>
+
+		<!-- SUMMARY OF PRODUCT CHARACTERISTICS -->
+		<item id="5"><![CDATA[SUMMARY OF PRODUCT CHARACTERISTICS]]></item>
+
+	</menu>
+</brand>

@@ -1,21 +1,43 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<client>
-
+<brand>
 	<title><![CDATA[Tafinlar]]></title>
 	<colour><![CDATA[#ff0000]]></colour>
 	<logo>ExampleLogoFile.jpg</logo>
-	
-	<buttons>
-		<button id="0">0</button>
-			<button id="0.1">0.1</button>
-				<button id="0.1.0">0.1.0</button>
-				<button id="0.1.1">0.1.1</button>	
-					<button id="0.1.1.0">0.1.1.0</button>		
-			<button id="0.2">0.2</button>
-				<button id="0.2.0">0.2.0</button>
-			<button id="0.3">0.3</button>
-				<button id="0.3.0">0.3.0</button>
-	</buttons>
+
+	<menu>
+		<!-- Break-3 Study Design -->
+		<item id="0"><![CDATA[BREAK-3 STUDY DESIGN]]></item>
+			<item id="0.0"><![CDATA[STUDY DESIGN OVERVIEW]]></item>
+			<item id="0.1"><![CDATA[DR. HAUSCHILD ON BREAK-3 STUDY DESIGN VIDEO]]></item>
+		
+		<!-- Efficacy -->	
+		<item id="1"><![CDATA[EFFICACY]]></item>
+			<item id="1.0"><![CDATA[BREAK-3 EFFICACY]]></item>
+			<item id="1.1"><![CDATA[DR. HAUSCHILD ON BREAK-3 EFFICACY (2011 DATA CUTOFF) VIDEO]]></item>
+			<item id="1.2"><![CDATA[DR. HAUSCHILD ON BREAK-3 EFFICACY (2012 FATA CUTOFF) VIDEO]]></item>
+			
+		<!-- Safety -->
+		<item id="2"><![CDATA[SAFETY]]></item>
+			<item id="2.0"><![CDATA[SAFETY OVERVIEW]]></item>
+			<item id="2.1"><![CDATA[DR. HAUSCHILD ON BREAK-3 SAFETY VIDEO]]></item>
+		
+		<!-- Dosing -->	
+		<item id="3"><![CDATA[DOSING]]></item>
+			<item id="3.0"><![CDATA[DOSING OVERVIEW]]></item>
+		
+		<!-- Break-MB Trial -->
+		<item id="4"><![CDATA[BREAK-MB TRIAL]]></item>
+			<item id="4.0"><![CDATA[BREAK-MB TRIAL OVERVIEW]]></item>
+			<item id="4.1"><![CDATA[DR. ASCIERTO - BREAK-MB STUDY DESIGN VIDEO]]></item>
+			<item id="4.2"><![CDATA[DR. ASCIERTO - BREAK-MB IN COHORT A]]></item>
+			<item id="4.3"><![CDATA[DR. ASCIERTO - BREAK-MB IN COHORT B]]></item>
+			<item id="4.4"><![CDATA[DR. ASCIERTO - BREAK-MB SAFETY VIDEO]]></item>
+			
+		<!-- Mechanism of Action -->
+		<item id="5"><![CDATA[MECHANISM OF ACTION]]></item>
+			<item id="5.0"><![CDATA[MOA OVERVIEW]]></item>
+			<item id="5.1"><![CDATA[MOA ANIMATION]]></item>
+	</menu>
 	
 	<videos>
 		<video id="0" filename="IMG_0888.MOV">
@@ -73,5 +95,4 @@
 			</copy>
 		</video>
 	</videos>
-	
-</client>
+</brand>

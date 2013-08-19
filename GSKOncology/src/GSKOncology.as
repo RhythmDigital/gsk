@@ -26,7 +26,7 @@ package
 		
 		protected function launchApp(e:Event):void
 		{
-			trace("Added.");
+			//trace("Added.");
 			removeEventListener(Event.ADDED_TO_STAGE, launchApp);
 			
 			// instantiate main app
@@ -50,7 +50,7 @@ package
 		
 		private function onXMLLoaded(e:LoaderEvent):void
 		{
-			trace("initialised.");
+			//trace("initialised.");
 			main.init(XML(LoaderMax.getContent("settings")), XML(LoaderMax.getContent("content")));
 		}
 		
