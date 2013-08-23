@@ -10,6 +10,7 @@ package com.wehaverhythm.gsk.oncology.menu
 	
 	import flash.display.Sprite;
 	import flash.filesystem.File;
+	import com.wehaverhythm.gsk.oncology.content.ContentEvent;
 	
 	public class Menu extends Sprite
 	{
@@ -28,6 +29,8 @@ package com.wehaverhythm.gsk.oncology.menu
 		private var currentID:String = null;
 		private var currentMenu:int = -1;
 		private var currentXML:XMLList;
+		private var currentSubMenu:int = -1;
+		private var prevSubMenu:int = -1;
 		
 		public var menus:Array;
 		
@@ -50,7 +53,6 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		public function init(settingsXML:XML):void
 		{
-		//	trace("initialising menu with : " + settingsXML);
 			menuXML = new LoaderMax({onComplete:onMenuXMLLoaded});
 			menus = [];
 			menuLookup = [];
@@ -66,9 +68,7 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		private function addMainMenu(menu:XML):void
 		{
-			//("Adding menu: " + menu);
 			var nextMenu:Array = [];
-			
 			for(var i:int = 0; i < menu.menu.item.length(); ++i)
 			{
 				var nextBtn:XML = menu.menu.item[i];
@@ -77,14 +77,11 @@ package com.wehaverhythm.gsk.oncology.menu
 				var locationRoot:String = location.split(".")[0];
 				
 				if(locationParent == "") locationParent = locationRoot = null;
-				
 				//trace("id: " + location + " / parent: " + locationParent + " / root: " + locationRoot);
-				
 				nextMenu.push({btn:nextBtn, id:nextBtn.@id, parent:locationParent, root:locationRoot, menuID:menuLookup.length});
 			}
 			
 			menuLookup.push(nextMenu);
-			
 		}
 		
 		private function showRootMenu():void
@@ -92,6 +89,8 @@ package com.wehaverhythm.gsk.oncology.menu
 			//trace("render buttons for main menu");
 			var newButtons:Array = new Array();
 			
+			prevSubMenu = currentSubMenu;
+			currentSubMenu = -1;
 			
 			for(var i:int = 0; i < menus.length; ++i) {
 				//trace("Menu " + i);
@@ -119,6 +118,9 @@ package com.wehaverhythm.gsk.oncology.menu
 		private function renderButtonsFor(m:int, mid:int, id:String = null):void
 		{			
 			var newButtons:Array = new Array();
+			
+			prevSubMenu = currentSubMenu;
+			currentSubMenu = mid;
 			
 			if(id != null){
 				var idLen:int = id.split(".").length;
@@ -212,11 +214,19 @@ package com.wehaverhythm.gsk.oncology.menu
 		{
 			var startProps:Object = {x:-100, autoAlpha:0};
 			var endProps:Object = {autoAlpha:1, x:0, ease:Quad.easeOut};
+			var delay:Number = 0;
+			
+			if(currentID==null && prevSubMenu == -1) {
+				delay = .07;
+				TweenMax.fromTo(logoHolder, .27, startProps,{x:endProps.x, autoAlpha:endProps.autoAlpha});
+			}
 			
 			if(showTitle) {
-				endProps.delay = .07;
-				TweenMax.fromTo(overlay.display.titleBar, .27, startProps,{x:endProps.x, autoAlpha:endProps.autoAlpha});
+				delay += .07;
+				TweenMax.fromTo(overlay.display.titleBar, .27, startProps,{delay:delay, x:endProps.x, autoAlpha:endProps.autoAlpha});
 			}
+			
+			endProps.delay = delay;
 			
 			TweenMax.staggerFromTo(buttons, .27, startProps, endProps, .07);
 		}
@@ -329,14 +339,9 @@ package com.wehaverhythm.gsk.oncology.menu
 				if(buttons[i] !== e.target) buttons[i].deselect();
 			}
 			
-			//trace("e.target.hasOwnProperty('menu'): " + e.target.hasOwnProperty("menu"));
-			//trace("e.target.hasOwnProperty('xmlID'): " + e.target.hasOwnProperty("xmlID"));
-			
+			// set current xml if exists.
 			if(e.target.hasOwnProperty("menu") && e.target.hasOwnProperty("xmlID") && e.target.xmlID !== null)
-			{
 				currentXML = menus[e.target.menu].content.menu.item.(@id == e.target.xmlID);
-			//	trace("currentXML xml : " + currentXML);
-			}
 			
 			renderButtonsFor(menuLookup[e.target.menu], e.target.menu, e.target.xmlID);
 		}

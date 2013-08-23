@@ -3,7 +3,7 @@
 	<title><![CDATA[TAFINLAR]]></title>
 	<colour><![CDATA[#00ccff]]></colour>
 	<logo>tafinlar.png</logo>
-	<rootVideo></rootVideo>
+	<rootVideo>camera.mov</rootVideo>
 
 	<menu contentID="0">
 		<!-- Break-3 Study Design -->

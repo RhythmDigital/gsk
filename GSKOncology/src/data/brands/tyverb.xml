@@ -3,7 +3,8 @@
 	<title><![CDATA[TYVERB]]></title>
 	<colour><![CDATA[#99cc33]]></colour>
 	<logo>tyverb.png</logo>
-
+	<rootVideo>camera.mov</rootVideo>
+	
 	<menu>
 		<!-- LANDSCAPE AND PRODUCT OVERVIEW -->
 		<item id="0"><![CDATA[LANDSCAPE AND PRODUCT OVERVIEW]]></item>

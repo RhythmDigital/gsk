@@ -1,4 +1,4 @@
-package com.wehaverhythm.gsk.oncology.menu
+package com.wehaverhythm.gsk.oncology.content
 {
 	import flash.events.Event;
 	
