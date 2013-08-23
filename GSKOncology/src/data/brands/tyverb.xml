@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <brand>
-	<title><![CDATA[Tyverb]]></title>
-	<colour><![CDATA[#ff0000]]></colour>
-	<logo>ExampleLogoFile.jpg</logo>
+	<title><![CDATA[TYVERB]]></title>
+	<colour><![CDATA[#99cc33]]></colour>
+	<logo>tyverb.png</logo>
 
 	<menu>
 		<!-- LANDSCAPE AND PRODUCT OVERVIEW -->

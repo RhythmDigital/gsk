@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <content>
-	<sections>
-		<section>
-			<video filename="IMG_0888.MOV" />
+	<videos>
+		<video filename="camera.mov" loopStart="5.23" loopEnd="13.9">
 			<cuePoints>
-				<cuePoint id="cue1" inTime="00:00:10.000" outTime="00:00:12.000" boxXY="0,0" lineStartXY="0,0" lineEndXY="0,0" />
-				<cuePoint id="cue2" inTime="00:00:15.000" outTime="00:00:20.000" boxXY="0,0" lineStartXY="0,0" lineEndXY="0,0" />
+				<cuePoint id="cue1" inTime="00:00:10.000" outTime="00:00:12.000" boxXY="0,0" type="">
+					<title><![CDATA[CUE POINT 1]]></title>
+					<copy><![CDATA[This is the body copy for cue point 1.]]></copy>
+					<image></image>
+					<footer></footer>
+				</cuePoint>
+				<cuePoint id="cue2" inTime="00:00:15.000" outTime="00:00:20.000" boxXY="0,0" lineStartXY="0,0" lineEndXY="0,0">
+					<title><![CDATA[CUE POINT 2]]></title>
+					<copy><![CDATA[This is the body copy for cue point 2.]]></copy>
+					<image></image>
+					<footer></footer>
+				</cuePoint>
 			</cuePoints>
-			<copy>
-				<copyItem id="cue1">
-					<heading><![CDATA[CUE POINT 1]]></heading>
-					<body><![CDATA[This is the body copy for cue point 1.]]></body>
-				</copyItem>
-				<copyItem id="cue2">
-					<heading><![CDATA[CUE POINT 2]]></heading>
-					<body><![CDATA[This is the body copy for cue point 2.]]></body>
-				</copyItem>
-			</copy>
-		</section>
-	</sections>
+		</video>
+	</videos>
 </content>

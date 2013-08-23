@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <brand>
-	<title><![CDATA[Votrient]]></title>
-	<colour><![CDATA[#ff0000]]></colour>
-	<logo>ExampleLogoFile.jpg</logo>
+	<title><![CDATA[VOTRIENT]]></title>
+	<colour><![CDATA[#ff6600]]></colour>
+	<logo>votrient.png</logo>
 
 	<menu>
 		<!-- Advanced Renal Cell Carcinoma (aRCC) -->
@@ -27,5 +27,6 @@
 		
 		<!-- Prescribing Information -->
 		<item id="3"><![CDATA[PRESCRIBING INFORMATION]]></item>
+		
 	</menu>
 </brand>

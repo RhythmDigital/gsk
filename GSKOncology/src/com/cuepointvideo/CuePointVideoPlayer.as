@@ -20,7 +20,9 @@ package com.cuepointvideo
 		private var currentPoint:CuePoint;
 		private var listeningForCuePoints:Boolean;
 		private var clock:Date;
-		private var verbose:Boolean;
+		private var verbose:Boolean = false;
+		private var vidInfo:Object;
+		private var video:Video;
 		
 		public function CuePointVideoPlayer(width:int, height:int)
 		{
@@ -32,17 +34,17 @@ package com.cuepointvideo
 			super();	
 		}
 		
-		public function initWithCuePoints(cues:Vector.<CuePoint>):void
+		public function initWithCuePoints(file:String, cues:Vector.<CuePoint>):void
 		{
 			
 			for each(var cue:CuePoint in cues) {
 				this.cuePoints.push(cue);
 			}
 			
-			init();
+			init(file);
 		}
 		
-		public function init():void {
+		public function init(file:String):void {
 			with(graphics) {
 				beginFill(0xffffff, 1);
 				drawRect(0,0,stage.stageWidth, stage.stageHeight);
@@ -53,46 +55,63 @@ package com.cuepointvideo
 			connection.connect(null);
 			
 			stream = new NetStream(connection);
-			var vid:Video = new Video();
+			video = new Video();
 			var vidContainer:Sprite = new Sprite();
 			var customClient:Object = new Object();
 			stream.client = customClient;
 			
-			customClient["onMetaData"] = function(infoObject):void {
-				if(verbose) {
-					for (var propName:String in infoObject) {
-						trace(propName + " = " + infoObject[propName]);
-					}
-				}
-				vid.rotation = 90;
-				var bounds:Rectangle = vid.getBounds(stage);
-				vid.x = -bounds.x;
-				vid.y = 0;
-			}
+
+			customClient["onMetaData"] = onMetaData;
+				
 			
-			
-			vid.attachNetStream(stream);
-			vidContainer.addChild(vid);
+			video.attachNetStream(stream);
+			vidContainer.addChild(video);
 			addChild(vidContainer);
 			
-			vid.width = vidHeight;
-			vid.height = vidWidth;
+			video.width = vidWidth;
+			video.height = vidHeight;
+			
+			
 			
 			stream.addEventListener(NetStatusEvent.NET_STATUS, onStatusUpdate);
-			
-			play();
+			play(file);
 		}
 		
-		public function play():void
+		public function onMetaData(vidInfo):void {
+			this.vidInfo = vidInfo;
+			if(verbose) {
+				for (var propName:String in vidInfo) {
+					trace(propName + " = " + vidInfo[propName]);
+				}
+			}
+			//vid.rotation = 90;
+			var bounds:Rectangle = video.getBounds(stage);
+			video.x = -bounds.x;
+			video.y = 0;
+		}
+		
+		public function play(file:String):void
 		{
-			stream.play("/IMG_0888.MOV");
+			trace("play " + file);
+			stream.play(file);
 		}
 		
 		protected function onStatusUpdate(e:NetStatusEvent):void
 		{
 			switch(e.info.code) {
+				case "NetStream.SeekStart.Notify":
+					//
 				case "NetStream.Play.Start":
+					
+					break;
+				case "NetStream.Buffer.Full":
+					trace("START");
 					listenForCuePoints = true;
+					addEventListener(Event.ENTER_FRAME, onEnterFrame);
+					stream.resume();
+					break;
+				case "NetStream.Buffer.Empty":
+					//throw("SNAPSHOT HERE!");
 					break;
 				case "NetStream.Play.Stop":
 					listenForCuePoints = false;
@@ -104,13 +123,24 @@ package com.cuepointvideo
 			}
 		}
 		
+		protected function onEnterFrame(e:Event):void
+		{
+			if(stream.time >= 14) {
+				trace(stream.time + " / " + vidInfo.duration);
+				listenForCuePoints = false;
+				stream.pause();
+				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+				stream.seek(5.23);
+			}
+		}
+		
 		private function set listenForCuePoints(listen:Boolean):void
 		{
 			listeningForCuePoints = listen;
 			
-			if(listen && !this.hasEventListener(Event.ENTER_FRAME)) {
+			if(listen) {
 				addEventListener(Event.ENTER_FRAME, onCuePointCheck);
-			} else if(!listen) {
+			} else {
 				removeEventListener(Event.ENTER_FRAME, onCuePointCheck);
 			}
 		}

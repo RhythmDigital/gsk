@@ -12,21 +12,23 @@ package
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.filesystem.File;
+	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
 	
-	[SWF (width="1080", height="1920", frameRate="60", backgroundColor="#000000"]
+	[SWF (width="1080", height="1920", frameRate="30", backgroundColor="#000000"]
 	public class GSKOncology extends Sprite
 	{
 		private var main:OncologyMain;
 		
 		public function GSKOncology()
 		{
+			this.scrollRect = new Rectangle(0,0,1080,1920);
+			
 			addEventListener(Event.ADDED_TO_STAGE, launchApp);
 		}
 		
 		protected function launchApp(e:Event):void
 		{
-			//trace("Added.");
 			removeEventListener(Event.ADDED_TO_STAGE, launchApp);
 			
 			// instantiate main app
@@ -44,14 +46,14 @@ package
 			// load xml.
 			var lm:LoaderMax = new LoaderMax({onComplete:onXMLLoaded});
 			lm.insert(new XMLLoader(File.applicationDirectory.url+"data/settings.xml", {name:"settings"}));
-			lm.insert(new XMLLoader(File.applicationDirectory.url+"data/test.xml", {name:"content"}));
+//			lm.insert(new XMLLoader(File.applicationDirectory.url+"data/test.xml", {name:"content"}));
 			lm.load();
 		}
 		
 		private function onXMLLoaded(e:LoaderEvent):void
 		{
 			//trace("initialised.");
-			main.init(XML(LoaderMax.getContent("settings")), XML(LoaderMax.getContent("content")));
+			main.init(XML(LoaderMax.getContent("settings")));
 		}
 		
 		protected function onKeyDown(e:KeyboardEvent):void
