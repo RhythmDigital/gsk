@@ -1,10 +1,11 @@
 package com.wehaverhythm.gsk.oncology
 {
+	import com.wehaverhythm.cuepointvideo.CuePointVideoEvent;
+	import com.wehaverhythm.gsk.oncology.content.ContentEvent;
+	import com.wehaverhythm.gsk.oncology.content.ContentManager;
 	import com.wehaverhythm.gsk.oncology.menu.Menu;
 	
 	import flash.display.Sprite;
-	import com.wehaverhythm.gsk.oncology.content.ContentEvent;
-	import com.wehaverhythm.gsk.oncology.content.ContentManager;
 	
 	public class OncologyMain extends Sprite
 	{
@@ -17,17 +18,17 @@ package com.wehaverhythm.gsk.oncology
 			super();
 		}
 		
-		public function init(settingsXML:XML):void {
-			
-			contentMan = new ContentManager();
-			addChild(contentMan);
-			
+		public function init(settingsXML:XML):void
+		{
 			menu = new Menu();
 			menu.addEventListener(ContentEvent.CONTENT_TRIGGER, onContentTrigger);
 			menu.x = 29;
 			addChild(menu);
 			
 			menu.init(settingsXML);
+			
+			contentMan = new ContentManager(menu);
+			addChildAt(contentMan, 0);
 		}
 		
 		protected function onContentTrigger(e:ContentEvent):void

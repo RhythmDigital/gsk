@@ -4,30 +4,52 @@
 	<colour><![CDATA[#ff6600]]></colour>
 	<logo>votrient.png</logo>
 	<rootVideo>camera.mov</rootVideo>
-
-	<menu>
+	<rootCaption>
+		<copy><![CDATA[Discover how VOTRIENT is lighting up the world of oncology]]></copy>
+	</rootCaption>
+	
+	<menu contentID="0">
 		<!-- Advanced Renal Cell Carcinoma (aRCC) -->
-		<item id="0"><![CDATA[ADVANCED RENAL CELL CARCINOMA (aRCC)]]></item>
-			<item id="0.0"><![CDATA[COMPARZ STUDY DESIGN]]></item>
-			<item id="0.1"><![CDATA[COMPARABLE EFFICACY TO SUBITINIB]]></item>
-			<item id="0.2"><![CDATA[DIFFERENTIATED SAFETY PROFILE FROM SUBITINIB]]></item>
-			<item id="0.3"><![CDATA[LOWER IMPACT ON QoL THAN SUNITINIB]]></item>
-			<item id="0.4"><![CDATA[PISCES STUDY DESIGN]]></item>
-			<item id="0.5"><![CDATA[PREFERRED OVER SUNITINIB IN THE PISCES STUDY]]></item>
+		<item id="0" contentID="0"><![CDATA[ADVANCED RENAL CELL CARCINOMA (aRCC)]]></item>
+			<item id="0.0" contentID="0"><![CDATA[COMPARZ STUDY DESIGN]]></item>
+			<item id="0.1" contentID="0"><![CDATA[COMPARABLE EFFICACY TO SUBITINIB]]></item>
+			<item id="0.2" contentID="0"><![CDATA[DIFFERENTIATED SAFETY PROFILE FROM SUBITINIB]]></item>
+			<item id="0.3" contentID="0"><![CDATA[LOWER IMPACT ON QoL THAN SUNITINIB]]></item>
+			<item id="0.4" contentID="0"><![CDATA[PISCES STUDY DESIGN]]></item>
+			<item id="0.5" contentID="0"><![CDATA[PREFERRED OVER SUNITINIB IN THE PISCES STUDY]]></item>
 		
 		<!-- Advanced Soft Tissue Sarcoma (aSTS) -->
-		<item id="1"><![CDATA[ADVANCED SOFT TISSUE SARCOMA (aSTS)]]></item>
-			<item id="1.0"><![CDATA[PHASE III DATA IN SECOND-LINE aSTS]]></item>
-			<item id="1.1"><![CDATA[PFS IMPROVEMENT VS. PLACEBO]]></item>
-			<item id="1.2"><![CDATA[CONSISTENT BENEFIT ACCROSS SUBTYPES]]></item>
-			<item id="1.3"><![CDATA[WELL-ESTABLISHED SAFETY PROFILE]]></item>
-			<item id="1.4"><![CDATA[MAINTAINS HRQoL VS. PLACEBO]]></item>
+		<item id="1" contentID="0"><![CDATA[ADVANCED SOFT TISSUE SARCOMA (aSTS)]]></item>
+			<item id="1.0" contentID="0"><![CDATA[PHASE III DATA IN SECOND-LINE aSTS]]></item>
+			<item id="1.1" contentID="0"><![CDATA[PFS IMPROVEMENT VS. PLACEBO]]></item>
+			<item id="1.2" contentID="0"><![CDATA[CONSISTENT BENEFIT ACCROSS SUBTYPES]]></item>
+			<item id="1.3" contentID="0"><![CDATA[WELL-ESTABLISHED SAFETY PROFILE]]></item>
+			<item id="1.4" contentID="0"><![CDATA[MAINTAINS HRQoL VS. PLACEBO]]></item>
 			
 		<!-- Once-Daily Oral Dosing -->
-		<item id="2"><![CDATA[ONCE-DAILY ORAL DOSING]]></item>
+		<item id="2" contentID="0"><![CDATA[ONCE-DAILY ORAL DOSING]]></item>
 		
 		<!-- Prescribing Information -->
-		<item id="3"><![CDATA[PRESCRIBING INFORMATION]]></item>
+		<item id="3" contentID="0"><![CDATA[PRESCRIBING INFORMATION]]></item>
 		
 	</menu>
+	
+	<content>
+		<content id="0" action="video" videoID="votrient-root" cuePointSet="votrient-root" />
+	</content>
+	
+	<videos>
+		<video id="votrient-root" filename="brain_move_longer_1920.mov" loopInFrame="51" loopOutFrame="348" />
+	</videos>
+	
+	<cuePointSets>
+		<cuePointSet id="votrient-root">
+			<cuePoint id="cue1" inFrame="60" outFrame="187" boxXY="49,272" boxWidth="321">
+				<body><![CDATA[Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ]]></body>
+			</cuePoint>
+			<cuePoint id="cue2" inFrame="212" outFrame="344" boxXY="49,272" boxWidth="321">
+				<body><![CDATA[Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ]]></body>
+			</cuePoint>
+		</cuePointSet>
+	</cuePointSets>
 </brand>

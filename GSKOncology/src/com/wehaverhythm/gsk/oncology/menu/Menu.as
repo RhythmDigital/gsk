@@ -7,10 +7,10 @@ package com.wehaverhythm.gsk.oncology.menu
 	import com.greensock.loading.ImageLoader;
 	import com.greensock.loading.LoaderMax;
 	import com.greensock.loading.XMLLoader;
+	import com.wehaverhythm.gsk.oncology.content.ContentEvent;
 	
 	import flash.display.Sprite;
 	import flash.filesystem.File;
-	import com.wehaverhythm.gsk.oncology.content.ContentEvent;
 	
 	public class Menu extends Sprite
 	{
@@ -115,6 +115,19 @@ package com.wehaverhythm.gsk.oncology.menu
 			dispatchEvent(new ContentEvent(ContentEvent.CONTENT_TRIGGER, {type:"root-menu", brandsXML:menus}));
 		}
 		
+		public function showRootCaption(id:int):void
+		{
+			// if not on root menu, but root playlist still in bg, don't try and show/hide root captions.
+			if(currentSubMenu != -1) return; 
+			
+			trace("Show root caption for : " + id);
+			for(var i:int = 0; i < buttons.length; ++i) {
+				MenuButtonLogo(buttons[i]).hideCaption();
+			}
+			
+			MenuButtonLogo(buttons[id]).showCaption();
+		}
+		
 		private function renderButtonsFor(m:int, mid:int, id:String = null):void
 		{			
 			var newButtons:Array = new Array();
@@ -157,7 +170,6 @@ package com.wehaverhythm.gsk.oncology.menu
 					var xml:XMLList = XMLList(menus[mid].content.menu.item.(@id==id));
 					addButton(newButtons, i, menuLookup[mid][i].id, mid, menus[mid].content.menu.item[i], xml, false, startY);
 				}
-				
 			}
 			
 			if(!newButtons.length) {

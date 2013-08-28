@@ -4,64 +4,63 @@
 	<colour><![CDATA[#00ccff]]></colour>
 	<logo>tafinlar.png</logo>
 	<rootVideo>camera.mov</rootVideo>
+	<rootCaption>
+		<copy><![CDATA[NOW LICENSED in monotherapy for the treatment of adult patients with unresectable or metastatic melanoma with a BRAFV600 mutation]]></copy>
+		<footer><![CDATA[TAF SPC, p2, Section 4.1]]></footer>
+	</rootCaption>
 
 	<menu contentID="0">
 		<!-- Break-3 Study Design -->
 		<item id="0"><![CDATA[BREAK-3 STUDY DESIGN]]></item>
-			<item id="0.0"><![CDATA[STUDY DESIGN OVERVIEW]]></item>
-			<item id="0.1"><![CDATA[DR. HAUSCHILD ON BREAK-3 STUDY DESIGN VIDEO]]></item>
+			<item id="0.0" contentID="0"><![CDATA[STUDY DESIGN OVERVIEW]]></item>
+			<item id="0.1" contentID="0"><![CDATA[DR. HAUSCHILD ON BREAK-3 STUDY DESIGN VIDEO]]></item>
 		
 		<!-- Efficacy -->	
-		<item id="1"><![CDATA[EFFICACY]]></item>
-			<item id="1.0"><![CDATA[BREAK-3 EFFICACY]]></item>
-			<item id="1.1"><![CDATA[DR. HAUSCHILD ON BREAK-3 EFFICACY (2011 DATA CUTOFF) VIDEO]]></item>
-			<item id="1.2"><![CDATA[DR. HAUSCHILD ON BREAK-3 EFFICACY (2012 FATA CUTOFF) VIDEO]]></item>
+		<item id="1" contentID="0"><![CDATA[EFFICACY]]></item>
+			<item id="1.0"  contentID="0"><![CDATA[BREAK-3 EFFICACY]]></item>
+			<item id="1.1"  contentID="0"><![CDATA[DR. HAUSCHILD ON BREAK-3 EFFICACY (2011 DATA CUTOFF) VIDEO]]></item>
+			<item id="1.2"  contentID="0"><![CDATA[DR. HAUSCHILD ON BREAK-3 EFFICACY (2012 FATA CUTOFF) VIDEO]]></item>
 			
 		<!-- Safety -->
-		<item id="2"><![CDATA[SAFETY]]></item>
-			<item id="2.0"><![CDATA[SAFETY OVERVIEW]]></item>
-			<item id="2.1"><![CDATA[DR. HAUSCHILD ON BREAK-3 SAFETY VIDEO]]></item>
+		<item id="2" contentID="0"><![CDATA[SAFETY]]></item>
+			<item id="2.0"  contentID="0"><![CDATA[SAFETY OVERVIEW]]></item>
+			<item id="2.1"  contentID="0"><![CDATA[DR. HAUSCHILD ON BREAK-3 SAFETY VIDEO]]></item>
 		
 		<!-- Dosing -->	
-		<item id="3"><![CDATA[DOSING]]></item>
-			<item id="3.0"><![CDATA[DOSING OVERVIEW]]></item>
+		<item id="3" contentID="0"><![CDATA[DOSING]]></item>
+			<item id="3.0"  contentID="0"><![CDATA[DOSING OVERVIEW]]></item>
 		
 		<!-- Break-MB Trial -->
-		<item id="4"><![CDATA[BREAK-MB TRIAL]]></item>
-			<item id="4.0"><![CDATA[BREAK-MB TRIAL OVERVIEW]]></item>
-			<item id="4.1"><![CDATA[DR. ASCIERTO - BREAK-MB STUDY DESIGN VIDEO]]></item>
-			<item id="4.2"><![CDATA[DR. ASCIERTO - BREAK-MB IN COHORT A]]></item>
-			<item id="4.3"><![CDATA[DR. ASCIERTO - BREAK-MB IN COHORT B]]></item>
-			<item id="4.4"><![CDATA[DR. ASCIERTO - BREAK-MB SAFETY VIDEO]]></item>
+		<item id="4" contentID="0"><![CDATA[BREAK-MB TRIAL]]></item>
+			<item id="4.0"  contentID="0"><![CDATA[BREAK-MB TRIAL OVERVIEW]]></item>
+			<item id="4.1"  contentID="0"><![CDATA[DR. ASCIERTO - BREAK-MB STUDY DESIGN VIDEO]]></item>
+			<item id="4.2"  contentID="0"><![CDATA[DR. ASCIERTO - BREAK-MB IN COHORT A]]></item>
+			<item id="4.3"  contentID="0"><![CDATA[DR. ASCIERTO - BREAK-MB IN COHORT B]]></item>
+			<item id="4.4"  contentID="0"><![CDATA[DR. ASCIERTO - BREAK-MB SAFETY VIDEO]]></item>
 			
 		<!-- Mechanism of Action -->
-		<item id="5"><![CDATA[MECHANISM OF ACTION]]></item>
-			<item id="5.0"><![CDATA[MOA OVERVIEW]]></item>
-			<item id="5.1"><![CDATA[MOA ANIMATION]]></item>
+		<item id="5" contentID="0"><![CDATA[MECHANISM OF ACTION]]></item>
+			<item id="5.0"  contentID="0"><![CDATA[MOA OVERVIEW]]></item>
+			<item id="5.1"  contentID="0"><![CDATA[MOA ANIMATION]]></item>
 	</menu>
 	
 	<content>
-		<content id="0" action="video" videoID="0" loopStart="5.23" loopEnd="13.9"/>
-		<content id="1" action="slides" />
+		<content id="0" action="video" videoID="taflinlar-root" cuePointSet="tafinlar-root" />
 	</content>
 	
 	<videos>
-		<video id="0" filename="camera.mov" cuePointSet="0" />
+		<video id="taflinlar-root" filename="brain_move_longer_1920.mov" loopInFrame="51" loopOutFrame="348" />
 	</videos>
 	
 	<cuePointSets>
-		<cuePointSet id="0">
-			<cuePoint id="cue1" inTime="00:00:10.000" outTime="00:00:12.000" boxXY="0,0" type="">
-				<title><![CDATA[CUE POINT 1]]></title>
-				<copy><![CDATA[This is the body copy for cue point 1.]]></copy>
-				<image></image>
-				<footer></footer>
+		<cuePointSet id="tafinlar-root">
+			<cuePoint id="cue1" inFrame="60" outFrame="187" boxXY="49,272" boxWidth="321">
+				<body><![CDATA[NOW LICENSED - TAFINLAR is indicated in monotherapy for the treatment of adult patients with unresectable or metastatic melanoma with a BRAFV600 mutation]]></body>
+				<footer>GlaxoSmithKline. TAFINLAR Summary of Product Characteristics.</footer>
 			</cuePoint>
-			<cuePoint id="cue2" inTime="00:00:15.000" outTime="00:00:20.000" boxXY="0,0" lineStartXY="0,0" lineEndXY="0,0">
-				<title><![CDATA[CUE POINT 2]]></title>
-				<copy><![CDATA[This is the body copy for cue point 2.]]></copy>
-				<image></image>
-				<footer></footer>
+			<cuePoint id="cue2" inFrame="212" outFrame="344" boxXY="49,272" boxWidth="321">
+				<body><![CDATA[Before taking TAFINLAR, patients must have confirmation of tumour BRAFV600 mutation using a validated test]]></body>
+				<footer>GlaxoSmithKline. TAFINLAR Summary of Product Characteristics.</footer>
 			</cuePoint>
 		</cuePointSet>
 	</cuePointSets>

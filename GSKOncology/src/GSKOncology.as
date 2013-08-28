@@ -13,6 +13,7 @@ package
 	import flash.events.KeyboardEvent;
 	import flash.filesystem.File;
 	import flash.geom.Rectangle;
+	import flash.text.Font;
 	import flash.ui.Keyboard;
 	
 	[SWF (width="1080", height="1920", frameRate="30", backgroundColor="#000000"]
@@ -22,8 +23,9 @@ package
 		
 		public function GSKOncology()
 		{
-			this.scrollRect = new Rectangle(0,0,1080,1920);
+			Font.registerFont(GillSans);
 			
+			this.scrollRect = new Rectangle(0,0,1080,1920);
 			addEventListener(Event.ADDED_TO_STAGE, launchApp);
 		}
 		
@@ -46,13 +48,11 @@ package
 			// load xml.
 			var lm:LoaderMax = new LoaderMax({onComplete:onXMLLoaded});
 			lm.insert(new XMLLoader(File.applicationDirectory.url+"data/settings.xml", {name:"settings"}));
-//			lm.insert(new XMLLoader(File.applicationDirectory.url+"data/test.xml", {name:"content"}));
 			lm.load();
 		}
 		
 		private function onXMLLoaded(e:LoaderEvent):void
 		{
-			//trace("initialised.");
 			main.init(XML(LoaderMax.getContent("settings")));
 		}
 		

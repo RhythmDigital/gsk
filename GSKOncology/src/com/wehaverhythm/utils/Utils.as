@@ -1,5 +1,7 @@
 package com.wehaverhythm.utils
 {
+	import com.greensock.TweenMax;
+
 	public class Utils
 	{
 		public function Utils()
@@ -16,6 +18,11 @@ package com.wehaverhythm.utils
 					deepLogArray(array[j].menu, level+1);
 				}
 			}
+		}
+		
+		public static function frameToSeconds(frame:int, fps:int):Number
+		{
+			return frame/fps;
 		}
 	}
 }
