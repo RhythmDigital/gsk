@@ -17,29 +17,27 @@ package com.wehaverhythm.cuepointvideo
 	import flash.net.NetStream;
 	
 	
-	public class CuePointVideoPlayer extends Sprite
+	public class CuePointVideoPlayer extends SimpleStageVideo
 	{
 		public static const MODE_SINGLE:String = "MODE_SINGLE";
 		public static const MODE_PLAYLIST:String = "MODE_PLAYLIST";
 		
-		private var vidWidth:int;
-		private var vidHeight:int;
+	//	private var vidWidth:int;
+	//	private var vidHeight:int;
 		private var settings:XML;
-		private var connection:NetConnection;
-		private var stream:NetStream;
+	//	private var connection:NetConnection;
+	//	private var stream:NetStream;
 		private var cuePoints:Vector.<CuePoint>;
 		private var currentPoint:CuePoint;
 		private var listeningForCuePoints:Boolean;
 		private var clock:Date;
 		private var vidInfo:Object;
-		private var video:Video;
+	//	private var video:Video;
 		private var initialised:Boolean;
 		private var useCuePoints:Boolean;
 		private var mode:String; // single file or playlist? changes play complete behaviour.
 		private var playlist:Array;
 		private var currentVideo:int;
-		private var frameFrozen:Boolean;
-		private var frame:Bitmap;
 		private var vidContainer:Sprite;
 		private var canFade:Boolean;
 		
@@ -62,69 +60,50 @@ package com.wehaverhythm.cuepointvideo
 			this.videoPath = path;
 			
 			clock = new Date();
-			vidWidth = width;
-			vidHeight = height;
 			
-			super();	
+			super();
 		}
 		
-		public function init():void {
+		override protected function init():void {
 			
 			if(!initialised) {
 				trace("Video player initialising...");
-				with(graphics) {
+
+				vidContainer = new Sprite();
+				with(vidContainer.graphics) {
 					beginFill(0x000000, 1);
-					drawRect(0,0,stage.stageWidth, stage.stageHeight);
+					drawRect(0,0,stage.stageWidth*1.1, stage.stageHeight*1.1); // overlap to hide dirty edge
 					endFill();
 				}
 				
-				connection = new NetConnection();
-				connection.connect(null);
-				
-				stream = new NetStream(connection);
-				video = new Video();
-				video.smoothing = true;
-				vidContainer = new Sprite();
-				var customClient:Object = new Object();
-				stream.client = customClient;
-				
-				
-				customClient["onMetaData"] = onMetaData;
-				
-				
-				video.attachNetStream(stream);
-				vidContainer.addChild(video);
 				addChild(vidContainer);
 				
-				video.width = vidWidth;
-				video.height = vidHeight;
-				
-				stream.addEventListener(NetStatusEvent.NET_STATUS, onStatusUpdate);
-				
 				initialised = true;
-				
 				addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			} else {
 				trace("Video player already initialised.");
 			}
 		}
 		
-		public function onMetaData(vidInfo:Object):void {
-			//super.onMetaData(vidInfo);
+		override public function onMetaData(vidInfo:Object):void {
+			super.onMetaData(vidInfo);
 			
 			this.vidInfo = vidInfo;
-			if(verbose) {
+			//if(verbose) {
 				for (var propName:String in vidInfo) {
 					trace(propName + " = " + vidInfo[propName]);
 				}
-			}
+			//}
 			
 			videoFrameRate = vidInfo.videoframerate;
 			
+			vidContainer.width = vidInfo.width*1.3;
+			vidContainer.height = vidInfo.height*1.3;
+			
 			//vid.rotation = 90;
-			var bounds:Rectangle = video.getBounds(stage);
-			video.x = -bounds.x;
-			video.y = 0;
+//			var bounds:Rectangle = video.getBounds(stage);
+//			video.x = -bounds.x;
+//			video.y = 0;
 			
 			if(useLooping) {
 				setLoopTime();
@@ -148,7 +127,7 @@ package com.wehaverhythm.cuepointvideo
 			useCuePoints = true;
 			
 			trace("fade to video");
-			stream.play(videoPath+file);
+			ns.play(videoPath+file);
 		}
 		
 		public function playPlaylist(files:Array, contentID:String = null):void
@@ -169,12 +148,9 @@ package com.wehaverhythm.cuepointvideo
 		
 		private function resetPlayer():void
 		{
-			if(frame) {
-				TweenMax.killTweensOf(frame);
-				frame.alpha = 1;
-			}
 			TweenMax.killTweensOf(vidContainer);
-			vidContainer.alpha = 0;
+			vidContainer.alpha = 1;
+			vidContainer.visible = true;
 			
 			useCuePoints = false;
 			useLooping = listenForLooping = false;
@@ -191,11 +167,11 @@ package com.wehaverhythm.cuepointvideo
 		private function playNextVideo():void
 		{
 			var url:String = videoPath+playlist[currentVideo];
-			stream.play(url);
+			ns.play(url);
 			dispatchEvent(new CuePointVideoEvent(CuePointVideoEvent.NEXT_VIDEO_PLAYING, true, false, {id:currentVideo}));
 			
 			TweenMax.killTweensOf(vidContainer);
-			vidContainer.alpha = 0;
+			vidContainer.alpha = 1;
 			
 			currentVideo++;
 			if(currentVideo == playlist.length) {
@@ -203,8 +179,10 @@ package com.wehaverhythm.cuepointvideo
 			}
 		}
 		
-		protected function onStatusUpdate(e:NetStatusEvent):void
+		override protected function onNetStatus(e:NetStatusEvent):void
 		{
+			super.onNetStatus(e);
+			
 			switch(e.info.code) {
 				case "NetStream.Play.Start":
 					canFade = true;
@@ -216,13 +194,13 @@ package com.wehaverhythm.cuepointvideo
 					if(useLooping) {
 						setLoopTime();
 						listenForLooping = true;
-						stream.resume();
+						ns.resume();
 					}
 					
-					if(vidContainer.alpha < 1 && canFade) {
+					if(vidContainer.alpha > 0 && canFade) {
 						canFade = false;
 						trace("FADE IN!");
-						TweenMax.delayedCall(2, fadeContainerIn, null, true);
+						TweenMax.delayedCall(2, fadeVideoIn, null, true);
 					}
 					
 					break;
@@ -239,9 +217,9 @@ package com.wehaverhythm.cuepointvideo
 			}
 		}
 		
-		private function fadeContainerIn():void
+		private function fadeVideoIn():void
 		{
-			TweenMax.to(vidContainer, 1, {alpha:1, ease:Quad.easeOut, overwrite:2});
+			TweenMax.to(vidContainer, 1, {alpha:0, ease:Quad.easeOut, overwrite:2});
 		}
 		
 		private function setLoopTime():void
@@ -252,39 +230,13 @@ package com.wehaverhythm.cuepointvideo
 		
 		private function freezeFrame():void
 		{
-			if(verbose) trace("FREEZE!!");
-			frameFrozen = true;
-			if(!frame) {
-				frame = new Bitmap(new BitmapData(vidWidth, vidHeight, false, 0xff0000));
-			}
-			
-			frame.bitmapData.draw(vidContainer);
-			frame.alpha = 1;
-			addChild(frame);
-			if(contains(vidContainer)) removeChild(vidContainer);
-			
-			TweenMax.to(frame, 1, {alpha: 0, ease:Quad.easeOut, onComplete:unfreezeFrame});
+			dispatchEvent(new CuePointVideoEvent(CuePointVideoEvent.HIDE_CURRENT_CAPTION, true, false, {id:currentVideo}));
+			TweenMax.to(vidContainer, 1, {alpha: 1, ease:Quad.easeOut, onComplete:playNextVideo});
 		}
 		
 		public function reset():void
 		{
 			
-		}
-		
-		private function unfreezeFrame():void
-		{
-			if(verbose) trace("UNFREEZE!!");
-			
-			vidContainer.alpha = 0;
-			if(!contains(vidContainer)) addChild(vidContainer);
-			
-			if(frame && contains(frame)) {
-				removeChild(frame);
-			}
-			
-			playNextVideo();
-			
-			frameFrozen = false;
 		}
 		
 		protected function onEnterFrame(e:Event):void
@@ -293,13 +245,13 @@ package com.wehaverhythm.cuepointvideo
 				//trace("loopEnabled: " + loopOut);
 			//	if(verbose) trace(stream.time + " / " + vidInfo.duration);
 				// loop code
-				if(stream.time >= loopOut) {
+				if(ns.time >= loopOut) {
 					//trace(stream.time + " / " + vidInfo.duration);
 					listenForLooping = false;
 					listenForCuePoints = false;
 				//	trace("goto > loopIn: " + loopIn);
-					stream.pause();
-					stream.seek(loopIn);//+0.8);
+					ns.pause();
+					ns.seek(loopIn);//+0.8);
 					
 				}
 			}
@@ -313,7 +265,7 @@ package com.wehaverhythm.cuepointvideo
 				for(i; i < numCuePoints; ++i)
 				{
 					//trace(stream.time +":  "+cuePoints[i].inTimeSeconds+"->"+cuePoints[i].outTimeSeconds);
-					if(stream.time >= cuePoints[i].inTimeSeconds && stream.time < cuePoints[i].outTimeSeconds) {
+					if(ns.time >= cuePoints[i].inTimeSeconds && ns.time < cuePoints[i].outTimeSeconds) {
 						if(!cuePoints[i].visible) {
 							cuePoints[i].visible = true;
 							processCuePoint(cuePoints[i], CuePoint.CUE_IN);

@@ -3,7 +3,7 @@
 	<title><![CDATA[TYVERB]]></title>
 	<colour><![CDATA[#99cc33]]></colour>
 	<logo>tyverb.png</logo>
-	<rootVideo>camera.mov</rootVideo>
+	<rootVideo>brain_move_longer_1920.mov</rootVideo>
 	<rootCaption>
 		<copy><![CDATA[Despite progression, continuous blockade of HER2 signaling has been shown to be an effective strategy for prolonging response.]]></copy>
 	</rootCaption>
@@ -48,10 +48,14 @@
 	<cuePointSets>
 		<cuePointSet id="tyverb-root">
 			<cuePoint id="cue1" inFrame="60" outFrame="187" boxXY="49,272" boxWidth="321">
-				<body><![CDATA[]]></body>
+				<title><![CDATA[PROVEN EFFICACY IN A RANGE OF PATIENTS]]></title>
+				<body><![CDATA[TYVERB combination therapy has been proven effective in a range of patients with HER2+ mBC across lines of therapy]]></body>
+				<footer><![CDATA[Cameron 2008/p535/C2/para 4/lines 6-8, p537/Figure 2/A, p 538/table 2; Johnston 2009/p5538/abstract/para 3/lines 1-3]]></footer>
 			</cuePoint>
 			<cuePoint id="cue2" inFrame="212" outFrame="344" boxXY="49,272" boxWidth="321">
-				<body><![CDATA[]]></body>
+				<title><![CDATA[HER2+ mBC]]></title>
+				<body><![CDATA[Despite progression, continuous blockade of HER2 signaling has been shown to be an effective strategy for prolonging response]]></body>
+				<footer><![CDATA[Wang 2011/p 17/col 2/para 2; Blackwell 2012/p2585/Abstract/Conclusion; Gori 2011/p 5/col 1/para 4; p 5/col 2/para 4]]></footer>
 			</cuePoint>
 		</cuePointSet>
 	</cuePointSets>

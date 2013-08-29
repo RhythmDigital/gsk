@@ -2,6 +2,8 @@ package com.wehaverhythm.gsk.oncology.menu
 {
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Quad;
+	import com.greensock.easing.Quint;
+	import com.greensock.easing.Sine;
 	import com.greensock.loading.LoaderMax;
 	import com.wehaverhythm.gsk.oncology.Constants;
 	
@@ -14,6 +16,7 @@ package com.wehaverhythm.gsk.oncology.menu
 		private var d:MenuButtonLogoDisplay;
 		private var caption:RootMenuCaptionDisplay;
 		private var logo:*;
+		private var captionX:Number;
 		
 		public function MenuButtonLogo(buttonID:int, xmlID:String, menu:int, label:String, xml:XMLList, menuXML:XML)
 		{
@@ -31,9 +34,10 @@ package com.wehaverhythm.gsk.oncology.menu
 		private function setupCaption(menuXML:XML):void
 		{
 			var margin:Number = 12;
+			captionX = width + 10;
 			
 			caption = new RootMenuCaptionDisplay();
-			caption.x = width + 10;
+			caption.x = 1080;//captionX;
 			caption.alpha = 0;
 			caption.visible = false;
 			caption.txtFooter.visible = false;
@@ -87,12 +91,12 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		public function showCaption():void
 		{
-			TweenMax.to(caption, .4, {delay:.1, autoAlpha:1, ease:Quad.easeOut});
+			TweenMax.to(caption, .35, {x:captionX, autoAlpha:1, delay:.2, ease:Sine.easeOut});
 		}
 		
 		public function hideCaption():void
 		{
-			if(caption.alpha > 0) TweenMax.to(caption, .4, {delay:.1, autoAlpha:0, ease:Quad.easeOut});
+			TweenMax.to(caption, .25, {x:1080, autoAlpha:0, delay:.2, ease:Sine.easeIn});
 		}
 		
 		override public function destroy():void

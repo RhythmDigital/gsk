@@ -36,8 +36,9 @@ package com.wehaverhythm.gsk.oncology.content
 			video = new CuePointVideoPlayer(GlobalSettings.STAGE_WIDTH, GlobalSettings.STAGE_HEIGHT, File.applicationDirectory.url+"assets/video/");
 			video.addEventListener(CuePointEvent.CUE_POINT_TRIGGER, onCuePointTriggered);
 			video.addEventListener(CuePointVideoEvent.NEXT_VIDEO_PLAYING, onNextVideoPlaying);
+			video.addEventListener(CuePointVideoEvent.HIDE_CURRENT_CAPTION, onHideCurrentCaption);
 			addChild(video);
-			video.init();
+			//video.init();
 		}
 		
 		public function hideCurrentOverlays():void
@@ -184,6 +185,12 @@ package com.wehaverhythm.gsk.oncology.content
 			currentBrandXML = brandsXMLArray[e.params.id].content;
 			//trace(currentBrandXML.rootCaption);
 			menu.showRootCaption(e.params.id);
+		}
+		
+		
+		protected function onHideCurrentCaption(e:Event):void
+		{
+			menu.hideRootCaptions();
 		}
 	}
 }

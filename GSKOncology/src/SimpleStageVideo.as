@@ -1,34 +1,22 @@
 package
 {
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-	import flash.display.DisplayObject;
-	import flash.display.Loader;
 	import flash.display.Shape;
 	import flash.display.Sprite;
-	import flash.display.StageAlign;
 	import flash.display.StageDisplayState;
-	import flash.display.StageScaleMode;
 	import flash.events.Event;
-	import flash.events.FullScreenEvent;
 	import flash.events.KeyboardEvent;
-	import flash.events.MouseEvent;
 	import flash.events.NetStatusEvent;
 	import flash.events.StageVideoAvailabilityEvent;
 	import flash.events.StageVideoEvent;
-	import flash.events.TimerEvent;
 	import flash.events.VideoEvent;
 	import flash.geom.Rectangle;
-	import flash.media.SoundTransform;
 	import flash.media.StageVideo;
 	import flash.media.StageVideoAvailability;
 	import flash.media.Video;
 	import flash.net.NetConnection;
 	import flash.net.NetStream;
-	import flash.system.LoaderContext;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
-	import flash.text.TextFormat;
 	import flash.ui.Keyboard;
 	
 	/**
@@ -39,14 +27,13 @@ package
 	[SWF(frameRate="1", backgroundColor="#000000")]
 	public class SimpleStageVideo extends Sprite
 	{
-		private static const FILE_NAME:String = "/assets/video/brain_move_longer_1920.mov";
 		private static const INTERVAL:Number = 500;
 		private static const BORDER:Number = 20;
 		
 		private var legend:TextField = new TextField();
 		private var sv:StageVideo;
 		private var nc:NetConnection;
-		private var ns:NetStream;
+		protected var ns:NetStream;
 		private var rc:Rectangle;
 		private var video:Video;
 		private var thumb:Shape;
@@ -67,7 +54,12 @@ package
 		private var inited:Boolean;
 		private var played:Boolean;
 		private var container:Sprite;
+		public static var READY:String = "SimpleStageVideoReady";
 		
+		/**
+		 * 
+		 * 
+		 */		
 		public function SimpleStageVideo()
 		{
 			// Make sure the app is visible and stage available
@@ -92,22 +84,22 @@ package
 		private function onAddedToStage(event:Event):void
 		{
 			// Scaling
-			stage.scaleMode = StageScaleMode.NO_SCALE;
-			stage.align = StageAlign.TOP_LEFT;
+//			stage.scaleMode = StageScaleMode.NO_SCALE;
+//			stage.align = StageAlign.TOP_LEFT;
 			legend.autoSize = TextFieldAutoSize.LEFT;
 			
 			// Debug infos
 			legend.multiline = true;
 			legend.background = true;
 			legend.backgroundColor = 0xFFFFFFFF;
-			addChild(legend);
+			//addChild(legend);
 			
 			// Thumb seek Bar
 			thumb = new Shape();
 			
 			interactiveThumb = new Sprite();
 			interactiveThumb.addChild(thumb);
-			addChild(interactiveThumb);
+			//addChild(interactiveThumb);
 			
 			// Connections
 			nc = new NetConnection();
@@ -127,9 +119,16 @@ package
 			video.addEventListener(VideoEvent.RENDER_STATE, videoStateChange);
 			
 			// Input Events
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+//			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			stage.addEventListener(Event.RESIZE,  onResize);
-			stage.addEventListener(MouseEvent.CLICK, onClick);
+//			stage.addEventListener(MouseEvent.CLICK, onClick);
+			
+			init();
+		}
+		
+		protected function init():void
+		{
+			
 		}
 		
 		/**
@@ -137,7 +136,7 @@ package
 		 * @param event
 		 * 
 		 */		
-		private function onNetStatus(event:NetStatusEvent):void
+		protected function onNetStatus(event:NetStatusEvent):void
 		{
 			if ( event.info == "NetStream.Play.StreamNotFound" )
 				legend.text = "Video file passed, not available!";
@@ -155,20 +154,6 @@ package
 			thumb.graphics.clear();
 			thumb.graphics.beginFill(0xFFFFFF);
 			thumb.graphics.drawRect(rect.x, rect.y, rect.width, rect.height);	
-		}
-		
-		/**
-		 * 
-		 * @param event
-		 * 
-		 */		
-		private function onClick(event:MouseEvent):void
-		{
-			if ( event.stageY >= interactiveThumb.y - BORDER && event.stageX <= stage.stageWidth - BORDER )
-			{
-				var seekTime:Number = (stage.mouseX - BORDER) * ( totalTime / (stage.stageWidth - (BORDER << 1) ) );
-				ns.seek( seekTime );	
-			}
 		}
 		
 		/**
@@ -253,7 +238,7 @@ package
 		public function onMetaData ( evt:Object ):void
 		{
 			totalTime = evt.duration;
-			stage.addEventListener(Event.ENTER_FRAME, onFrame);
+			//stage.addEventListener(Event.ENTER_FRAME, onFrame);
 		}
 		
 		/**
@@ -284,6 +269,7 @@ package
 				{
 					sv = stage.stageVideos[0];
 					sv.addEventListener(StageVideoEvent.RENDER_STATE, stageVideoStateChange);
+					trace("TRYING STAGE VIDEO");
 				}
 				sv.attachNetStream(ns);
 				if (classicVideoInUse)
@@ -300,12 +286,6 @@ package
 				classicVideoInUse = true;
 				video.attachNetStream(ns);
 				stage.addChildAt(video, 0);
-			}
-			
-			if ( !played ) 
-			{
-				played = true;
-				ns.play(FILE_NAME);
 			}
 		} 
 		

@@ -5,50 +5,63 @@ package
 	import com.greensock.loading.XMLLoader;
 	import com.wehaverhythm.gsk.oncology.OncologyMain;
 	
-	import flash.display.NativeWindow;
-	import flash.display.Screen;
 	import flash.display.Sprite;
 	import flash.display.StageDisplayState;
 	import flash.events.Event;
+	import flash.events.FullScreenEvent;
 	import flash.events.KeyboardEvent;
-	import flash.events.StageVideoAvailabilityEvent;
 	import flash.filesystem.File;
 	import flash.geom.Rectangle;
-	import flash.text.Font;
+	import flash.text.Font;;
 	import flash.ui.Keyboard;
 	
 	[SWF (width="1080", height="1920", frameRate="30", backgroundColor="#000000")]
 	public class GSKOncology extends Sprite
 	{
+		private var startup:StartupDisplay;
 		private var main:OncologyMain;
 		
 		public function GSKOncology()
 		{
-//			var v:SimpleStageVideo = new SimpleStageVideo();
-//			addChild(v);
-			
-			
 			Font.registerFont(GillSans);
-			
 			this.scrollRect = new Rectangle(0,0,1080,1920);
-			addEventListener(Event.ADDED_TO_STAGE, launchApp);
+			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+		}
+		
+		protected function onAddedToStage(e:Event):void
+		{
+			startup = new StartupDisplay();
+			addChild(startup);
+			
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+			stage.addEventListener(FullScreenEvent.FULL_SCREEN, onFullScreen);
+		}
+		
+		private function onKeyDown(e:KeyboardEvent):void
+		{
+			switch(e.keyCode) {
+				case Keyboard.ENTER:
+					stage.displayState = StageDisplayState.FULL_SCREEN;
+				break;
+				case Keyboard.ESCAPE:
+					stage.displayState = StageDisplayState.NORMAL;
+				break;
+			}			
+		}
+		
+		protected function onFullScreen(e:FullScreenEvent):void
+		{
+			removeChild(startup);
+			launchApp(null);
 		}
 		
 		protected function launchApp(e:Event):void
 		{
-			removeEventListener(Event.ADDED_TO_STAGE, launchApp);
+			stage.removeEventListener(FullScreenEvent.FULL_SCREEN, onFullScreen); // don't want to re-initialised.
 			
 			// instantiate main app
 			main = new OncologyMain();
 			addChild(main);
-			
-			// position native window
-			var nw:NativeWindow = stage.nativeWindow;
-			var screen:Screen = Screen(Screen.screens[Screen.screens.length-1]);
-			nw.x = screen.bounds.x;
-			
-			// enter fullscreen
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			
 			// load xml.
 			var lm:LoaderMax = new LoaderMax({onComplete:onXMLLoaded});
@@ -59,13 +72,6 @@ package
 		private function onXMLLoaded(e:LoaderEvent):void
 		{
 			main.init(XML(LoaderMax.getContent("settings")));
-		}
-		
-		protected function onKeyDown(e:KeyboardEvent):void
-		{
-			if(e.keyCode == Keyboard.ENTER) {
-				stage.displayState = StageDisplayState.FULL_SCREEN;
-			}
 		}
 	}
 }

@@ -3,7 +3,7 @@
 	<title><![CDATA[VOTRIENT]]></title>
 	<colour><![CDATA[#ff6600]]></colour>
 	<logo>votrient.png</logo>
-	<rootVideo>camera.mov</rootVideo>
+	<rootVideo>brain_move_longer_1920.mov</rootVideo>
 	<rootCaption>
 		<copy><![CDATA[Discover how VOTRIENT is lighting up the world of oncology]]></copy>
 	</rootCaption>
@@ -44,11 +44,10 @@
 	
 	<cuePointSets>
 		<cuePointSet id="votrient-root">
-			<cuePoint id="cue1" inFrame="60" outFrame="187" boxXY="49,272" boxWidth="321">
-				<body><![CDATA[Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ]]></body>
-			</cuePoint>
-			<cuePoint id="cue2" inFrame="212" outFrame="344" boxXY="49,272" boxWidth="321">
-				<body><![CDATA[Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ]]></body>
+			<cuePoint id="cue1" inFrame="60" outFrame="187" boxXY="49,272" boxWidth="298">
+				<image>pills.png</image>
+				<body><![CDATA[VOTRIENT IS AVAILABLE AS A 200MG AND 400MG TABLET]]></body>
+				<footer>VOTRIENT. Summary of Product Characteristics</footer>
 			</cuePoint>
 		</cuePointSet>
 	</cuePointSets>

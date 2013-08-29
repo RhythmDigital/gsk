@@ -121,12 +121,14 @@ package com.wehaverhythm.gsk.oncology.menu
 			// if not on root menu, but root playlist still in bg, don't try and show/hide root captions.
 			if(currentSubMenu != -1) return; 
 			
-			trace("Show root caption for : " + id);
+			MenuButtonLogo(buttons[id]).showCaption();
+		}
+		
+		public function hideRootCaptions():void
+		{
 			for(var i:int = 0; i < buttons.length; ++i) {
 				MenuButtonLogo(buttons[i]).hideCaption();
 			}
-			
-			MenuButtonLogo(buttons[id]).showCaption();
 		}
 		
 		private function renderButtonsFor(m:int, mid:int, id:String = null):void
@@ -230,21 +232,23 @@ package com.wehaverhythm.gsk.oncology.menu
 		{
 			var startProps:Object = {x:-100, autoAlpha:0};
 			var endProps:Object = {autoAlpha:1, x:0, ease:Quad.easeOut};
-			var delay:Number = 0;
+			var delay:Number = 0;//.1;
+			var time:Number = 0.35;
 			
 			if(currentID==null && prevSubMenu == -1) {
-				delay = .07;
-				TweenMax.fromTo(logoHolder, .27, startProps,{x:endProps.x, autoAlpha:endProps.autoAlpha});
+				delay += .07;
+				//logoHolder.visible = false;
+				TweenMax.fromTo(logoHolder, time, startProps,{delay:delay, x:endProps.x, autoAlpha:endProps.autoAlpha});
 			}
 			
 			if(showTitle) {
 				delay += .07;
-				TweenMax.fromTo(overlay.display.titleBar, .27, startProps,{delay:delay, x:endProps.x, autoAlpha:endProps.autoAlpha});
+				TweenMax.fromTo(overlay.display.titleBar, time, startProps,{delay:delay, x:endProps.x, autoAlpha:endProps.autoAlpha});
 			}
 			
 			endProps.delay = delay;
 			
-			TweenMax.staggerFromTo(buttons, .27, startProps, endProps, .07);
+			TweenMax.staggerFromTo(buttons, time, startProps, endProps, .07);
 		}
 		
 		private function addButton(btns:Array, buttonID:int, xmlID:String, menuID:int, label:String, xml:XMLList = null, logo:Boolean = false, startY:int = 0):void
