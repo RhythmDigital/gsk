@@ -31,6 +31,7 @@ package com.wehaverhythm.gsk.oncology.menu
 		private var currentXML:XMLList;
 		private var currentSubMenu:int = -1;
 		private var prevSubMenu:int = -1;
+		private var brandColour:uint;
 		
 		public var menus:Array;
 		
@@ -195,8 +196,11 @@ package com.wehaverhythm.gsk.oncology.menu
 				dispatchEvent(new ContentEvent(ContentEvent.CONTENT_TRIGGER, {type:"sub-menu-button", mid:currentMenu, xml: currentXML}));
 			}
 			
+			brandColour = uint("0x"+String(menus[currentMenu].content.colour).substr(1));
+			
 			logoHolder.logoHolder.logo.addChild(LoaderMax.getContent(String(menus[mid].content.logo)));
 			overlay.display.addChild(logoHolder);
+			TweenMax.to(logoHolder.leftBar, 0, {tint:brandColour, immediateRender:true});
 			TweenMax.to(logoHolder, .3, {autoAlpha:1, ease:Quad.easeOut});
 			
 			overlay.showButtons(MenuOverlay.TYPE_SUBNAV);
@@ -219,7 +223,7 @@ package com.wehaverhythm.gsk.oncology.menu
 			}
 			
 			overlay.display.titleBar.txtLabel.text = title;
-			TweenMax.to(overlay.display.titleBar.bg, 0, {immediateRender:true, tint:uint("0x"+String(menus[currentMenu].content.colour).substr(1))});
+			TweenMax.to(overlay.display.titleBar.bg, 0, {immediateRender:true, tint:brandColour});
 		}
 		
 		private function animateButtons(showTitle:Boolean = false):void

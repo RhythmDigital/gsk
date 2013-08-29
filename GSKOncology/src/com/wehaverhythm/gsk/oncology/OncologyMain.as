@@ -5,6 +5,7 @@ package com.wehaverhythm.gsk.oncology
 	import com.wehaverhythm.gsk.oncology.content.ContentManager;
 	import com.wehaverhythm.gsk.oncology.menu.Menu;
 	
+	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	
 	public class OncologyMain extends Sprite
@@ -29,6 +30,12 @@ package com.wehaverhythm.gsk.oncology
 			
 			contentMan = new ContentManager(menu);
 			addChildAt(contentMan, 0);
+			
+			var logo:Bitmap = new Bitmap(new GSKLogo(0,0));
+			logo.smoothing = true;
+			logo.x = 40;
+			logo.y = 20;
+			addChild(logo);
 		}
 		
 		protected function onContentTrigger(e:ContentEvent):void

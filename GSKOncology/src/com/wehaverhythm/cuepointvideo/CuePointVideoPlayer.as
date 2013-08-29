@@ -109,7 +109,9 @@ package com.wehaverhythm.cuepointvideo
 			}
 		}
 		
-		public function onMetaData(vidInfo):void {
+		public function onMetaData(vidInfo:Object):void {
+			//super.onMetaData(vidInfo);
+			
 			this.vidInfo = vidInfo;
 			if(verbose) {
 				for (var propName:String in vidInfo) {

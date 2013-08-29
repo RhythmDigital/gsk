@@ -11,18 +11,23 @@ package
 	import flash.display.StageDisplayState;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
+	import flash.events.StageVideoAvailabilityEvent;
 	import flash.filesystem.File;
 	import flash.geom.Rectangle;
 	import flash.text.Font;
 	import flash.ui.Keyboard;
 	
-	[SWF (width="1080", height="1920", frameRate="30", backgroundColor="#000000"]
+	[SWF (width="1080", height="1920", frameRate="30", backgroundColor="#000000")]
 	public class GSKOncology extends Sprite
 	{
 		private var main:OncologyMain;
 		
 		public function GSKOncology()
 		{
+//			var v:SimpleStageVideo = new SimpleStageVideo();
+//			addChild(v);
+			
+			
 			Font.registerFont(GillSans);
 			
 			this.scrollRect = new Rectangle(0,0,1080,1920);

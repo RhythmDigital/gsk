@@ -48,10 +48,10 @@
 	<cuePointSets>
 		<cuePointSet id="tyverb-root">
 			<cuePoint id="cue1" inFrame="60" outFrame="187" boxXY="49,272" boxWidth="321">
-				<body><![CDATA[Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ]]></body>
+				<body><![CDATA[]]></body>
 			</cuePoint>
 			<cuePoint id="cue2" inFrame="212" outFrame="344" boxXY="49,272" boxWidth="321">
-				<body><![CDATA[Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ]]></body>
+				<body><![CDATA[]]></body>
 			</cuePoint>
 		</cuePointSet>
 	</cuePointSets>
