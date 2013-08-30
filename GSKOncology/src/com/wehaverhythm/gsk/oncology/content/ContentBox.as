@@ -85,7 +85,7 @@ package com.wehaverhythm.gsk.oncology.content
 		
 		protected function onAddToCartClicked(e:MouseEvent):void
 		{
-			dispatchEvent(new Event(ContentBox.CLOSE, true));
+			dispatchEvent(new Event(ContentBox.ADD_TO_CART, true));
 		}
 		
 		/**
@@ -94,19 +94,16 @@ package com.wehaverhythm.gsk.oncology.content
 		protected function onSeekForwardClicked(e:MouseEvent):void
 		{
 			// TODO Auto-generated method stub
-			
 		}
 		
 		protected function onSeekBackClicked(e:MouseEvent):void
 		{
 			// TODO Auto-generated method stub
-			
 		}
 		
 		protected function onPlayPauseClicked(e:MouseEvent):void
 		{
 			// TODO Auto-generated method stub
-			
 		}
 		
 		/**
