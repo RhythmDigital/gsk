@@ -176,10 +176,13 @@ package com.wehaverhythm.gsk.oncology.menu
 			}
 			
 			if(!newButtons.length) {
-				//trace("There are no buttons for this item!");
+				trace("There are no buttons for this item!");
+				trace(currentXML.toXMLString());
+				currentID = id;
+				currentMenu = mid;
 			} else {
 				currentID = id;
-				//trace("currentID: " + currentID);
+				trace("currentID: " + currentID);
 				currentMenu = mid;
 				destroyButtons();
 				buttons = newButtons;
@@ -189,7 +192,6 @@ package com.wehaverhythm.gsk.oncology.menu
 				} else {
 					animateButtons(false);
 				}
-				
 			}
 			
 			if(currentID == null) {
@@ -352,7 +354,7 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		protected function onMenuItemSelected(e:MenuEvent):void
 		{
-			//trace("Item selected: " + e.target.menu + " / " + e.target.xmlID);
+			trace("Item selected: " + e.target.menu + " / " + e.target.xmlID);
 			
 			// deselect old buttons
 			for(var i:int = 0; i < buttons.length; ++i) {

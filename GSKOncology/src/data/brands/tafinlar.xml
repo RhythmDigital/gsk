@@ -45,7 +45,7 @@
 	</menu>
 	
 	<content>
-		<content id="0" action="video" videoID="taflinlar-root" cuePointSet="tafinlar-root" />
+		<content id="0" action="video-bg" videoID="taflinlar-root" cuePointSet="tafinlar-root" />
 	</content>
 	
 	<videos>

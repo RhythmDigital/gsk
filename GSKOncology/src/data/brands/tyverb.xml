@@ -10,36 +10,40 @@
 	
 	<menu contentID="0">
 		<!-- LANDSCAPE AND PRODUCT OVERVIEW -->
-		<item id="0" contentID="0"><![CDATA[LANDSCAPE AND PRODUCT OVERVIEW]]></item>
-
-		<!-- TREATMENT SEQUENCE OF HER2+ MBC -->
-		<item id="1" contentID="0"><![CDATA[TREATMENT SEQUENCE OF HER2+ MBC]]></item>
-			<item id="1.0" contentID="0"><![CDATA[NOW APPROVED IN HER2+/HR- DISEASE]]></item>
-			<item id="1.1" contentID="0"><![CDATA[STUDY DESIGN AND RESULTS]]></item>
-			<item id="1.2" contentID="0"><![CDATA[MECHANISM OF ACTION]]></item>
-			<item id="1.3" contentID="0"><![CDATA[SAFETY AND DOSING]]></item>
+		<item id="0" contentID="1"><![CDATA[LANDSCAPE AND PRODUCT OVERVIEW]]></item>
 			
 		<!-- TYVERB PLUS AROMATASE INHIBATOR -->
-		<item id="2" contentID="0"><![CDATA[TYVERB PLUS AROMATASE INHIBATOR]]></item>
+		<item id="1" contentID="2"><![CDATA[TYVERB PLUS AROMATASE INHIBATOR]]></item>
 
 		<!-- TYVERB PLUS CAPECITABINE -->
-		<item id="3" contentID="0"><![CDATA[TYVERB PLUS CAPECITABINE]]></item>
+		<item id="2" contentID="0"><![CDATA[TYVERB PLUS CAPECITABINE]]></item>
 
 		<!-- TYVERB IN COMBINATION WITH TRASTUZUMAB -->
-		<item id="4" contentID="0"><![CDATA[TYVERB IN COMBINATION WITH TRASTUZUMAB]]></item>
-			<item id="4.0" contentID="0"><![CDATA[NOW APPROVED IN HER2+/HR- DISEASE]]></item>
-			<item id="4.1" contentID="0"><![CDATA[STUDY DESIGN AND RESULTS]]></item>
-			<item id="4.2" contentID="0"><![CDATA[MECHANISM OF ACTION]]></item>
-			<item id="4.3" contentID="0"><![CDATA[SAFETY AND DOSING]]></item>
+		<item id="3" contentID="0"><![CDATA[TYVERB IN COMBINATION WITH TRASTUZUMAB]]></item>
+			<item id="3.0" contentID="0"><![CDATA[NOW APPROVED IN HER2+/HR- DISEASE]]></item>
+			<item id="3.1" contentID="0"><![CDATA[STUDY DESIGN AND RESULTS]]></item>
+			<item id="3.2" contentID="0"><![CDATA[MECHANISM OF ACTION]]></item>
+			<item id="3.3" contentID="0"><![CDATA[SAFETY AND DOSING]]></item>
 
 		<!-- SUMMARY OF PRODUCT CHARACTERISTICS -->
-		<item id="5" contentID="0"><![CDATA[SUMMARY OF PRODUCT CHARACTERISTICS]]></item>
+		<item id="4" contentID="0"><![CDATA[SUMMARY OF PRODUCT CHARACTERISTICS]]></item>
 
 	</menu>
 	
 	<content>
-		<content id="0" action="video" videoID="tyverb-root" cuePointSet="tyverb-root" />
+		<content id="0" action="video-bg" videoID="tyverb-root" cuePointSet="tyverb-root" />
+		<content id="1" action="slideshow-box" slideshowID="landscape-product-overview" />
+		<content id="2" action="video-box" videoID="tyverv-root" />
 	</content>
+	
+	<slideshows>
+		<slideshow id="landscape-product-overview">
+			<slide></slide>
+			<slide></slide>
+			<slide></slide>
+			<slide></slide>
+		</slideshow>
+	</slideshows>
 	
 	<videos>
 		<video id="tyverb-root" filename="brain_move_longer_1920.mov" loopInFrame="51" loopOutFrame="348" />

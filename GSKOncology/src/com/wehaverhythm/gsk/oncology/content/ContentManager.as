@@ -22,6 +22,7 @@ package com.wehaverhythm.gsk.oncology.content
 		private var cuePointSet:XML;
 		private var currentBrandXML:XML;
 		private var brandsXMLArray:Array;
+		private var content:ContentBox;
 		
 		public function ContentManager(menu:Menu)
 		{
@@ -32,6 +33,8 @@ package com.wehaverhythm.gsk.oncology.content
 		protected function onAddedToStage(e:Event):void
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			
+			content = new ContentBox();
 			
 			video = new CuePointVideoPlayer(GlobalSettings.STAGE_WIDTH, GlobalSettings.STAGE_HEIGHT, File.applicationDirectory.url+"assets/video/");
 			video.addEventListener(CuePointEvent.CUE_POINT_TRIGGER, onCuePointTriggered);
@@ -44,7 +47,7 @@ package com.wehaverhythm.gsk.oncology.content
 		public function hideCurrentOverlays():void
 		{
 			trace("hideCurrentOverlays");
-			clearOldAnnotations();
+			
 		}
 		
 		private function clearOldAnnotations():void
@@ -97,7 +100,9 @@ package com.wehaverhythm.gsk.oncology.content
 			trace("---------------------");
 			trace(contentSettings["action"]);
 			switch(contentSettings["action"]) {
-				case "video":
+				case "video-bg":
+					
+					trace(contentSettings["action"]);
 					// standard cuepoint video with annotations
 					trace("play the video!");
 					var videoXML:XML = XML(xml.videos.video.(@id == contentSettings["videoID"]));
@@ -120,6 +125,20 @@ package com.wehaverhythm.gsk.oncology.content
 						video.setCuePoints(cuePoints);
 					}
 					
+					break;
+				case "slideshow-box":
+					
+					trace("Show slideshow box!");
+					// new image loader , these will always have a content holder.
+					// (can even scale within!!! see settings for contentHolder);
+					content.setup(contentSettings["action"], xml.slideshows.slideshow.(@id == contentSettings["slideshowID"]));
+					addChild(content);
+					break;
+				
+				case "video-box":
+					trace("Show video box!");
+					content.setup(contentSettings["action"], xml.slideshows.slideshow.(@id == contentSettings["videoID"]));
+					addChild(content);
 					break;
 			}
 		}

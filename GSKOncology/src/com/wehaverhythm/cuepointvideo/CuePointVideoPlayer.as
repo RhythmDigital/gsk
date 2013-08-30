@@ -2,19 +2,10 @@ package com.wehaverhythm.cuepointvideo
 {
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Quad;
-	import com.wehaverhythm.utils.Utils;
 	
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.NetStatusEvent;
-	import flash.events.VideoEvent;
-	import flash.filesystem.File;
-	import flash.geom.Rectangle;
-	import flash.media.Video;
-	import flash.net.NetConnection;
-	import flash.net.NetStream;
 	
 	
 	public class CuePointVideoPlayer extends SimpleStageVideo
@@ -22,17 +13,12 @@ package com.wehaverhythm.cuepointvideo
 		public static const MODE_SINGLE:String = "MODE_SINGLE";
 		public static const MODE_PLAYLIST:String = "MODE_PLAYLIST";
 		
-	//	private var vidWidth:int;
-	//	private var vidHeight:int;
 		private var settings:XML;
-	//	private var connection:NetConnection;
-	//	private var stream:NetStream;
 		private var cuePoints:Vector.<CuePoint>;
 		private var currentPoint:CuePoint;
 		private var listeningForCuePoints:Boolean;
 		private var clock:Date;
 		private var vidInfo:Object;
-	//	private var video:Video;
 		private var initialised:Boolean;
 		private var useCuePoints:Boolean;
 		private var mode:String; // single file or playlist? changes play complete behaviour.
@@ -54,6 +40,7 @@ package com.wehaverhythm.cuepointvideo
 		private var loopOutFrame:Number;
 		private var videoFrameRate:Number;
 		private var numCuePoints:int;
+		private var playing:Boolean;
 		
 		public function CuePointVideoPlayer(width:int, height:int, path:String)
 		{
@@ -89,21 +76,15 @@ package com.wehaverhythm.cuepointvideo
 			super.onMetaData(vidInfo);
 			
 			this.vidInfo = vidInfo;
-			//if(verbose) {
+			if(verbose) {
 				for (var propName:String in vidInfo) {
 					trace(propName + " = " + vidInfo[propName]);
 				}
-			//}
+			}
 			
 			videoFrameRate = vidInfo.videoframerate;
-			
 			vidContainer.width = vidInfo.width*1.3;
 			vidContainer.height = vidInfo.height*1.3;
-			
-			//vid.rotation = 90;
-//			var bounds:Rectangle = video.getBounds(stage);
-//			video.x = -bounds.x;
-//			video.y = 0;
 			
 			if(useLooping) {
 				setLoopTime();
@@ -112,28 +93,22 @@ package com.wehaverhythm.cuepointvideo
 		}
 		
 		public function play(file:String, contentID:String):void
-		{		
-//			mode = MODE_SINGLE;
-//			useCuePoints = true;
-//			
-//			if(this.contentID == contentID) return;
-			this.contentID = contentID;
+		{			
+			if(this.contentID != contentID || !playing) {
+				trace("play " + file + " / contentID: " + contentID);
+				resetPlayer();
+				ns.play(videoPath+file);
+			}
 			
-			resetPlayer();
-			
-			trace("play " + file);
-			trace("cue points: " + cuePoints);
 			mode = MODE_SINGLE;
 			useCuePoints = true;
-			
-			trace("fade to video");
-			ns.play(videoPath+file);
+			this.contentID = contentID;
 		}
 		
 		public function playPlaylist(files:Array, contentID:String = null):void
 		{
-			/*if(this.contentID == contentID) return;
-			this.contentID = contentID;*/
+			if(this.contentID == contentID) return;
+			this.contentID = contentID;
 			
 			resetPlayer();
 			
@@ -148,12 +123,15 @@ package com.wehaverhythm.cuepointvideo
 		
 		private function resetPlayer():void
 		{
+			trace("RESET PLAYER");
 			TweenMax.killTweensOf(vidContainer);
 			vidContainer.alpha = 1;
 			vidContainer.visible = true;
 			
 			useCuePoints = false;
 			useLooping = listenForLooping = false;
+			
+			playing = false;
 			
 			// die cuepoints!
 			if(cuePoints) {
@@ -196,6 +174,8 @@ package com.wehaverhythm.cuepointvideo
 						listenForLooping = true;
 						ns.resume();
 					}
+					
+					playing = true;
 					
 					if(vidContainer.alpha > 0 && canFade) {
 						canFade = false;

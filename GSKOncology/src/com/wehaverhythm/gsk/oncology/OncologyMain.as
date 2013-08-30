@@ -40,7 +40,7 @@ package com.wehaverhythm.gsk.oncology
 		
 		protected function onContentTrigger(e:ContentEvent):void
 		{
-			//trace("Content Trigger: " + e);
+			trace("Content Trigger: " + e);
 			
 			contentMan.hideCurrentOverlays();
 			
@@ -63,6 +63,8 @@ package com.wehaverhythm.gsk.oncology
 					contentID = String(e.params.xml.attribute("contentID"));
 				break;
 			}
+			
+			trace("CONTENT ID: " + contentID);
 			
 			if(contentID != null && contentID.length) {
 				contentMan.showContent(contentID, e.params.mid, menu.getBrandXML(e.params.mid));

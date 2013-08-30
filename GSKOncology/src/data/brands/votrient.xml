@@ -35,7 +35,7 @@
 	</menu>
 	
 	<content>
-		<content id="0" action="video" videoID="votrient-root" cuePointSet="votrient-root" />
+		<content id="0" action="video-bg" videoID="votrient-root" cuePointSet="votrient-root" />
 	</content>
 	
 	<videos>
