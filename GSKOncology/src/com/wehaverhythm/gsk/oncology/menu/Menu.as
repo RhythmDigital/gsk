@@ -14,10 +14,10 @@ package com.wehaverhythm.gsk.oncology.menu
 	
 	public class Menu extends Sprite
 	{
-		private const BUTTON_MARGIN:int = 10;
-		private const START_Y_LOGO_BUTTONS:int = 1199;
-		private const START_Y_NORMAL_BUTTONS_TITLED:int = 1245;
-		private const START_Y_NORMAL_BUTTONS:int = 1134;
+		private const BUTTON_MARGIN:int = 9;
+		private const START_Y_LOGO_BUTTONS:int = 1206;
+		private const START_Y_NORMAL_BUTTONS_TITLED:int = 1241;
+		private const START_Y_NORMAL_BUTTONS:int = 1141;
 		
 		private var menuXML:LoaderMax;
 		private var buttons:Array;
@@ -32,6 +32,8 @@ package com.wehaverhythm.gsk.oncology.menu
 		private var currentSubMenu:int = -1;
 		private var prevSubMenu:int = -1;
 		private var brandColour:uint;
+		private var type:String = "";
+		private var isSubMenu:Boolean
 		
 		public var menus:Array;
 		
@@ -40,7 +42,7 @@ package com.wehaverhythm.gsk.oncology.menu
 			super();
 			
 			overlay = new MenuOverlay();
-			overlay.y = 954;
+			overlay.y = 964;
 			addChild(overlay);
 			
 			pickOne = overlay.display.pickOne;
@@ -113,7 +115,9 @@ package com.wehaverhythm.gsk.oncology.menu
 			hideTitle();
 			overlay.display.titleBar.visible = false;
 			overlay.showButtons(MenuOverlay.TYPE_ROOTNAV);
-			dispatchEvent(new ContentEvent(ContentEvent.CONTENT_TRIGGER, {type:"root-menu", brandsXML:menus}));
+			type = "root-menu";
+			isSubMenu = false;
+			dispatchEvent(new ContentEvent(ContentEvent.CONTENT_TRIGGER, {type:type, brandsXML:menus}));
 		}
 		
 		public function showRootCaption(id:int):void
@@ -134,6 +138,7 @@ package com.wehaverhythm.gsk.oncology.menu
 		private function renderButtonsFor(m:int, mid:int, id:String = null):void
 		{			
 			var newButtons:Array = new Array();
+			type = "";
 			
 			prevSubMenu = currentSubMenu;
 			currentSubMenu = mid;
@@ -180,10 +185,12 @@ package com.wehaverhythm.gsk.oncology.menu
 				trace(currentXML.toXMLString());
 				currentID = id;
 				currentMenu = mid;
+				isSubMenu = false;
 			} else {
 				currentID = id;
 				trace("currentID: " + currentID);
 				currentMenu = mid;
+				isSubMenu = true;
 				destroyButtons();
 				buttons = newButtons;
 				if(currentID != null) { 
@@ -194,10 +201,12 @@ package com.wehaverhythm.gsk.oncology.menu
 				}
 			}
 			
-			if(currentID == null) {
-				dispatchEvent(new ContentEvent(ContentEvent.CONTENT_TRIGGER, {type:"sub-menu", mid:currentMenu}));//xml: menus[mid].content}));
+			if(currentID == null || isSubMenu) {
+				type = "sub-menu";
+				dispatchEvent(new ContentEvent(ContentEvent.CONTENT_TRIGGER, {type:type, mid:currentMenu}));//xml: menus[mid].content}));
 			} else {
-				dispatchEvent(new ContentEvent(ContentEvent.CONTENT_TRIGGER, {type:"sub-menu-button", mid:currentMenu, xml: currentXML}));
+				type = "sub-menu-button";
+				dispatchEvent(new ContentEvent(ContentEvent.CONTENT_TRIGGER, {type:type, mid:currentMenu, xml: currentXML}));
 			}
 			
 			brandColour = uint("0x"+String(menus[currentMenu].content.colour).substr(1));
@@ -208,6 +217,8 @@ package com.wehaverhythm.gsk.oncology.menu
 			TweenMax.to(logoHolder, .3, {autoAlpha:1, ease:Quad.easeOut});
 			
 			overlay.showButtons(MenuOverlay.TYPE_SUBNAV);
+			
+			trace(" >>> BUTTON TYPE : " + type);
 		}
 		
 		private function hideTitle():void
@@ -282,10 +293,8 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		private function onMenuXMLLoaded(e:LoaderEvent):void
 		{
-			// init menus
-			for each(var menu:XMLLoader in menus) {
+			for each(var menu:XMLLoader in menus)
 				addMainMenu(XML(menu.content));
-			}
 			
 			loadAssets();			
 		}
@@ -294,9 +303,13 @@ package com.wehaverhythm.gsk.oncology.menu
 		{
 			imageLoader = new LoaderMax({onComplete:onAssetsLoaded});
 			
-			for(var i:int = 0; i < menus.length; ++i) {
-				imageLoader.insert(new ImageLoader(File.applicationDirectory.url+"assets/images/"+menus[i].content.logo, {name:menus[i].content.logo}));
-			}
+			for(var i:int = 0; i < menus.length; ++i)
+				imageLoader.insert(
+					new ImageLoader(
+						File.applicationDirectory.url+"assets/images/"+menus[i].content.logo, {name:menus[i].content.logo}
+					)
+				);
+			
 			imageLoader.load();
 		}
 		
@@ -305,24 +318,31 @@ package com.wehaverhythm.gsk.oncology.menu
 			showRootMenu();
 			addEventListener(MenuEvent.SELECT_ITEM, onMenuItemSelected);
 			addEventListener(MenuEvent.NAV_BUTTON_CLICKED, onNavButtonClicked);
-			
 			TweenMax.to(this, .3, {autoAlpha:1, ease:Sine.easeOut, overwrite:2});
 		}
 		
 		protected function onNavButtonClicked(e:MenuEvent):void
 		{
-			//trace(e.target.id + " clicked at id: " + currentID + " / menu: " + currentMenu);
+			trace(e.target.id + " clicked at id: " + currentID + " / menu: " + currentMenu);
+			processNavEvent(e.target.id, getButtonData(menuLookup[currentMenu], currentID));
+		}
+		
+		private function processNavEvent(id:String, itm:Object):void
+		{
+			if(id == "back" && type == "sub-menu-button") {
+				if(itm.parent == null) showRootMenu();
+				else renderButtonsFor(currentMenu, currentMenu, null);
+				return;
+			}
 			
-			switch(e.target.id) {
+			switch(id) {
 				case "back":
 					if(currentMenu == -1) {
-						// home.
 						//trace("don't go anywhere, i'm already root.");
 					} else {
 						if(currentID == null) {
 							showRootMenu();
 						} else {
-							var itm:Object = getButtonData(menuLookup[currentMenu], currentID);
 							if(itm.parent == "") {
 								renderButtonsFor(currentMenu, currentMenu);
 							} else {
@@ -330,10 +350,8 @@ package com.wehaverhythm.gsk.oncology.menu
 							}
 						}
 					}
-				break;
-				
+					break;
 				case "home":
-					//trace("Showing root menu...");
 					showRootMenu();
 					break;
 			}

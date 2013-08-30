@@ -23,6 +23,9 @@ package com.wehaverhythm.gsk.oncology.content
 		private var currentBrandXML:XML;
 		private var brandsXMLArray:Array;
 		private var content:ContentBox;
+		private var contentSettings:Object;
+		private var contentNode:XML;
+		
 		
 		public function ContentManager(menu:Menu)
 		{
@@ -35,6 +38,10 @@ package com.wehaverhythm.gsk.oncology.content
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			
 			content = new ContentBox();
+			content.alpha = 0;
+			content.visible = false;
+			content.x = 30;
+			content.y = 180;
 			
 			video = new CuePointVideoPlayer(GlobalSettings.STAGE_WIDTH, GlobalSettings.STAGE_HEIGHT, File.applicationDirectory.url+"assets/video/");
 			video.addEventListener(CuePointEvent.CUE_POINT_TRIGGER, onCuePointTriggered);
@@ -78,6 +85,8 @@ package com.wehaverhythm.gsk.oncology.content
 			
 			trace("Play Root Videos: " + rootVideos);
 			video.playPlaylist(rootVideos, "root");
+			
+			hideContentBox();
 		}
 		
 		public function showContent(contentID:String, brandID:int, brandXML:XML):void
@@ -86,9 +95,9 @@ package com.wehaverhythm.gsk.oncology.content
 			trace("process content id: " + contentID + " for brand " + brandID);
 			
 			var xml:XML = currentBrandXML = brandXML;
-			var contentNode:XMLList = xml.content.content.(@id == contentID);
+			contentNode = XML(xml.content.content.(@id == contentID));
 			var attributes:XMLList = contentNode.attributes();
-			var contentSettings:Object = {};
+			contentSettings = {};
 			
 			for each (var attr:XML in contentNode.attributes()) {
 				contentSettings[String(attr.name())] = String(attr);
@@ -125,21 +134,48 @@ package com.wehaverhythm.gsk.oncology.content
 						video.setCuePoints(cuePoints);
 					}
 					
+					hideContentBox();
+					
 					break;
 				case "slideshow-box":
 					
 					trace("Show slideshow box!");
 					// new image loader , these will always have a content holder.
 					// (can even scale within!!! see settings for contentHolder);
-					content.setup(contentSettings["action"], xml.slideshows.slideshow.(@id == contentSettings["slideshowID"]));
-					addChild(content);
+					showContentBox();
 					break;
 				
 				case "video-box":
 					trace("Show video box!");
-					content.setup(contentSettings["action"], xml.slideshows.slideshow.(@id == contentSettings["videoID"]));
-					addChild(content);
+					showContentBox();
 					break;
+			}
+		}
+		
+		private function showContentBox():void
+		{
+			if(contains(content)) {
+				hideContentBox(true);
+			} else {
+				addChild(content);
+				content.setup(contentSettings, currentBrandXML);
+				TweenMax.killTweensOf(content);
+				content.alpha = 0;
+				content.visible = false;
+				TweenMax.to(content, .4, {autoAlpha:1});
+			}
+		}
+
+		private function hideContentBox(showAgain:Boolean = false):void
+		{
+			TweenMax.to(content, .4, {autoAlpha:0, onComplete:hideContentComplete, onCompleteParams:[showAgain]});
+		}
+		
+		private function hideContentComplete(showAgain:Boolean):void
+		{
+			if(contains(content)) removeChild(content);
+			if(showAgain) {
+				showContentBox();
 			}
 		}
 		
@@ -151,7 +187,7 @@ package com.wehaverhythm.gsk.oncology.content
 				captions[id] = a;
 			}
 			
-			addChild(captions[id]);
+			addChildAt(captions[id], contains(content) ? getChildIndex(content)-1 : numChildren-1);
 			captions[id].showCaption();
 		}
 		
@@ -178,7 +214,7 @@ package com.wehaverhythm.gsk.oncology.content
 					var next:XML = xml.cuePoint[i];
 					var inTime:int = int(next.@inFrame);
 					var outTime:int = int(next.@outFrame);
-					//trace("Add cue point " + inTime + "," +outTime);
+					trace("Add cue point " + inTime + "," +outTime);
 					cuePoints.push(new CuePoint(next.@id, inTime, outTime));
 				}
 			
@@ -191,7 +227,9 @@ package com.wehaverhythm.gsk.oncology.content
 		
 		protected function onCuePointTriggered(e:CuePointEvent):void
 		{
-			//trace("Cue point: " + e.id + " / " + e.cueType);
+			trace("Cue point: " + e.id + " / " + e.cueType);
+			
+			// dont show cuepoint if content box is visible
 			if(e.cueType == CuePoint.CUE_IN) {
 				addAnnotation(e.id);
 			} else {

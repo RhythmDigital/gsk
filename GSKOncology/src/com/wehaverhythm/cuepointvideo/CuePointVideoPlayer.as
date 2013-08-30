@@ -54,7 +54,7 @@ package com.wehaverhythm.cuepointvideo
 		override protected function init():void {
 			
 			if(!initialised) {
-				trace("Video player initialising...");
+				if(verbose) trace("Video player initialising...");
 
 				vidContainer = new Sprite();
 				with(vidContainer.graphics) {
@@ -68,7 +68,7 @@ package com.wehaverhythm.cuepointvideo
 				initialised = true;
 				addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			} else {
-				trace("Video player already initialised.");
+				if(verbose) trace("Video player already initialised.");
 			}
 		}
 		
@@ -95,7 +95,7 @@ package com.wehaverhythm.cuepointvideo
 		public function play(file:String, contentID:String):void
 		{			
 			if(this.contentID != contentID || !playing) {
-				trace("play " + file + " / contentID: " + contentID);
+				if(verbose) trace("play " + file + " / contentID: " + contentID);
 				resetPlayer();
 				ns.play(videoPath+file);
 			}
@@ -123,7 +123,7 @@ package com.wehaverhythm.cuepointvideo
 		
 		private function resetPlayer():void
 		{
-			trace("RESET PLAYER");
+			if(verbose) trace("RESET PLAYER");
 			TweenMax.killTweensOf(vidContainer);
 			vidContainer.alpha = 1;
 			vidContainer.visible = true;
@@ -179,7 +179,7 @@ package com.wehaverhythm.cuepointvideo
 					
 					if(vidContainer.alpha > 0 && canFade) {
 						canFade = false;
-						trace("FADE IN!");
+						if(verbose) trace("FADE IN!");
 						TweenMax.delayedCall(2, fadeVideoIn, null, true);
 					}
 					
@@ -288,7 +288,7 @@ package com.wehaverhythm.cuepointvideo
 			this.loopOutFrame = loopOut;
 			this.useLooping = true;
 			
-			trace("Loop set: " + loopIn + "s -> "+loopOut+"s");
+			if(verbose) trace("Loop set: " + loopIn + "s -> "+loopOut+"s");
 		}
 		
 		public function setCuePoints(cuePoints:Vector.<CuePoint>):void
@@ -301,7 +301,7 @@ package com.wehaverhythm.cuepointvideo
 		private function calculateCuePointSeconds():void
 		{
 			var i:int = 0;
-			trace("Setting up cuepoints: " + cuePoints);
+			if(verbose) trace("Setting up cuepoints: " + cuePoints);
 			for(i; i < numCuePoints; ++i)
 			{
 				cuePoints[i].setFrameRate(videoFrameRate);
