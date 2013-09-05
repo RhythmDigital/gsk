@@ -4,6 +4,8 @@ package com.wehaverhythm.gsk.oncology.content
 	import com.greensock.easing.Quad;
 	import com.greensock.layout.ScaleMode;
 	import com.greensock.loading.VideoLoader;
+	import com.wehaverhythm.gsk.oncology.Cart;
+	import com.wehaverhythm.utils.CustomEvent;
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -23,7 +25,8 @@ package com.wehaverhythm.gsk.oncology.content
 		private var brandXML:XML;
 		private var area:Rectangle;
 		private var video:ContentBoxVideo;
-		
+		private var slideshow:ContentBoxSlideshow;
+		private var brandID:int;
 		
 		public function ContentBox()
 		{
@@ -34,15 +37,11 @@ package com.wehaverhythm.gsk.oncology.content
 			area = d.area.getBounds(this);
 			
 			d.btnClose.addEventListener(MouseEvent.MOUSE_DOWN, onCloseClicked);
-			
 			d.btnAddCart.addEventListener(MouseEvent.MOUSE_DOWN, onAddToCartClicked);
-			d.slideshow.btnNext.addEventListener(MouseEvent.MOUSE_DOWN, onNextClicked);
-			d.slideshow.btnPrev.addEventListener(MouseEvent.MOUSE_DOWN, onPrevClicked);
-			d.slideshow.btnNext.buttonMode = d.slideshow.btnPrev.buttonMode = true;
-				
 			d.btnClose.buttonMode = d.btnAddCart.buttonMode = true;
 			
-			
+			slideshow = new ContentBoxSlideshow(d);
+			d.slideshow.addChild(slideshow);
 		}
 		
 		private function stopVideo():void
@@ -57,13 +56,14 @@ package com.wehaverhythm.gsk.oncology.content
 		public function reset():void
 		{
 			stopVideo();
-			// cancel & dispose loaders & content.
+			slideshow.destroy();
 		}
 		
-		public function setup(contentSettings:Object, brandXML:XML):void
+		public function setup(contentSettings:Object, brandXML:XML, brandID:int):void
 		{
 			this.contentSettings = contentSettings;
 			this.brandXML = brandXML;
+			this.brandID = brandID;
 			
 			d.vidPlayer.visible = d.slideshow.visible = false;
 			d.vidPlayer.progress.scaleX = 0;
@@ -78,6 +78,8 @@ package com.wehaverhythm.gsk.oncology.content
 					d.slideshow.visible = true;
 					break;
 			}
+			
+			checkItemInCart();
 		}
 		
 		private function initVideo():void
@@ -89,7 +91,20 @@ package com.wehaverhythm.gsk.oncology.content
 		
 		private function initSlideshow():void
 		{
-			// TODO Auto Generated method stub
+			slideshow.init("assets/images/slideshows/"+contentSettings["slideshowFolderID"]);
+		}
+		
+		public function checkItemInCart():Boolean
+		{
+			var exists:Boolean = Cart.exists(contentSettings["id"], String(brandID));
+			trace("Item already in cart ? " + exists);
+			if(exists) {
+				d.addRemove.gotoAndStop("remove");
+			} else {
+				d.addRemove.gotoAndStop("add");
+			}
+			
+			return exists;
 		}
 		
 		/**
@@ -97,13 +112,20 @@ package com.wehaverhythm.gsk.oncology.content
 		 */
 		protected function onCloseClicked(e:MouseEvent):void
 		{
-			stopVideo();
 			dispatchEvent(new Event(ContentBox.CLOSE, true));
 		}
 		
 		protected function onAddToCartClicked(e:MouseEvent):void
 		{
-			dispatchEvent(new Event(ContentBox.ADD_TO_CART, true));
+			if(checkItemInCart()) {
+				Cart.remove(contentSettings["id"], String(brandID));
+			} else {
+				Cart.add(contentSettings["id"], String(brandID));
+			}
+			
+			checkItemInCart();
+			Cart.traceCart();
+			//dispatchEvent(new CustomEvent(ContentBox.ADD_TO_CART, true, false, {contentID:contentSettings["id"], brandID:brandID}));
 		}
 		
 		

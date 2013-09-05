@@ -29,6 +29,7 @@ package com.wehaverhythm.gsk.oncology.content
 		private var loader:LoaderMax;
 		
 		public var ready:Boolean;
+		private var verbose:Boolean;
 		
 		public function Caption()
 		{
@@ -52,15 +53,15 @@ package com.wehaverhythm.gsk.oncology.content
 			}
 			addChild(bg);
 			
-			trace("-------------------------");
-			trace("Add caption: ");
+			if(verbose) trace("-------------------------");
+			if(verbose) trace("Add caption: ");
 			elements = [];
 			
 			for(var i:int = 0; i < xml.children().length(); ++i) {
 				var n:String = String(xml.children()[i].name());
 				addElement(n, String(xml.children()[i]));
 			}
-			trace("-------------------------");
+			if(verbose) trace("-------------------------");
 			
 			var xySplit:Array = String(xml.@boxXY).split(",");
 			x = int(xySplit[0]); // get x pos
@@ -72,7 +73,7 @@ package com.wehaverhythm.gsk.oncology.content
 			
 			
 			if(loader.numChildren > 0) {
-				trace("LOADER: " + loader);
+				if(verbose) trace("LOADER: " + loader);
 				loader.load();
 			} else {
 				ready = true;
@@ -81,7 +82,7 @@ package com.wehaverhythm.gsk.oncology.content
 		
 		public function addElement(type:String, data:String):void
 		{
-			trace("\tAdd element: " + type+": " + data);
+			if(verbose) trace("\tAdd element: " + type+": " + data);
 			var el:*;
 			
 			switch(type) {
@@ -147,7 +148,7 @@ package com.wehaverhythm.gsk.oncology.content
 			canShowCaption = true;
 			if(!ready) return;
 			
-			trace("SHOWING CAPTION.");
+			if(verbose) trace("SHOWING CAPTION.");
 			
 			positionElements();
 			
@@ -173,7 +174,7 @@ package com.wehaverhythm.gsk.oncology.content
 		
 		public function destroy():void
 		{
-			trace("destroy annotation");
+			if(verbose) trace("destroy annotation");
 			
 			while(elements.length) {
 				if(elements[0].hasOwnProperty("destroy")) elements[0].destroy();

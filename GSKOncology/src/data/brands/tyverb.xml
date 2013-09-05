@@ -31,19 +31,10 @@
 	</menu>
 	
 	<content>
-		<content id="0" action="video-bg" videoID="tyverb-root" cuePointSet="tyverb-root" />
-		<content id="1" action="slideshow-box" slideshowID="landscape-product-overview" />
-		<content id="2" action="video-box" videoID="big_buck_bunny" />
+		<content id="0" action="video-bg" videoID="tyverb-root" cuePointSet="tyverb-root" cartLink="" />
+		<content id="1" action="slideshow-box" slideshowFolderID="test_slideshow" cartLink="" cartTitleAlt=""/>
+		<content id="2" action="video-box" videoID="big_buck_bunny" cartLink="" />
 	</content>
-	
-	<slideshows>
-		<slideshow id="landscape-product-overview">
-			<slide></slide>
-			<slide></slide>
-			<slide></slide>
-			<slide></slide>
-		</slideshow>
-	</slideshows>
 	
 	<videos>
 		<video id="tyverb-root" filename="brain_move_longer_1920.mov" loopInFrame="51" loopOutFrame="348" />

@@ -49,7 +49,7 @@ package com.wehaverhythm.gsk.oncology.content
 		
 		protected function onVideoStatus(e:NetStatusEvent):void
 		{
-			trace(e.info.code);
+			//trace(e.info.code);
 			
 			switch(e.info.code) {
 				case "NetStream.Unpause.Notify":
@@ -90,13 +90,11 @@ package com.wehaverhythm.gsk.oncology.content
 		 */
 		protected function onSeekForwardClicked(e:MouseEvent):void
 		{
-			trace("seek >>");
 			netStream.seek(netStream.time+seekAmount);
 		}
 		
 		protected function onSeekBackClicked(e:MouseEvent):void
 		{
-			trace("seek <<");
 			netStream.seek(netStream.time-seekAmount);
 		}
 		

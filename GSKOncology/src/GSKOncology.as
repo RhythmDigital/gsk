@@ -12,11 +12,13 @@ package
 	import flash.events.Event;
 	import flash.events.FullScreenEvent;
 	import flash.events.KeyboardEvent;
+	import flash.events.MouseEvent;
 	import flash.filesystem.File;
 	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
 	import flash.text.Font;
 	import flash.ui.Keyboard;
+	import flash.ui.Mouse;
 	
 	[SWF (width="1080", height="1920", frameRate="30", backgroundColor="#000000")]
 	public class GSKOncology extends Sprite
@@ -63,11 +65,12 @@ package
 				case Keyboard.ESCAPE:
 					stage.displayState = StageDisplayState.NORMAL;
 				break;
-			}			
+			}
 		}
 		
 		protected function onFullScreen(e:FullScreenEvent):void
 		{
+			if(!Constants.DEBUG) Mouse.hide();
 			removeChild(startup);
 			launchApp(null);
 		}
@@ -83,7 +86,7 @@ package
 			// load xml.
 			var lm:LoaderMax = new LoaderMax({onComplete:onXMLLoaded});
 			lm.insert(new XMLLoader(File.applicationDirectory.url+"data/settings.xml", {name:"settings"}));
-			lm.load();
+			lm.load(); 
 		}
 		
 		private function onXMLLoaded(e:LoaderEvent):void

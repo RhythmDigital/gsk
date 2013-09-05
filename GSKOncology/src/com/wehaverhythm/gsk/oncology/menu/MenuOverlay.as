@@ -10,7 +10,7 @@ package com.wehaverhythm.gsk.oncology.menu
 		public static const TYPE_SUBNAV:String = "TYPE_SUBNAV";
 		
 		public var display:NavElementsDisplay;
-		private var buttons:Array;
+		public var buttons:Array;
 		
 		public function MenuOverlay()
 		{

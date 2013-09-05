@@ -1,12 +1,17 @@
 package com.wehaverhythm.gsk.oncology
 {
 	import com.wehaverhythm.cuepointvideo.CuePointVideoEvent;
+	import com.wehaverhythm.gsk.oncology.content.ContentBox;
 	import com.wehaverhythm.gsk.oncology.content.ContentEvent;
 	import com.wehaverhythm.gsk.oncology.content.ContentManager;
 	import com.wehaverhythm.gsk.oncology.menu.Menu;
+	import com.wehaverhythm.utils.CustomEvent;
 	
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import flash.geom.Rectangle;
 	
 	public class OncologyMain extends Sprite
 	{
@@ -27,8 +32,11 @@ package com.wehaverhythm.gsk.oncology
 			addChild(menu);
 			
 			menu.init(settingsXML);
+
+			Cart.init(menu.overlay.buttons[2]);
 			
 			contentMan = new ContentManager(menu);
+			contentMan.addEventListener(ContentBox.CLOSE, onCloseContent);
 			addChildAt(contentMan, 0);
 			
 			var logo:Bitmap = new Bitmap(new GSKLogo(0,0));
@@ -36,6 +44,21 @@ package com.wehaverhythm.gsk.oncology
 			logo.x = 40;
 			logo.y = 20;
 			addChild(logo);
+			
+			stage.addEventListener(MouseEvent.MOUSE_DOWN, onMousedown);
+		//	this.needsSoftKeyboard = true;
+		}
+		
+		protected function onMousedown(e:MouseEvent):void
+		{
+		//	stage.focus = this;
+		//	trace(this.requestSoftKeyboard());
+		}
+		
+		protected function onCloseContent(e:Event):void
+		{
+			trace("Close in main.");
+			menu.currentButton.deselect();
 		}
 		
 		protected function onContentTrigger(e:ContentEvent):void

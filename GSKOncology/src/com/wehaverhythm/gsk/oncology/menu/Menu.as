@@ -7,6 +7,7 @@ package com.wehaverhythm.gsk.oncology.menu
 	import com.greensock.loading.ImageLoader;
 	import com.greensock.loading.LoaderMax;
 	import com.greensock.loading.XMLLoader;
+	import com.wehaverhythm.gsk.oncology.Cart;
 	import com.wehaverhythm.gsk.oncology.content.ContentEvent;
 	
 	import flash.display.Sprite;
@@ -26,7 +27,6 @@ package com.wehaverhythm.gsk.oncology.menu
 		private var imageLoader:LoaderMax;
 		private var pickOne:PickOne;
 		private var logoHolder:*;
-		private var overlay:MenuOverlay;
 		private var currentID:String = null;
 		private var currentMenu:int = -1;
 		private var currentXML:XMLList;
@@ -36,6 +36,8 @@ package com.wehaverhythm.gsk.oncology.menu
 		private var type:String = "";
 		private var isSubMenu:Boolean
 		
+		public var overlay:MenuOverlay;
+		public var currentButton:MenuButton;
 		public var menus:Array;
 		
 		public function Menu()
@@ -332,7 +334,7 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		protected function onNavButtonClicked(e:MenuEvent):void
 		{
-			trace(e.target.id + " clicked at id: " + currentID + " / menu: " + currentMenu);
+			//trace(e.target.id + " clicked at id: " + currentID + " / menu: " + currentMenu);
 			processNavEvent(e.target.id, getButtonData(menuLookup[currentMenu], currentID));
 		}
 		
@@ -363,6 +365,9 @@ package com.wehaverhythm.gsk.oncology.menu
 				case "home":
 					showRootMenu();
 					break;
+				case "cart":
+					Cart.traceCart();
+					break;
 			}
 		}
 		
@@ -381,6 +386,7 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		protected function onMenuItemSelected(e:MenuEvent):void
 		{
+			currentButton = MenuButton(e.target);
 			trace("Item selected: " + e.target.menu + " / " + e.target.xmlID);
 			
 			// deselect old buttons

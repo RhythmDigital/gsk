@@ -25,6 +25,8 @@ package com.wehaverhythm.gsk.oncology.content
 		private var content:ContentBox;
 		private var contentSettings:Object;
 		private var contentNode:XML;
+		private var brandID:int;
+		private var verbose:Boolean;
 		
 		
 		public function ContentManager(menu:Menu)
@@ -54,13 +56,13 @@ package com.wehaverhythm.gsk.oncology.content
 		
 		protected function onContentBoxClosed(e:Event):void
 		{
-			trace("CONTENT BOX CLOSED");
+			if(verbose) trace("CONTENT BOX CLOSED");
 			hideContentBox();
 		}
 		
 		public function hideCurrentOverlays():void
 		{
-			trace("hideCurrentOverlays");
+			if(verbose) trace("hideCurrentOverlays");
 			
 		}
 		
@@ -90,7 +92,7 @@ package com.wehaverhythm.gsk.oncology.content
 				}
 			}
 			
-			trace("Play Root Videos: " + rootVideos);
+			if(verbose) trace("Play Root Videos: " + rootVideos);
 			video.playPlaylist(rootVideos, "root");
 			
 			hideContentBox();
@@ -98,9 +100,12 @@ package com.wehaverhythm.gsk.oncology.content
 		
 		public function showContent(contentID:String, brandID:int, brandXML:XML):void
 		{
-			trace("---------------------");
-			trace("process content id: " + contentID + " for brand " + brandID);
+			if(verbose) {
+				trace("---------------------");
+				trace("process content id: " + contentID + " for brand " + brandID);
+			}
 			
+			this.brandID = brandID;
 			var xml:XML = currentBrandXML = brandXML;
 			contentNode = XML(xml.content.content.(@id == contentID));
 			var attributes:XMLList = contentNode.attributes();
@@ -110,19 +115,22 @@ package com.wehaverhythm.gsk.oncology.content
 				contentSettings[String(attr.name())] = String(attr);
 			}
 			
-			for (var key:String in contentSettings) {
-				trace(key+": "+contentSettings[key]);
+			if(verbose) {
+				for (var key:String in contentSettings) {
+					trace(key+": "+contentSettings[key]);
+				}
 			}
-			trace("---------------------");
-			trace(contentSettings["action"]);
+			
+			if(verbose) trace("---------------------");
+			if(verbose) trace(contentSettings["action"]);
 			switch(contentSettings["action"]) {
 				case "video-bg":
 					
-					trace(contentSettings["action"]);
+					if(verbose) trace(contentSettings["action"]);
 					// standard cuepoint video with annotations
-					trace("play the video!");
+					if(verbose) trace("play the video!");
 					var videoXML:XML = XML(xml.videos.video.(@id == contentSettings["videoID"]));
-					trace("video: " + videoXML.@filename);
+					if(verbose) trace("video: " + videoXML.@filename);
 					
 					cuePointSet = XML(xml.cuePointSets.cuePointSet.(@id == contentSettings["cuePointSet"]));
 					var cuePoints:Vector.<CuePoint> = parseCuePointXML(cuePointSet);
@@ -146,14 +154,14 @@ package com.wehaverhythm.gsk.oncology.content
 					break;
 				case "slideshow-box":
 					
-					trace("Show slideshow box!");
+					if(verbose) trace("Show slideshow box!");
 					// new image loader , these will always have a content holder.
 					// (can even scale within!!! see settings for contentHolder);
 					showContentBox();
 					break;
 				
 				case "video-box":
-					trace("Show video box!");
+					if(verbose) trace("Show video box!");
 					showContentBox();
 					break;
 			}
@@ -165,7 +173,7 @@ package com.wehaverhythm.gsk.oncology.content
 				hideContentBox(true);
 			} else {
 				addChild(content);
-				content.setup(contentSettings, currentBrandXML);
+				content.setup(contentSettings, currentBrandXML, brandID);
 				TweenMax.killTweensOf(content);
 				content.alpha = 0;
 				content.visible = false;
@@ -224,7 +232,7 @@ package com.wehaverhythm.gsk.oncology.content
 					var next:XML = xml.cuePoint[i];
 					var inTime:int = int(next.@inFrame);
 					var outTime:int = int(next.@outFrame);
-					trace("Add cue point " + inTime + "," +outTime);
+					if(verbose) trace("Add cue point " + inTime + "," +outTime);
 					cuePoints.push(new CuePoint(next.@id, inTime, outTime));
 				}
 			
@@ -237,7 +245,7 @@ package com.wehaverhythm.gsk.oncology.content
 		
 		protected function onCuePointTriggered(e:CuePointEvent):void
 		{
-			trace("Cue point: " + e.id + " / " + e.cueType);
+			if(verbose) trace("Cue point: " + e.id + " / " + e.cueType);
 			
 			// dont show cuepoint if content box is visible
 			if(e.cueType == CuePoint.CUE_IN) {
