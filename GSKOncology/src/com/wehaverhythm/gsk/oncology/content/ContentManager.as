@@ -42,6 +42,7 @@ package com.wehaverhythm.gsk.oncology.content
 			content.visible = false;
 			content.x = 30;
 			content.y = 180;
+			content.addEventListener(ContentBox.CLOSE, onContentBoxClosed);
 			
 			video = new CuePointVideoPlayer(GlobalSettings.STAGE_WIDTH, GlobalSettings.STAGE_HEIGHT, File.applicationDirectory.url+"assets/video/");
 			video.addEventListener(CuePointEvent.CUE_POINT_TRIGGER, onCuePointTriggered);
@@ -49,6 +50,12 @@ package com.wehaverhythm.gsk.oncology.content
 			video.addEventListener(CuePointVideoEvent.HIDE_CURRENT_CAPTION, onHideCurrentCaption);
 			addChild(video);
 			//video.init();
+		}
+		
+		protected function onContentBoxClosed(e:Event):void
+		{
+			trace("CONTENT BOX CLOSED");
+			hideContentBox();
 		}
 		
 		public function hideCurrentOverlays():void
@@ -173,7 +180,10 @@ package com.wehaverhythm.gsk.oncology.content
 		
 		private function hideContentComplete(showAgain:Boolean):void
 		{
-			if(contains(content)) removeChild(content);
+			if(contains(content)) {
+				content.reset();
+				removeChild(content);
+			}
 			if(showAgain) {
 				showContentBox();
 			}

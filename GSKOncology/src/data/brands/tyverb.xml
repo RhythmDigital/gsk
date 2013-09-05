@@ -17,7 +17,7 @@
 
 		<!-- TYVERB PLUS CAPECITABINE -->
 		<item id="2" contentID="0"><![CDATA[TYVERB PLUS CAPECITABINE]]></item>
-
+		
 		<!-- TYVERB IN COMBINATION WITH TRASTUZUMAB -->
 		<item id="3" contentID="0"><![CDATA[TYVERB IN COMBINATION WITH TRASTUZUMAB]]></item>
 			<item id="3.0" contentID="1"><![CDATA[NOW APPROVED IN HER2+/HR- DISEASE]]></item>
@@ -33,7 +33,7 @@
 	<content>
 		<content id="0" action="video-bg" videoID="tyverb-root" cuePointSet="tyverb-root" />
 		<content id="1" action="slideshow-box" slideshowID="landscape-product-overview" />
-		<content id="2" action="video-box" videoID="tyverv-root" />
+		<content id="2" action="video-box" videoURL="brain_move_longer_1920.mov" />
 	</content>
 	
 	<slideshows>

@@ -3,8 +3,10 @@ package
 	import com.greensock.events.LoaderEvent;
 	import com.greensock.loading.LoaderMax;
 	import com.greensock.loading.XMLLoader;
+	import com.wehaverhythm.gsk.oncology.Constants;
 	import com.wehaverhythm.gsk.oncology.OncologyMain;
 	
+	import flash.display.Screen;
 	import flash.display.Sprite;
 	import flash.display.StageDisplayState;
 	import flash.events.Event;
@@ -12,7 +14,8 @@ package
 	import flash.events.KeyboardEvent;
 	import flash.filesystem.File;
 	import flash.geom.Rectangle;
-	import flash.text.Font;;
+	import flash.system.Capabilities;
+	import flash.text.Font;
 	import flash.ui.Keyboard;
 	
 	[SWF (width="1080", height="1920", frameRate="30", backgroundColor="#000000")]
@@ -23,6 +26,17 @@ package
 		
 		public function GSKOncology()
 		{
+			Constants.DEBUG = Capabilities.isDebugger;
+			
+			if(Constants.DEBUG) {
+				stage.nativeWindow.x = Screen.screens[Screen.screens.length-1].bounds.x;
+				trace("********************************");
+				trace("********************************");
+				trace("         DEBUG ENABLED");
+				trace("********************************");
+				trace("********************************");
+			}
+			
 			Font.registerFont(GillSans);
 			this.scrollRect = new Rectangle(0,0,1080,1920);
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
@@ -34,7 +48,10 @@ package
 			addChild(startup);
 			
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-			stage.addEventListener(FullScreenEvent.FULL_SCREEN, onFullScreen);
+			
+			
+			if(!Constants.DEBUG) stage.addEventListener(FullScreenEvent.FULL_SCREEN, onFullScreen);
+			else onFullScreen(null);
 		}
 		
 		private function onKeyDown(e:KeyboardEvent):void

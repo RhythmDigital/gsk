@@ -11,6 +11,7 @@ package com.wehaverhythm.gsk.oncology.menu
 	
 	import flash.display.Sprite;
 	import flash.filesystem.File;
+	import flash.text.TextField;
 	
 	public class Menu extends Sprite
 	{
@@ -237,7 +238,15 @@ package com.wehaverhythm.gsk.oncology.menu
 				title = String(currentXML);
 			}
 			
-			overlay.display.titleBar.txtLabel.text = title;
+			var el:* =  overlay.display.titleBar;
+			var tf:TextField = overlay.display.titleBar.title.txtLabel;
+			tf.autoSize = "left";
+			tf.text = title;
+			tf.width = 630;
+			tf.height = tf.textHeight;
+			
+			el.title.y = (el.bg.height >> 1) - (el.title.height >> 1);
+			
 			TweenMax.to(overlay.display.titleBar.bg, 0, {immediateRender:true, tint:brandColour});
 		}
 		
