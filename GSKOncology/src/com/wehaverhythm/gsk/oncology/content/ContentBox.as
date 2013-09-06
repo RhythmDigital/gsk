@@ -4,7 +4,8 @@ package com.wehaverhythm.gsk.oncology.content
 	import com.greensock.easing.Quad;
 	import com.greensock.layout.ScaleMode;
 	import com.greensock.loading.VideoLoader;
-	import com.wehaverhythm.gsk.oncology.Cart;
+	import com.wehaverhythm.gsk.oncology.cart.Cart;
+	import com.wehaverhythm.gsk.oncology.menu.Menu;
 	import com.wehaverhythm.utils.CustomEvent;
 	
 	import flash.display.Sprite;
@@ -120,7 +121,7 @@ package com.wehaverhythm.gsk.oncology.content
 			if(checkItemInCart()) {
 				Cart.remove(contentSettings["id"], String(brandID));
 			} else {
-				Cart.add(contentSettings["id"], String(brandID));
+				Cart.add(contentSettings["id"], String(brandID), Menu.SELECTED_BUTTON_COPY);
 			}
 			
 			checkItemInCart();

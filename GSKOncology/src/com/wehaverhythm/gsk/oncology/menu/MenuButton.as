@@ -95,6 +95,12 @@ package com.wehaverhythm.gsk.oncology.menu
 			display.copy.y = (display.bg.height >> 1) - (display.copy.height >> 1);
 		}
 		
+		public function get textField():TextField
+		{
+			if(display.copy && display.copy.txtLabel) return display.copy.txtLabel;
+			else return null;
+		}
+		
 		public function destroy():void
 		{
 			removeEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);

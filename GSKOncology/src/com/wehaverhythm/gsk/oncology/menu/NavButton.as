@@ -2,6 +2,7 @@ package com.wehaverhythm.gsk.oncology.menu
 {
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	import flash.text.TextField;
 	
 	public class NavButton extends Sprite
 	{
@@ -45,6 +46,11 @@ package com.wehaverhythm.gsk.oncology.menu
 			dispatchEvent(new MenuEvent(MenuEvent.NAV_BUTTON_CLICKED, true));
 		}
 		
+		public function getTextField():TextField
+		{
+			return sprite.txtLabel;
+		}
+		/*
 		public function appendNumber(num:int):void
 		{
 			if(num == 0) {
@@ -53,8 +59,7 @@ package com.wehaverhythm.gsk.oncology.menu
 				this.num = num;
 				sprite.txtLabel.text = label + " ("+num+")";
 			}
-		}
-		
+		}*/
 		
 	}
 }

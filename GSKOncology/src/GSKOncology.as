@@ -12,7 +12,6 @@ package
 	import flash.events.Event;
 	import flash.events.FullScreenEvent;
 	import flash.events.KeyboardEvent;
-	import flash.events.MouseEvent;
 	import flash.filesystem.File;
 	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
@@ -48,9 +47,7 @@ package
 		{
 			startup = new StartupDisplay();
 			addChild(startup);
-			
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-			
 			
 			if(!Constants.DEBUG) stage.addEventListener(FullScreenEvent.FULL_SCREEN, onFullScreen);
 			else onFullScreen(null);

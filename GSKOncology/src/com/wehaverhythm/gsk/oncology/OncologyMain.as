@@ -1,6 +1,8 @@
 package com.wehaverhythm.gsk.oncology
 {
 	import com.wehaverhythm.cuepointvideo.CuePointVideoEvent;
+	import com.wehaverhythm.gsk.oncology.cart.Cart;
+	import com.wehaverhythm.gsk.oncology.cart.CartView;
 	import com.wehaverhythm.gsk.oncology.content.ContentBox;
 	import com.wehaverhythm.gsk.oncology.content.ContentEvent;
 	import com.wehaverhythm.gsk.oncology.content.ContentManager;
@@ -18,6 +20,7 @@ package com.wehaverhythm.gsk.oncology
 		private var settings:XML;
 		private var menu:Menu;
 		private var contentMan:ContentManager;
+		private var cartView:CartView;
 		
 		public function OncologyMain()
 		{
@@ -30,29 +33,22 @@ package com.wehaverhythm.gsk.oncology
 			menu.addEventListener(ContentEvent.CONTENT_TRIGGER, onContentTrigger);
 			menu.x = 29;
 			addChild(menu);
-			
 			menu.init(settingsXML);
 
-			Cart.init(menu.overlay.buttons[2]);
+			Cart.init(new CartView());
+			Cart.addCounterTF(menu.overlay.buttons[2].getTextField(), "VIEW CART");
 			
 			contentMan = new ContentManager(menu);
 			contentMan.addEventListener(ContentBox.CLOSE, onCloseContent);
 			addChildAt(contentMan, 0);
+			
+			addChild(Cart.view);
 			
 			var logo:Bitmap = new Bitmap(new GSKLogo(0,0));
 			logo.smoothing = true;
 			logo.x = 40;
 			logo.y = 20;
 			addChild(logo);
-			
-			stage.addEventListener(MouseEvent.MOUSE_DOWN, onMousedown);
-		//	this.needsSoftKeyboard = true;
-		}
-		
-		protected function onMousedown(e:MouseEvent):void
-		{
-		//	stage.focus = this;
-		//	trace(this.requestSoftKeyboard());
 		}
 		
 		protected function onCloseContent(e:Event):void

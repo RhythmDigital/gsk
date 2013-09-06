@@ -7,7 +7,7 @@ package com.wehaverhythm.gsk.oncology.menu
 	import com.greensock.loading.ImageLoader;
 	import com.greensock.loading.LoaderMax;
 	import com.greensock.loading.XMLLoader;
-	import com.wehaverhythm.gsk.oncology.Cart;
+	import com.wehaverhythm.gsk.oncology.cart.Cart;
 	import com.wehaverhythm.gsk.oncology.content.ContentEvent;
 	
 	import flash.display.Sprite;
@@ -16,6 +16,8 @@ package com.wehaverhythm.gsk.oncology.menu
 	
 	public class Menu extends Sprite
 	{
+		public static var SELECTED_BUTTON_COPY:String = "";
+		
 		private const BUTTON_MARGIN:int = 9;
 		private const START_Y_LOGO_BUTTONS:int = 1206;
 		private const START_Y_NORMAL_BUTTONS_TITLED:int = 1241;
@@ -386,9 +388,13 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		protected function onMenuItemSelected(e:MenuEvent):void
 		{
-			currentButton = MenuButton(e.target);
-			trace("Item selected: " + e.target.menu + " / " + e.target.xmlID);
-			
+			if(e.target.textField) {
+				Menu.SELECTED_BUTTON_COPY = e.target.textField.text;
+				trace("Item selected: " + e.target.menu + " / " + e.target.xmlID + " / " + Menu.SELECTED_BUTTON_COPY);
+			} else {
+				trace("Item selected: " + e.target.menu + " / " + e.target.xmlID);
+			}
+
 			// deselect old buttons
 			for(var i:int = 0; i < buttons.length; ++i) {
 				if(buttons[i] !== e.target) buttons[i].deselect();
