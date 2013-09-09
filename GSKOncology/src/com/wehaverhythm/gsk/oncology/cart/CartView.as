@@ -2,20 +2,25 @@ package com.wehaverhythm.gsk.oncology.cart
 {
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Quad;
+	import com.wehaverhythm.utils.CustomEvent;
 	
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
 
 	public class CartView extends CartViewDisplay
 	{
-		public static var CLOSE:String = "close";
-		public static var SHOW_LIST:String = "show_list";
+		public static const CLOSE:String = "close";
+		public static const SHOW_LIST:String = "show_list";
+		public static const CLOSING:String = "CLOSING";
 		
 		public var boxBoundary:Rectangle = new Rectangle(0,960,1080, 960);
 		
 		public var current:*;
 		public var list:CartList;
 		public var add:CartAddItem;
+		public var full:CartFull;
+		public var privacy:CartPrivacy;
 		
 		public function CartView()
 		{
@@ -30,16 +35,45 @@ package com.wehaverhythm.gsk.oncology.cart
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			Cart.events.addEventListener(Cart.ADD_ITEM, onCartAddItem);
+			Cart.events.addEventListener(Cart.CART_FULL, onCartFull);
 			list = new CartList();
 			add = new CartAddItem();
+			full = new CartFull();
+			privacy = new CartPrivacy();
+			
+			list.bottomSection.btnSend.addEventListener(MouseEvent.MOUSE_DOWN, onSend);
+			privacy.btnYes.addEventListener(MouseEvent.MOUSE_DOWN, onPrivacyYesClicked);
+			privacy.btnNo.addEventListener(MouseEvent.MOUSE_DOWN, onPrivacyNoClicked);
 			
 			addEventListener(CartView.CLOSE, onCloseCartView);
 			addEventListener(CartView.SHOW_LIST, onShowListView);
 		}
 		
+		protected function onPrivacyYesClicked(e:MouseEvent):void
+		{
+			// DO SEND!!!
+			
+		}
+		
+		protected function onPrivacyNoClicked(e:MouseEvent):void
+		{
+			Cart.reset();
+			hide();
+		}
+		
+		protected function onSend(e:MouseEvent):void
+		{
+			show(privacy);
+		}
+		
+		protected function onCartFull(e:Event):void
+		{
+			show(full);
+		}
+		
 		protected function onShowListView(e:Event):void
 		{
-			show(list);
+			showCart();
 		}
 		
 		protected function onCloseCartView(e:Event):void
@@ -47,21 +81,28 @@ package com.wehaverhythm.gsk.oncology.cart
 			hide();
 		}
 		
-		protected function onCartAddItem(e:Event):void
+		protected function onCartAddItem(e:CustomEvent):void
 		{
+			add.txtTitle.text = e.params.label;
 			show(add);
 		}
 		
-		public function show(screen:*):void
+		public function showCart():void
+		{
+			show(list, list.populateList);
+		}
+		
+		public function show(screen:*, onComplete:Function = null):void
 		{
 			if(this.visible && current) {
-				hideCurrent(screen);
+				hideCurrent(screen, onComplete);
 			} else {
 				current = screen;
 				current.visible = true;
 				current.alpha = 1;
 				positionView(current);
 				addChild(current);
+				if(onComplete) onComplete();
 				TweenMax.to(this, .3, {autoAlpha:1, ease:Quad.easeOut});
 			}
 		}
@@ -72,14 +113,15 @@ package com.wehaverhythm.gsk.oncology.cart
 			current.y = boxBoundary.y;
 		}
 		
-		public function hideCurrent(thenShow:*):void
+		public function hideCurrent(thenShow:*, onComplete:Function = null):void
 		{
-			TweenMax.to(current, .4, {autoAlpha:0, ease:Quad.easeOut, onComplete:onCurrentHidden, onCompleteParams:[thenShow]});
+			TweenMax.to(current, .4, {autoAlpha:0, ease:Quad.easeOut, onComplete:onCurrentHidden, onCompleteParams:[thenShow, onComplete]});
 		}
 		
 		public function hide():void
 		{
 			TweenMax.to(this, .3, {autoAlpha:0, ease:Quad.easeOut, onComplete:onHidden});
+			dispatchEvent(new Event(CartView.CLOSING, true)); 
 		}
 		
 		private function onHidden():void
@@ -87,13 +129,16 @@ package com.wehaverhythm.gsk.oncology.cart
 			if(current) removeChild(current);
 		}
 			
-		private function onCurrentHidden(showScreen:*):void
+		private function onCurrentHidden(showScreen:*, onComplete:Function = null):void
 		{
 		//	onHidden();
 			if(showScreen) {
 				current = showScreen;
 				addChild(current);
+				positionView(current);
 				TweenMax.to(current, .4, {autoAlpha:1, ease:Quad.easeOut});
+				
+				if(onComplete) onComplete();
 			}
 		}
 	}

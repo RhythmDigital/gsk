@@ -97,6 +97,8 @@ package com.wehaverhythm.gsk.oncology.content
 		
 		public function checkItemInCart():Boolean
 		{
+			if(!contentSettings) return false;
+			
 			var exists:Boolean = Cart.exists(contentSettings["id"], String(brandID));
 			trace("Item already in cart ? " + exists);
 			if(exists) {
@@ -121,7 +123,7 @@ package com.wehaverhythm.gsk.oncology.content
 			if(checkItemInCart()) {
 				Cart.remove(contentSettings["id"], String(brandID));
 			} else {
-				Cart.add(contentSettings["id"], String(brandID), Menu.SELECTED_BUTTON_COPY);
+				var result:Boolean = Cart.add(contentSettings["id"], String(brandID), Menu.SELECTED_BUTTON_COPY);
 			}
 			
 			checkItemInCart();

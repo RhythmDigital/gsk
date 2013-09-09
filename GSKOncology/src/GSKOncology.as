@@ -5,6 +5,7 @@ package
 	import com.greensock.loading.XMLLoader;
 	import com.wehaverhythm.gsk.oncology.Constants;
 	import com.wehaverhythm.gsk.oncology.OncologyMain;
+	import com.wehaverhythm.utils.OnScreenKeyboard;
 	
 	import flash.display.Screen;
 	import flash.display.Sprite;
@@ -40,7 +41,7 @@ package
 			
 			Font.registerFont(GillSans);
 			this.scrollRect = new Rectangle(0,0,1080,1920);
-			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);			
 		}
 		
 		protected function onAddedToStage(e:Event):void

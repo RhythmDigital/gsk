@@ -12,8 +12,10 @@ package com.wehaverhythm.gsk.oncology
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
+	import flash.ui.Keyboard;
 	
 	public class OncologyMain extends Sprite
 	{
@@ -38,11 +40,14 @@ package com.wehaverhythm.gsk.oncology
 			Cart.init(new CartView());
 			Cart.addCounterTF(menu.overlay.buttons[2].getTextField(), "VIEW CART");
 			
+			if(Constants.DEBUG) stage.addEventListener(KeyboardEvent.KEY_DOWN, onDebugKeyDown);
+			
 			contentMan = new ContentManager(menu);
 			contentMan.addEventListener(ContentBox.CLOSE, onCloseContent);
 			addChildAt(contentMan, 0);
 			
 			addChild(Cart.view);
+			addEventListener(CartView.CLOSING, onCartClosing);
 			
 			var logo:Bitmap = new Bitmap(new GSKLogo(0,0));
 			logo.smoothing = true;
@@ -51,10 +56,23 @@ package com.wehaverhythm.gsk.oncology
 			addChild(logo);
 		}
 		
+		protected function onCartClosing(e:Event):void
+		{
+			contentMan.content.checkItemInCart();
+		}
+		
+		private var contentID:int = 0;
+		
+		protected function onDebugKeyDown(e:KeyboardEvent):void
+		{
+			if(e.keyCode == Keyboard.SPACE) Cart.forceAdd(String(contentID), "99999", "A title " + contentID);
+			contentID++;
+		}
+		
 		protected function onCloseContent(e:Event):void
 		{
 			trace("Close in main.");
-			menu.currentButton.deselect();
+			if(menu.currentButton) menu.currentButton.deselect();
 		}
 		
 		protected function onContentTrigger(e:ContentEvent):void

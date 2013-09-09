@@ -1,5 +1,7 @@
 package com.wehaverhythm.gsk.oncology.cart
 {
+	import com.wehaverhythm.utils.CustomEvent;
+	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.text.TextField;
@@ -10,12 +12,17 @@ package com.wehaverhythm.gsk.oncology.cart
 		public static const SHOW:String = "SHOW";
 		public static const HIDE:String = "HIDE";
 		public static const ADD_ITEM:String = "ADD_ITEM";
+		public static const CART_FULL:String = "CART_FULL";
+		
+		public static const MAX_CART_ITEMS:int = 21;
 		
 		public static var events:EventDispatcher;
 		public static var view:CartView;
 		public static var cart:Dictionary;
 		public static var counter:int = 0;
 		public static var textfields:Array;
+		
+		
 		
 		public function Cart()
 		{
@@ -34,23 +41,31 @@ package com.wehaverhythm.gsk.oncology.cart
 			Cart.textfields.push({tf:tf, prefix:prefix});
 		}
 		
-		public static function add(contentID:String, brandID:String, title:String):Boolean
+		public static function add(contentID:String, brandID:String, title:String, cancelEvent:Boolean = false):Boolean
 		{
 			if(!Cart.cart[brandID]) {
 				var brand:Vector.<Object> = new Vector.<Object>();
 				Cart.cart[brandID] = brand;
 			}
 			
-			if(!exists(contentID, brandID)) {
+			if(!exists(contentID, brandID) && Cart.hasRoom()) {
 				counter ++;
 				Cart.appendNumberToTextfields();
 				Cart.cart[brandID].push({contentID:contentID, title:title});
 				//trace("Adding "+contentID+" of brand " + brandID + " to cart.");
-				Cart.events.dispatchEvent(new Event(Cart.ADD_ITEM, true, false));
+				if(!cancelEvent) Cart.events.dispatchEvent(new CustomEvent(Cart.ADD_ITEM, true, false, {label:title}));
 				return true;
+			} else if (!Cart.hasRoom()) {
+				if(!cancelEvent) Cart.events.dispatchEvent(new CustomEvent(Cart.CART_FULL, true, false));
+				return false;
 			}
 			
 			return false;
+		}
+		
+		public static function showCart():void
+		{
+			Cart.view.showCart();
 		}
 		
 		private static function appendNumberToTextfields():void
@@ -86,6 +101,12 @@ package com.wehaverhythm.gsk.oncology.cart
 					}
 				}
 			}
+		}
+		
+		public static function hasRoom():Boolean
+		{
+			trace("HAS ROOM ? " + !(Cart.counter >= Cart.MAX_CART_ITEMS));
+			return !(Cart.counter >= Cart.MAX_CART_ITEMS);
 		}
 		
 		public static function exists(contentID:String, brandID:String):Boolean
@@ -130,6 +151,13 @@ package com.wehaverhythm.gsk.oncology.cart
 			Cart.cart = new Dictionary();
 			counter = 0;
 			Cart.appendNumberToTextfields();
+		}
+		
+		public static function forceAdd(contentID:String, brandID:String, title:String):void
+		{
+			trace("Adding "+contentID+" of brand " + brandID + " to cart.");
+			Cart.add(contentID, brandID, title, true);
+			
 		}
 	}
 }

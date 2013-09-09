@@ -22,12 +22,12 @@ package com.wehaverhythm.gsk.oncology.content
 		private var cuePointSet:XML;
 		private var currentBrandXML:XML;
 		private var brandsXMLArray:Array;
-		private var content:ContentBox;
 		private var contentSettings:Object;
 		private var contentNode:XML;
 		private var brandID:int;
 		private var verbose:Boolean;
 		
+		public var content:ContentBox;
 		
 		public function ContentManager(menu:Menu)
 		{
