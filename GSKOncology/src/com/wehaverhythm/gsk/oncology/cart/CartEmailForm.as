@@ -23,6 +23,8 @@ package com.wehaverhythm.gsk.oncology.cart
 			super();
 			
 			emailer = new EmailFormController();
+			emailer.addEventListener(EmailFormController.SUCCESS, onSuccess);
+			emailer.addEventListener(EmailFormController.FAILED, onFailed);
 			
 			keyboard = new OnScreenKeyboard();
 			keyboard.y = 238;
@@ -44,9 +46,21 @@ package com.wehaverhythm.gsk.oncology.cart
 			setChildIndex(validEmail, numChildren-1);
 		}
 		
+		protected function onSuccess(event:Event):void
+		{
+			dispatchEvent(new Event(EmailFormController.SUCCESS, true));
+		}
+		
+		protected function onFailed(event:Event):void
+		{
+			showSpinner = false;
+			dispatchEvent(new Event(EmailFormController.FAILED, true));
+		}
+		
 		protected function onCloseClicked(event:MouseEvent):void
 		{
-			cancelSendEmail();
+			showSpinner = false;
+			emailer.cancel();
 			dispatchEvent(new Event(CartView.CLOSE, true));
 		}
 		
@@ -105,12 +119,6 @@ package com.wehaverhythm.gsk.oncology.cart
 			emailer.emailCart(nameBox.textfield.text, emailBox.textfield.text);
 		}
 		
-		// Called on close button clicked.
-		private function cancelSendEmail():void
-		{
-			trace("CANCEL EMAIL SEND HERE!");
-			showSpinner = false;
-		}
 		
 		private function emailSent():void
 		{

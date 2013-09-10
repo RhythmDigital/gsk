@@ -101,7 +101,7 @@ package com.wehaverhythm.gsk.oncology.cart
 		
 		public static function hasRoom():Boolean
 		{
-			trace("HAS ROOM ? " + !(Cart.counter >= Cart.MAX_CART_ITEMS));
+			//trace("HAS ROOM ? " + !(Cart.counter >= Cart.MAX_CART_ITEMS));
 			return !(Cart.counter >= Cart.MAX_CART_ITEMS);
 		}
 		
@@ -151,7 +151,7 @@ package com.wehaverhythm.gsk.oncology.cart
 		
 		public static function forceAdd(contentID:String, brandID:String, title:String):void
 		{
-			trace("Adding "+contentID+" of brand " + brandID + " to cart.");
+			//trace("Adding "+contentID+" of brand " + brandID + " to cart.");
 			Cart.add(contentID, brandID, title, true);
 			
 		}

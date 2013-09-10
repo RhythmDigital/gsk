@@ -2,6 +2,7 @@ package com.wehaverhythm.gsk.oncology.cart
 {
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Quad;
+	import com.wehaverhythm.gsk.oncology.EmailFormController;
 	import com.wehaverhythm.utils.CustomEvent;
 	
 	import flash.events.Event;
@@ -22,6 +23,7 @@ package com.wehaverhythm.gsk.oncology.cart
 		public var full:CartFull;
 		public var privacy:CartPrivacy;
 		public var email:CartEmailForm;
+		public var thanks:CartThanks;
 		
 		public function CartView()
 		{
@@ -43,6 +45,8 @@ package com.wehaverhythm.gsk.oncology.cart
 			full = new CartFull();
 			privacy = new CartPrivacy();
 			email = new CartEmailForm();
+			email.addEventListener(EmailFormController.SUCCESS, onEmailSuccess);
+			thanks = new CartThanks();
 			
 			list.bottomSection.btnSend.addEventListener(MouseEvent.MOUSE_DOWN, onSend);
 			privacy.btnYes.addEventListener(MouseEvent.MOUSE_DOWN, onPrivacyYesClicked);
@@ -50,6 +54,12 @@ package com.wehaverhythm.gsk.oncology.cart
 			
 			addEventListener(CartView.CLOSE, onCloseCartView);
 			addEventListener(CartView.SHOW_LIST, onShowListView);
+		}
+		
+		protected function onEmailSuccess(e:Event):void
+		{
+			trace("EMAIL SUCCESS IN MAIN VIEW");
+			show(thanks);
 		}
 		
 		protected function onPrivacyYesClicked(e:MouseEvent):void

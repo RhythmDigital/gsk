@@ -4,7 +4,7 @@
 	<title><![CDATA[TAFINLAR]]></title>
 	<colour><![CDATA[#00ccff]]></colour>
 	<logo>tafinlar.png</logo>
-	<rootVideo>brain_move_longer_1920.mov</rootVideo>
+	<rootVideo>tafinlar_homepage_1080.mov</rootVideo>
 	<rootCaption>
 		<copy><![CDATA[NOW LICENSED in monotherapy for the treatment of adult patients with unresectable or metastatic melanoma with a BRAFV600 mutation]]></copy>
 		<footer><![CDATA[TAF SPC, p2, Section 4.1]]></footer>
@@ -46,7 +46,7 @@
 	</menu>
 	
 	<content>
-		<content id="0" action="video-bg" videoID="taflinlar-root" cuePointSet="tafinlar-root" cartLink="tafinlar/somecontent.zip" cartTitleAlt="" />
+		<content id="0" action="video-bg" videoID="taflinlar-root" cuePointSet="tafinlar-root" cartLink="somecontent.zip" cartTitleAlt="" />
 	</content>
 	
 	<videos>

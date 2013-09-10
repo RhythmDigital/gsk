@@ -4,7 +4,7 @@
 	<title><![CDATA[VOTRIENT]]></title>
 	<colour><![CDATA[#ff6600]]></colour>
 	<logo>votrient.png</logo>
-	<rootVideo>brain_move_longer_1920.mov</rootVideo>
+	<rootVideo>tafinlar_homepage_1080.mov</rootVideo>
 	<rootCaption>
 		<copy><![CDATA[Discover how VOTRIENT is lighting up the world of oncology]]></copy>
 	</rootCaption>
@@ -40,7 +40,7 @@
 	</content>
 	
 	<videos>
-		<video id="votrient-root" filename="brain_move_longer_1920.mov" loopInFrame="51" loopOutFrame="348" />
+		<video id="votrient-root" filename="tafinlar_homepage_1080.mov" loopInFrame="51" loopOutFrame="348" />
 	</videos>
 	
 	<cuePointSets>

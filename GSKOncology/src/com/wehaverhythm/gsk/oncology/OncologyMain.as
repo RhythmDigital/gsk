@@ -23,6 +23,7 @@ package com.wehaverhythm.gsk.oncology
 		private var menu:Menu;
 		private var contentMan:ContentManager;
 		private var cartView:CartView;
+		private var footer:MenuFooter;
 		
 		public function OncologyMain()
 		{
@@ -40,7 +41,7 @@ package com.wehaverhythm.gsk.oncology
 			Cart.init(new CartView());
 			Cart.addCounterTF(menu.overlay.buttons[2].getTextField(), "VIEW CART");
 			
-		//	if(Constants.DEBUG) stage.addEventListener(KeyboardEvent.KEY_DOWN, onDebugKeyDown);
+			//if(Constants.DEBUG) stage.addEventListener(KeyboardEvent.KEY_DOWN, onDebugKeyDown);
 			
 			contentMan = new ContentManager(menu);
 			contentMan.addEventListener(ContentBox.CLOSE, onCloseContent);
@@ -54,6 +55,10 @@ package com.wehaverhythm.gsk.oncology
 			logo.x = 40;
 			logo.y = 20;
 			addChild(logo);
+			
+			footer = new MenuFooter();
+			footer.y = Constants.HEIGHT - footer.height;
+			addChild(footer);
 		}
 		
 		protected function onCartClosing(e:Event):void

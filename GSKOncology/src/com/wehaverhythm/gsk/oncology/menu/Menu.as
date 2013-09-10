@@ -388,6 +388,8 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		protected function onMenuItemSelected(e:MenuEvent):void
 		{
+			currentButton = MenuButton(e.target);
+			
 			if(e.target.textField) {
 				Menu.SELECTED_BUTTON_COPY = e.target.textField.text;
 				trace("Item selected: " + e.target.menu + " / " + e.target.xmlID + " / " + Menu.SELECTED_BUTTON_COPY);

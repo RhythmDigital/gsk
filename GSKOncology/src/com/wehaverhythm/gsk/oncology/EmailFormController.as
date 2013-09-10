@@ -5,21 +5,24 @@ package com.wehaverhythm.gsk.oncology
 	import com.wehaverhythm.gsk.oncology.menu.Menu;
 	
 	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
-	import flash.net.URLRequestHeader;
 	import flash.net.URLRequestMethod;
 	import flash.net.URLVariables;
 	import flash.utils.Dictionary;
 
-	public class EmailFormController
+	public class EmailFormController extends EventDispatcher
 	{
+		public static var FAILED:String = "FAILED";
+		public static var SUCCESS:String = "SUCCESS";
 		public static const CART_MAIL_SCRIPT_LIVE:String = "http://www.gsk-downloads.com/scripts/cart_mail.php";
 		public static const CART_MAIL_SCRIPT_LOCAL:String = "http://gsk.local/scripts/cart_mail.php";
 		
 		private var settings:XML;
+		private var loader:URLLoader;
 		
 		public function EmailFormController()
 		{
@@ -31,39 +34,37 @@ package com.wehaverhythm.gsk.oncology
 			settings = XML(LoaderMax.getContent("settings"));
 			var path:String = settings.downloadsURL;
 			var cart:Dictionary = Cart.cart;
-			var message:String = "Hello " + theirName + ", \nHere are your GSK Oncology items as requested:\n\n";
+			var message:String = "<h3>Hello " + theirName + ", \nHere are your GSK Oncology items as requested:\n\n</h3><br/><p>";
 			var brands:Array = new Array();
 			
 			for(var b:String in Cart.cart) {
 				var brand:Vector.<Object> = Cart.cart[b];
 				var brandData:XML = Menu.getBrandXML(int(b));
-				//trace(brandData.toXMLString());
 				for(var i:int = 0; i < brand.length; ++i) {
 					var node:XML = XML(brandData.content.content.(@id == brand[i].contentID));
-					trace(node.toXMLString());
-					
-					message += brand[i].title+ ": " + path+"/"+node.@cartLink+"\n";
-					
-					//	trace(cart[b] + ": " + 
-					//	trace("  brand : " + b + " > contentID : " + brand[i].contentID + " > title: " + brand[i].title); 
+					var link:String = path+"/"+brandData.name+"/"+node.@cartLink;
+					message += "<a href='"+link+"'>"+brand[i].title+": " + link +"</a><br/>"; 
 				}
 			}
+			
+			message += "</p>";
 			
 			var vars:URLVariables = new URLVariables();
 			vars.theirName = encodeURIComponent(theirName);
 			vars.theirEmail = encodeURIComponent(Constants.DEBUG ? "hello@jamie-white.com" : emailAddress);
 			vars.theirMessage = encodeURIComponent(message);
 			
-			var request:URLRequest = new URLRequest(Constants.DEBUG ? CART_MAIL_SCRIPT_LOCAL : CART_MAIL_SCRIPT_LIVE);
+			//var request:URLRequest = new URLRequest(Constants.DEBUG ? CART_MAIL_SCRIPT_LOCAL : CART_MAIL_SCRIPT_LIVE);
+			var request:URLRequest = new URLRequest(CART_MAIL_SCRIPT_LIVE);
 			request.method = URLRequestMethod.POST;
 			request.contentType = 'application/x-www-form-urlencoded';
 			request.data = vars;
 			
-			var loader:URLLoader = new URLLoader();
+			loader = new URLLoader();
 			loader.dataFormat = URLLoaderDataFormat.VARIABLES;
 			
-			loader.addEventListener(Event.COMPLETE, onComplete);
-			loader.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
+			loader.addEventListener(Event.COMPLETE, onComplete, false, 0, true);
+			loader.addEventListener(IOErrorEvent.IO_ERROR, onIOError, false, 0, true);
 			
 			loader.load(request);
 			
@@ -72,13 +73,31 @@ package com.wehaverhythm.gsk.oncology
 		
 		protected function onIOError(e:IOErrorEvent):void
 		{
-			trace("Failed.");
+			destroyLoader();
+			dispatchEvent(new Event(EmailFormController.FAILED, true));
 		}
 		
 		protected function onComplete(e:Event):void
 		{
-			trace("Done.");
-			//trace(URLLoader(e.target).data);
+			trace("Done: " + e.target.data.result);
+			destroyLoader();
+			Cart.reset();
+			dispatchEvent(new Event(EmailFormController.SUCCESS, true));
+		}
+		
+		public function cancel():void
+		{
+			destroyLoader();
+		}
+		
+		private function destroyLoader():void
+		{
+			if(loader) {
+				loader.close();
+				loader.removeEventListener(Event.COMPLETE, onComplete);
+				loader.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
+				loader = null;
+			}
 		}
 	}
 }

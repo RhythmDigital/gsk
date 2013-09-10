@@ -4,7 +4,7 @@
 	<title><![CDATA[TYVERB]]></title>
 	<colour><![CDATA[#99cc33]]></colour>
 	<logo>tyverb.png</logo>
-	<rootVideo>brain_move_longer_1920.mov</rootVideo>
+	<rootVideo>tafinlar_homepage_1080.mov</rootVideo>
 	<rootCaption>
 		<copy><![CDATA[Despite progression, continuous blockade of HER2 signaling has been shown to be an effective strategy for prolonging response.]]></copy>
 	</rootCaption>
@@ -32,13 +32,13 @@
 	</menu>
 	
 	<content>
-		<content id="0" action="video-bg" videoID="tyverb-root" cuePointSet="tyverb-root" cartLink="tafinlar/somecontent.zip" />
-		<content id="1" action="slideshow-box" slideshowFolderID="test_slideshow" cartLink="tafinlar/somecontent.zip" cartTitleAlt=""/>
-		<content id="2" action="video-box" videoID="big_buck_bunny" cartLink="tafinlar/somecontent.zip" />
+		<content id="0" action="video-bg" videoID="tyverb-root" cuePointSet="tyverb-root" cartLink="somecontent.zip" />
+		<content id="1" action="slideshow-box" slideshowFolderID="test_slideshow" cartLink="somecontent.zip" cartTitleAlt="Hello world. This is my alternate title."/>
+		<content id="2" action="video-box" videoID="big_buck_bunny" cartLink="somecontent.zip" />
 	</content>
 	
 	<videos>
-		<video id="tyverb-root" filename="brain_move_longer_1920.mov" loopInFrame="51" loopOutFrame="348" />
+		<video id="tyverb-root" filename="tafinlar_homepage_1080.mov" loopInFrame="51" loopOutFrame="348" />
 		<video id="big_buck_bunny" filename="big_buck_bunny.mp4" />
 	</videos>
 	

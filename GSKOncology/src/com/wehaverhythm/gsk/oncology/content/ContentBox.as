@@ -123,7 +123,18 @@ package com.wehaverhythm.gsk.oncology.content
 			if(checkItemInCart()) {
 				Cart.remove(contentSettings["id"], String(brandID));
 			} else {
-				var result:Boolean = Cart.add(contentSettings["id"], String(brandID), Menu.SELECTED_BUTTON_COPY);
+				var title:String = Menu.SELECTED_BUTTON_COPY;
+				var contentNode:XML = XML(Menu.getBrandXML(brandID).content.content.(@id == contentSettings["id"]));
+				
+				if(contentNode.hasOwnProperty("@cartTitleAlt")) {
+					var altTitle:String = String(contentNode.@cartTitleAlt);
+					if(altTitle.length) {
+						trace(">> Using alternate title. Was: " + title + ". Now: " + altTitle);
+						title = altTitle;
+					}
+				}
+				
+				var result:Boolean = Cart.add(contentSettings["id"], String(brandID), title);
 			}
 			
 			checkItemInCart();

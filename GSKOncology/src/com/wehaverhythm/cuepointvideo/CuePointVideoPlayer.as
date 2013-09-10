@@ -237,14 +237,10 @@ package com.wehaverhythm.cuepointvideo
 			}
 			
 			if(listenForCuePoints && useCuePoints) {
-				//trace("cuePointEnabled");
-				
-				
 				var i:int = 0;
 				
 				for(i; i < numCuePoints; ++i)
 				{
-					//trace(stream.time +":  "+cuePoints[i].inTimeSeconds+"->"+cuePoints[i].outTimeSeconds);
 					if(ns.time >= cuePoints[i].inTimeSeconds && ns.time < cuePoints[i].outTimeSeconds) {
 						if(!cuePoints[i].visible) {
 							cuePoints[i].visible = true;
@@ -257,12 +253,6 @@ package com.wehaverhythm.cuepointvideo
 						processCuePoint(cuePoints[i], CuePoint.CUE_OUT);
 					}
 				}
-				
-				/*
-				if(currentPoint && (clock.time >= currentPoint.outTimeSeconds || clock.time < currentPoint.inTimeSeconds)) {
-					processCuePoint(currentPoint, CuePoint.CUE_OUT);
-					currentPoint = null;
-				}*/
 			}
 		}
 		
