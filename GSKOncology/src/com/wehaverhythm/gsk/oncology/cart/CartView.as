@@ -21,6 +21,7 @@ package com.wehaverhythm.gsk.oncology.cart
 		public var add:CartAddItem;
 		public var full:CartFull;
 		public var privacy:CartPrivacy;
+		public var email:CartEmailForm;
 		
 		public function CartView()
 		{
@@ -36,10 +37,12 @@ package com.wehaverhythm.gsk.oncology.cart
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			Cart.events.addEventListener(Cart.ADD_ITEM, onCartAddItem);
 			Cart.events.addEventListener(Cart.CART_FULL, onCartFull);
+			
 			list = new CartList();
 			add = new CartAddItem();
 			full = new CartFull();
 			privacy = new CartPrivacy();
+			email = new CartEmailForm();
 			
 			list.bottomSection.btnSend.addEventListener(MouseEvent.MOUSE_DOWN, onSend);
 			privacy.btnYes.addEventListener(MouseEvent.MOUSE_DOWN, onPrivacyYesClicked);
@@ -51,8 +54,7 @@ package com.wehaverhythm.gsk.oncology.cart
 		
 		protected function onPrivacyYesClicked(e:MouseEvent):void
 		{
-			// DO SEND!!!
-			
+			show(email);
 		}
 		
 		protected function onPrivacyNoClicked(e:MouseEvent):void
@@ -102,6 +104,7 @@ package com.wehaverhythm.gsk.oncology.cart
 				current.alpha = 1;
 				positionView(current);
 				addChild(current);
+				if(current.hasOwnProperty('reset')) current.reset();
 				if(onComplete) onComplete();
 				TweenMax.to(this, .3, {autoAlpha:1, ease:Quad.easeOut});
 			}
@@ -109,8 +112,8 @@ package com.wehaverhythm.gsk.oncology.cart
 		
 		private function positionView(current:*):void
 		{
-			current.x = ((boxBoundary.x+boxBoundary.width)>>1)-(current.width>>1);
-			current.y = boxBoundary.y;
+			current.x = int(((boxBoundary.x+boxBoundary.width)>>1)-(current.width>>1));
+			current.y = int(boxBoundary.y);
 		}
 		
 		public function hideCurrent(thenShow:*, onComplete:Function = null):void
@@ -137,7 +140,7 @@ package com.wehaverhythm.gsk.oncology.cart
 				addChild(current);
 				positionView(current);
 				TweenMax.to(current, .4, {autoAlpha:1, ease:Quad.easeOut});
-				
+				if(current.hasOwnProperty('reset')) current.reset();
 				if(onComplete) onComplete();
 			}
 		}

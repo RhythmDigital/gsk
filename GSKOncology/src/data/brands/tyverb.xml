@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <brand>
+	<name>tyverb</name> <!-- used for downloads -->
 	<title><![CDATA[TYVERB]]></title>
 	<colour><![CDATA[#99cc33]]></colour>
 	<logo>tyverb.png</logo>
@@ -31,9 +32,9 @@
 	</menu>
 	
 	<content>
-		<content id="0" action="video-bg" videoID="tyverb-root" cuePointSet="tyverb-root" cartLink="" />
-		<content id="1" action="slideshow-box" slideshowFolderID="test_slideshow" cartLink="" cartTitleAlt=""/>
-		<content id="2" action="video-box" videoID="big_buck_bunny" cartLink="" />
+		<content id="0" action="video-bg" videoID="tyverb-root" cuePointSet="tyverb-root" cartLink="tafinlar/somecontent.zip" />
+		<content id="1" action="slideshow-box" slideshowFolderID="test_slideshow" cartLink="tafinlar/somecontent.zip" cartTitleAlt=""/>
+		<content id="2" action="video-box" videoID="big_buck_bunny" cartLink="tafinlar/somecontent.zip" />
 	</content>
 	
 	<videos>

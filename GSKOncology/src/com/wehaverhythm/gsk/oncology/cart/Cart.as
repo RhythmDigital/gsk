@@ -2,18 +2,16 @@ package com.wehaverhythm.gsk.oncology.cart
 {
 	import com.wehaverhythm.utils.CustomEvent;
 	
-	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.text.TextField;
 	import flash.utils.Dictionary;
-
+	
 	public class Cart
 	{
 		public static const SHOW:String = "SHOW";
 		public static const HIDE:String = "HIDE";
 		public static const ADD_ITEM:String = "ADD_ITEM";
 		public static const CART_FULL:String = "CART_FULL";
-		
 		public static const MAX_CART_ITEMS:int = 21;
 		
 		public static var events:EventDispatcher;
@@ -21,8 +19,6 @@ package com.wehaverhythm.gsk.oncology.cart
 		public static var cart:Dictionary;
 		public static var counter:int = 0;
 		public static var textfields:Array;
-		
-		
 		
 		public function Cart()
 		{

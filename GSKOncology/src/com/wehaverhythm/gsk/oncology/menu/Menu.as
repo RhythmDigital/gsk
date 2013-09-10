@@ -9,7 +9,6 @@ package com.wehaverhythm.gsk.oncology.menu
 	import com.greensock.loading.XMLLoader;
 	import com.wehaverhythm.gsk.oncology.cart.Cart;
 	import com.wehaverhythm.gsk.oncology.content.ContentEvent;
-	import com.wehaverhythm.utils.CustomEvent;
 	
 	import flash.display.Sprite;
 	import flash.filesystem.File;
@@ -41,7 +40,7 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		public var overlay:MenuOverlay;
 		public var currentButton:MenuButton;
-		public var menus:Array;
+		public static var menus:Array;
 		
 		public function Menu()
 		{
@@ -383,7 +382,7 @@ package com.wehaverhythm.gsk.oncology.menu
 			return null;
 		}
 		
-		public function getBrandXML(num:int):XML {
+		public static function getBrandXML(num:int):XML {
 			return menus[num].content;
 		}
 		

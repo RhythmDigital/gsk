@@ -1,5 +1,6 @@
- <?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <settings>
+	<downloadsURL>http://gsk-downloads.com/esmo2013</downloadsURL>
 	<mainMenus>
 		<menu file="data/brands/tyverb.xml" />
 		<menu file="data/brands/votrient.xml" />

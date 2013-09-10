@@ -40,7 +40,7 @@ package com.wehaverhythm.gsk.oncology
 			Cart.init(new CartView());
 			Cart.addCounterTF(menu.overlay.buttons[2].getTextField(), "VIEW CART");
 			
-			if(Constants.DEBUG) stage.addEventListener(KeyboardEvent.KEY_DOWN, onDebugKeyDown);
+		//	if(Constants.DEBUG) stage.addEventListener(KeyboardEvent.KEY_DOWN, onDebugKeyDown);
 			
 			contentMan = new ContentManager(menu);
 			contentMan.addEventListener(ContentBox.CLOSE, onCloseContent);
@@ -60,15 +60,14 @@ package com.wehaverhythm.gsk.oncology
 		{
 			contentMan.content.checkItemInCart();
 		}
-		
+		/*
 		private var contentID:int = 0;
-		
 		protected function onDebugKeyDown(e:KeyboardEvent):void
 		{
 			if(e.keyCode == Keyboard.SPACE) Cart.forceAdd(String(contentID), "99999", "A title " + contentID);
 			contentID++;
 		}
-		
+		*/
 		protected function onCloseContent(e:Event):void
 		{
 			trace("Close in main.");
@@ -92,7 +91,7 @@ package com.wehaverhythm.gsk.oncology
 				
 				case "sub-menu":
 					trace(">> Sub Menu Content");
-					contentID = String(menu.menus[e.params.mid].content.menu.attribute("contentID"));
+					contentID = String(Menu.menus[e.params.mid].content.menu.attribute("contentID"));
 				break;
 				
 				case "sub-menu-button":
@@ -104,7 +103,7 @@ package com.wehaverhythm.gsk.oncology
 			trace("CONTENT ID: " + contentID);
 			
 			if(contentID != null && contentID.length) {
-				contentMan.showContent(contentID, e.params.mid, menu.getBrandXML(e.params.mid));
+				contentMan.showContent(contentID, e.params.mid, Menu.getBrandXML(e.params.mid));
 			} else {
 				trace("No content for this node");
 			}

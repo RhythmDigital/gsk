@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <brand>
+	<name>tafinlar</name> <!-- used for downloads -->
 	<title><![CDATA[TAFINLAR]]></title>
 	<colour><![CDATA[#00ccff]]></colour>
 	<logo>tafinlar.png</logo>
@@ -45,7 +46,7 @@
 	</menu>
 	
 	<content>
-		<content id="0" action="video-bg" videoID="taflinlar-root" cuePointSet="tafinlar-root" cartLink="" cartTitleAlt="" />
+		<content id="0" action="video-bg" videoID="taflinlar-root" cuePointSet="tafinlar-root" cartLink="tafinlar/somecontent.zip" cartTitleAlt="" />
 	</content>
 	
 	<videos>

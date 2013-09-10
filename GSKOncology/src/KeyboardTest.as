@@ -14,7 +14,7 @@ package
 			var keys:OnScreenKeyboard = new OnScreenKeyboard();
 			addChild(keys);
 			
-			keys.addTextField(keys.txtTest);
+			//keys.addTextField(keys.te);
 		}
 	}
 }
