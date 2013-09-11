@@ -13,6 +13,8 @@ package
 	import flash.events.FullScreenEvent;
 	import flash.events.KeyboardEvent;
 	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
 	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
 	import flash.text.Font;
@@ -24,9 +26,48 @@ package
 	{
 		private var startup:StartupDisplay;
 		private var main:OncologyMain;
+		private var contentFolder:File;
+		private var contentDefinitionFile:File;
 		
 		public function GSKOncology()
 		{
+			findContentDirectory();
+		}
+		
+		private function findContentDirectory():void
+		{
+			contentDefinitionFile = File.desktopDirectory;
+			var fs:FileStream = new FileStream();
+			contentFolder = File.documentsDirectory;
+			
+			if(contentDefinitionFile.resolvePath(Constants.CONTENT_LOCATION_FILENAME).exists) {
+				fs.open(contentDefinitionFile.resolvePath(Constants.CONTENT_LOCATION_FILENAME), FileMode.READ);
+				var path:String = fs.readUTFBytes(fs.bytesAvailable);
+				contentFolder = new File(path);
+				fs.close();
+				contentFolderFound();
+			} else {
+				contentFolder.browseForDirectory("CHOOSE CONTENT FOLDER");
+				contentFolder.addEventListener(Event.SELECT, onDirectorySelected);
+			}
+		}
+		
+		protected function onDirectorySelected(e:Event):void
+		{
+			var fs:FileStream = new FileStream();
+			fs.open(contentDefinitionFile.resolvePath(Constants.CONTENT_LOCATION_FILENAME), FileMode.WRITE);
+			fs.writeUTFBytes(contentFolder.nativePath);
+			fs.close();
+			
+			contentFolderFound();
+		}
+		
+		private function contentFolderFound():void
+		{
+			trace("Content folder found.");
+			Constants.CONTENT_DIR = contentFolder;
+			trace(Constants.CONTENT_DIR.nativePath);
+			//return;
 			Constants.DEBUG = Capabilities.isDebugger;
 			
 			if(Constants.DEBUG) {
@@ -40,11 +81,14 @@ package
 			
 			Font.registerFont(GillSans);
 			this.scrollRect = new Rectangle(0,0,1080,1920);
-			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);			
+			
+			if(stage) onAddedToStage(null);
+			else addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);	
 		}
 		
 		protected function onAddedToStage(e:Event):void
 		{
+			
 			startup = new StartupDisplay();
 			addChild(startup);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
@@ -82,7 +126,7 @@ package
 			
 			// load xml.
 			var lm:LoaderMax = new LoaderMax({onComplete:onXMLLoaded});
-			lm.insert(new XMLLoader(File.applicationDirectory.url+"data/settings.xml", {name:"settings"}));
+			lm.insert(new XMLLoader(Constants.CONTENT_DIR.url+"/data/settings.xml", {name:"settings"}));
 			lm.load(); 
 		}
 		

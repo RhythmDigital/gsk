@@ -5,6 +5,7 @@ package com.wehaverhythm.gsk.oncology.content
 	import com.wehaverhythm.cuepointvideo.CuePointEvent;
 	import com.wehaverhythm.cuepointvideo.CuePointVideoEvent;
 	import com.wehaverhythm.cuepointvideo.CuePointVideoPlayer;
+	import com.wehaverhythm.gsk.oncology.Constants;
 	import com.wehaverhythm.gsk.oncology.GlobalSettings;
 	import com.wehaverhythm.gsk.oncology.menu.Menu;
 	
@@ -46,7 +47,7 @@ package com.wehaverhythm.gsk.oncology.content
 			content.y = 180;
 			content.addEventListener(ContentBox.CLOSE, onContentBoxClosed);
 			
-			video = new CuePointVideoPlayer(GlobalSettings.STAGE_WIDTH, GlobalSettings.STAGE_HEIGHT, File.applicationDirectory.url+"assets/video/");
+			video = new CuePointVideoPlayer(GlobalSettings.STAGE_WIDTH, GlobalSettings.STAGE_HEIGHT, Constants.CONTENT_DIR.url+"/assets/video/");
 			video.addEventListener(CuePointEvent.CUE_POINT_TRIGGER, onCuePointTriggered);
 			video.addEventListener(CuePointVideoEvent.NEXT_VIDEO_PLAYING, onNextVideoPlaying);
 			video.addEventListener(CuePointVideoEvent.HIDE_CURRENT_CAPTION, onHideCurrentCaption);

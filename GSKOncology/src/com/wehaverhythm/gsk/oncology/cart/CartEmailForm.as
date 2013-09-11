@@ -66,6 +66,7 @@ package com.wehaverhythm.gsk.oncology.cart
 		protected function onFailed(event:Event):void
 		{
 			showSpinner = false;
+			btnSend.visible = true;
 			dispatchEvent(new Event(EmailFormController.FAILED, true));
 		}
 		

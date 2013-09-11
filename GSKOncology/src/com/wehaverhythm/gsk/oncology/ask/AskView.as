@@ -15,11 +15,14 @@ package com.wehaverhythm.gsk.oncology.ask
 		public static const CLOSE:String = "close";
 		public static const SHOW_LIST:String = "show_list";
 		public static const CLOSING:String = "CLOSING";
+		public static const SHOW_EMAIL_FORM:String = "SHOW_EMAIL_FORM";
 		
 		public var boxBoundary:Rectangle = new Rectangle(0,960,1080, 960);
 		
 		public var current:*;
 		public var email:AskEmailForm;
+		public var privacy:AskPrivacy;
+		public var thanks:AskThanks;
 		
 		public function AskView()
 		{
@@ -36,7 +39,17 @@ package com.wehaverhythm.gsk.oncology.ask
 			email = new AskEmailForm();
 			email.addEventListener(EmailFormController.SUCCESS, onEmailSuccess);
 			
+			privacy = new AskPrivacy();
+			privacy.addEventListener(AskView.SHOW_EMAIL_FORM, onShowEmailForm);
+			
+			thanks = new AskThanks();
+			
 			addEventListener(AskView.CLOSE, onCloseAskView);
+		}
+		
+		protected function onShowEmailForm(e:Event):void
+		{
+			show(email);
 		}
 		
 		protected function onCloseAskView(event:Event):void
@@ -46,8 +59,7 @@ package com.wehaverhythm.gsk.oncology.ask
 		
 		protected function onEmailSuccess(e:Event):void
 		{
-			trace("EMAIL SUCCESS IN MAIN VIEW");
-			//show(thanks);
+			show(thanks);
 		}
 		
 		public function show(screen:*, onComplete:Function = null):void

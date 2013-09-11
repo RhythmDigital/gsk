@@ -66,7 +66,7 @@ package com.wehaverhythm.gsk.oncology
 		
 		protected function onAskViewShow(e:Event):void
 		{
-			askView.show(askView.email);
+			askView.show(askView.privacy);
 		}
 		
 		protected function onCartClosing(e:Event):void
