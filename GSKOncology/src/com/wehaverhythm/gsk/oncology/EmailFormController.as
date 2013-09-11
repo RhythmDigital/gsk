@@ -18,8 +18,10 @@ package com.wehaverhythm.gsk.oncology
 	{
 		public static var FAILED:String = "FAILED";
 		public static var SUCCESS:String = "SUCCESS";
-		public static const CART_MAIL_SCRIPT_LIVE:String = "http://www.gsk-downloads.com/scripts/cart_mail.php";
-		public static const CART_MAIL_SCRIPT_LOCAL:String = "http://gsk.local/scripts/cart_mail.php";
+		
+		private const ASK_MAIL_SCRIPT_LIVE:String = "http://www.gsk-downloads.com/scripts/ask_mail.php";
+		private const CART_MAIL_SCRIPT_LIVE:String = "http://www.gsk-downloads.com/scripts/cart_mail.php";
+		private const CART_MAIL_SCRIPT_LOCAL:String = "http://gsk.local/scripts/cart_mail.php";
 		
 		private var settings:XML;
 		private var loader:URLLoader;
@@ -54,8 +56,28 @@ package com.wehaverhythm.gsk.oncology
 			vars.theirEmail = encodeURIComponent(Constants.DEBUG ? "hello@jamie-white.com" : emailAddress);
 			vars.theirMessage = encodeURIComponent(message);
 			
+			doSend(vars, CART_MAIL_SCRIPT_LIVE);
+			
+			trace("Emailing cart: ", vars.toString());
+		}
+		
+		public function emailAsk(theirName:String, theirEmail:String, product:String, message:String):void
+		{
+			var vars:URLVariables = new URLVariables();
+			vars.name = encodeURIComponent(theirName);
+			vars.email = encodeURIComponent(theirEmail);
+			vars.product = encodeURIComponent(product);
+			vars.message = encodeURIComponent(message);
+			
+			doSend(vars, ASK_MAIL_SCRIPT_LIVE);
+			
+			trace("ASKING GSK: ", vars.toString());
+		}
+		
+		public function doSend(vars:URLVariables, url:String):void
+		{
 			//var request:URLRequest = new URLRequest(Constants.DEBUG ? CART_MAIL_SCRIPT_LOCAL : CART_MAIL_SCRIPT_LIVE);
-			var request:URLRequest = new URLRequest(CART_MAIL_SCRIPT_LIVE);
+			var request:URLRequest = new URLRequest(url);
 			request.method = URLRequestMethod.POST;
 			request.contentType = 'application/x-www-form-urlencoded';
 			request.data = vars;
@@ -67,8 +89,6 @@ package com.wehaverhythm.gsk.oncology
 			loader.addEventListener(IOErrorEvent.IO_ERROR, onIOError, false, 0, true);
 			
 			loader.load(request);
-			
-			trace("Emailing cart: ", vars.toString());
 		}
 		
 		protected function onIOError(e:IOErrorEvent):void

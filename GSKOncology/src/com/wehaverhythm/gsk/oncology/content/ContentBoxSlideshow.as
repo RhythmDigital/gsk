@@ -5,6 +5,7 @@ package com.wehaverhythm.gsk.oncology.content
 	import com.greensock.events.LoaderEvent;
 	import com.greensock.loading.ImageLoader;
 	import com.greensock.loading.LoaderMax;
+	import com.wehaverhythm.gsk.oncology.Constants;
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -44,7 +45,7 @@ package com.wehaverhythm.gsk.oncology.content
 		
 		public function init(path:String):void
 		{
-			folder = File.applicationDirectory.resolvePath(path);
+			folder = Constants.CONTENT_DIR.resolvePath(path);
 			loader = new LoaderMax({onComplete:onLoadComplete});
 			images = new Array();
 			

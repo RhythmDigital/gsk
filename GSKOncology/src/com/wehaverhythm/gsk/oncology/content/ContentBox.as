@@ -4,6 +4,7 @@ package com.wehaverhythm.gsk.oncology.content
 	import com.greensock.easing.Quad;
 	import com.greensock.layout.ScaleMode;
 	import com.greensock.loading.VideoLoader;
+	import com.wehaverhythm.gsk.oncology.Constants;
 	import com.wehaverhythm.gsk.oncology.cart.Cart;
 	import com.wehaverhythm.gsk.oncology.menu.Menu;
 	import com.wehaverhythm.utils.CustomEvent;
@@ -86,7 +87,7 @@ package com.wehaverhythm.gsk.oncology.content
 		private function initVideo():void
 		{
 			var filename:String = brandXML.videos.video.(@id == contentSettings["videoID"]).@filename;
-			video = new ContentBoxVideo(d, File.applicationDirectory.url + "assets/video/"+filename, {width:area.width, height:area.height, autoPlay:true, scaleMode:"proportionalInside"});
+			video = new ContentBoxVideo(d, Constants.CONTENT_DIR.url + "/assets/video/"+filename, {width:area.width, height:area.height, autoPlay:true, scaleMode:"proportionalInside"});
 			addChild(video.content);
 		}
 		

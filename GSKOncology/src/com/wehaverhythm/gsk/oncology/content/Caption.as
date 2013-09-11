@@ -6,6 +6,7 @@ package com.wehaverhythm.gsk.oncology.content
 	import com.greensock.loading.ImageLoader;
 	import com.greensock.loading.LoaderMax;
 	import com.greensock.loading.LoaderStatus;
+	import com.wehaverhythm.gsk.oncology.Constants;
 	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
@@ -118,7 +119,7 @@ package com.wehaverhythm.gsk.oncology.content
 		
 		private function addImage(data:String):ImageLoader
 		{
-			return new ImageLoader(File.applicationDirectory.url+"assets/images/"+data);
+			return new ImageLoader(Constants.CONTENT_DIR.url+"/assets/images/"+data);
 		}
 		
 		private function createTextField(text:String, size:Number = 30):CopyBox

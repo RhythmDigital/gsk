@@ -7,6 +7,7 @@ package com.wehaverhythm.gsk.oncology.menu
 	import com.greensock.loading.ImageLoader;
 	import com.greensock.loading.LoaderMax;
 	import com.greensock.loading.XMLLoader;
+	import com.wehaverhythm.gsk.oncology.Constants;
 	import com.wehaverhythm.gsk.oncology.ask.AskView;
 	import com.wehaverhythm.gsk.oncology.cart.Cart;
 	import com.wehaverhythm.gsk.oncology.content.ContentEvent;
@@ -70,7 +71,7 @@ package com.wehaverhythm.gsk.oncology.menu
 			buttons = new Array();
 			
 			for(var i:int = 0; i < settingsXML.mainMenus.menu.length(); ++i) {
-				var nextXML:XMLLoader = new XMLLoader(File.applicationDirectory.url+settingsXML.mainMenus.menu[i].@file);
+				var nextXML:XMLLoader = new XMLLoader(Constants.CONTENT_DIR.url+"/"+settingsXML.mainMenus.menu[i].@file);
 				menuXML.insert(nextXML);
 				menus.push(nextXML);
 			}
@@ -322,7 +323,7 @@ package com.wehaverhythm.gsk.oncology.menu
 			for(var i:int = 0; i < menus.length; ++i)
 				imageLoader.insert(
 					new ImageLoader(
-						File.applicationDirectory.url+"assets/images/"+menus[i].content.logo, {name:menus[i].content.logo}
+						Constants.CONTENT_DIR.url+"/assets/images/"+menus[i].content.logo, {name:menus[i].content.logo}
 					)
 				);
 			
