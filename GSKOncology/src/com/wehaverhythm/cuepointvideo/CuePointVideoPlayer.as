@@ -7,11 +7,11 @@ package com.wehaverhythm.cuepointvideo
 	import flash.events.Event;
 	import flash.events.NetStatusEvent;
 	
-	
 	public class CuePointVideoPlayer extends SimpleStageVideo
 	{
 		public static const MODE_SINGLE:String = "MODE_SINGLE";
 		public static const MODE_PLAYLIST:String = "MODE_PLAYLIST";
+		private const verbose:Boolean = false;
 		
 		private var settings:XML;
 		private var cuePoints:Vector.<CuePoint>;
@@ -21,17 +21,13 @@ package com.wehaverhythm.cuepointvideo
 		private var vidInfo:Object;
 		private var initialised:Boolean;
 		private var useCuePoints:Boolean;
-		private var mode:String; // single file or playlist? changes play complete behaviour.
+		private var playMode:String; // single file or playlist? changes play complete behaviour.
 		private var playlist:Array;
 		private var currentVideo:int;
 		private var vidContainer:Sprite;
 		private var canFade:Boolean;
-		
-		private var verbose:Boolean = false;
 		private var videoPath:String;
-		
-		private var contentID:String = "";
-		
+		private var contentID:String;
 		private var useLooping:Boolean;
 		private var listenForLooping:Boolean;
 		private var loopIn:Number;
@@ -45,7 +41,7 @@ package com.wehaverhythm.cuepointvideo
 		public function CuePointVideoPlayer(width:int, height:int, path:String)
 		{
 			this.videoPath = path;
-			
+			contentID = "";
 			clock = new Date();
 			
 			super();
@@ -100,7 +96,7 @@ package com.wehaverhythm.cuepointvideo
 				ns.play(videoPath+file);
 			}
 			
-			mode = MODE_SINGLE;
+			playMode = MODE_SINGLE;
 			useCuePoints = true;
 			this.contentID = contentID;
 		}
@@ -112,7 +108,7 @@ package com.wehaverhythm.cuepointvideo
 			
 			resetPlayer();
 			
-			mode = MODE_PLAYLIST;
+			playMode = MODE_PLAYLIST;
 			useCuePoints = false;
 			useLooping = listenForLooping = false;
 			
@@ -186,7 +182,7 @@ package com.wehaverhythm.cuepointvideo
 					break;
 				case "NetStream.Play.Stop":
 					listenForCuePoints = false;
-					if(mode == MODE_PLAYLIST) {
+					if(playMode == MODE_PLAYLIST) {
 						freezeFrame();
 					}
 					break;
@@ -246,8 +242,6 @@ package com.wehaverhythm.cuepointvideo
 							cuePoints[i].visible = true;
 							processCuePoint(cuePoints[i], CuePoint.CUE_IN);
 						}
-						
-						
 					} else if(cuePoints[i].visible) {
 						cuePoints[i].visible = false;
 						processCuePoint(cuePoints[i], CuePoint.CUE_OUT);
@@ -262,8 +256,7 @@ package com.wehaverhythm.cuepointvideo
 		}
 		
 		private function processCuePoint(cuePoint:CuePoint, type:String):void
-		{
-			//if(verbose)			
+		{		
 			dispatchEvent(new CuePointEvent(CuePointEvent.CUE_POINT_TRIGGER, type, cuePoint.id, {}));
 		}
 		

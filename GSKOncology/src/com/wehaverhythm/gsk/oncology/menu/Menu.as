@@ -7,16 +7,19 @@ package com.wehaverhythm.gsk.oncology.menu
 	import com.greensock.loading.ImageLoader;
 	import com.greensock.loading.LoaderMax;
 	import com.greensock.loading.XMLLoader;
+	import com.wehaverhythm.gsk.oncology.ask.AskView;
 	import com.wehaverhythm.gsk.oncology.cart.Cart;
 	import com.wehaverhythm.gsk.oncology.content.ContentEvent;
 	
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.filesystem.File;
 	import flash.text.TextField;
 	
 	public class Menu extends Sprite
 	{
 		public static var SELECTED_BUTTON_COPY:String = "";
+		public static var ASSETS_LOADED:String = "ASSETS_LOADED";
 		
 		private const BUTTON_MARGIN:int = 9;
 		private const START_Y_LOGO_BUTTONS:int = 1206;
@@ -328,6 +331,7 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		private function onAssetsLoaded(e:LoaderEvent):void
 		{
+			dispatchEvent(new Event(Menu.ASSETS_LOADED, true));
 			showRootMenu();
 			addEventListener(MenuEvent.SELECT_ITEM, onMenuItemSelected);
 			addEventListener(MenuEvent.NAV_BUTTON_CLICKED, onNavButtonClicked);
@@ -369,6 +373,9 @@ package com.wehaverhythm.gsk.oncology.menu
 					break;
 				case "cart":
 					Cart.showCart();
+					break;
+				case "ask":
+					dispatchEvent(new Event(AskView.SHOW, true));
 					break;
 			}
 		}

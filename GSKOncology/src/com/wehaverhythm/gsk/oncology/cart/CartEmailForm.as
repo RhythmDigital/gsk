@@ -1,11 +1,11 @@
 package com.wehaverhythm.gsk.oncology.cart
 {
 	import com.greensock.TweenMax;
-	import com.greensock.loading.LoaderMax;
 	import com.wehaverhythm.gsk.oncology.EmailFormController;
-	import com.wehaverhythm.gsk.oncology.InputCopyBox;
-	import com.wehaverhythm.utils.OnScreenKeyboard;
 	import com.wehaverhythm.utils.Validate;
+	import com.wehaverhythm.utils.keyboard.OnScreenKeyboard;
+	import com.wehaverhythm.utils.keyboard.input.ComboBox;
+	import com.wehaverhythm.utils.keyboard.input.InputCopyBox;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -27,6 +27,7 @@ package com.wehaverhythm.gsk.oncology.cart
 			emailer.addEventListener(EmailFormController.FAILED, onFailed);
 			
 			keyboard = new OnScreenKeyboard();
+			keyboard.addEventListener(OnScreenKeyboard.TF_HAS_FOCUS, onTFHasFocus);
 			keyboard.y = 238;
 			addChild(keyboard);
 			
@@ -44,6 +45,17 @@ package com.wehaverhythm.gsk.oncology.cart
 			
 			setChildIndex(validName, numChildren-1);
 			setChildIndex(validEmail, numChildren-1);
+		}
+		
+		protected function onTFHasFocus(e:Event):void
+		{
+			hideErrorBoxes();
+		}
+		
+		private function hideErrorBoxes():void
+		{
+			validName.visible = false;
+			validEmail.visible = false;
 		}
 		
 		protected function onSuccess(event:Event):void
@@ -66,8 +78,7 @@ package com.wehaverhythm.gsk.oncology.cart
 		
 		public function reset():void
 		{
-			validName.visible = false;
-			validEmail.visible = false;
+			hideErrorBoxes();
 			nameBox.reset(true);
 			emailBox.reset();
 			showSpinner = false;

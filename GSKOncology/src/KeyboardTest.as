@@ -1,6 +1,6 @@
 package
 {
-	import com.wehaverhythm.utils.OnScreenKeyboard;
+	import com.wehaverhythm.utils.keyboard.OnScreenKeyboard;
 	
 	import flash.display.Sprite;
 	
