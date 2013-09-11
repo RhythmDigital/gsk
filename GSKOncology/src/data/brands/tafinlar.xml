@@ -6,7 +6,7 @@
 	<logo>tafinlar.png</logo>
 	<rootVideo>tafinlar_homepage_1080.mov</rootVideo>
 	<rootCaption>
-		<copy><![CDATA[NOW LICENSED in monotherapy for the treatment of adult patients with unresectable or metastatic melanoma with a BRAFV600 mutation]]></copy>
+		<copy><![CDATA[NOW LICENSED in monotherapy for the treatment of adult patients with unresectable or metastatic melanoma with a BRAF V600 mutation]]></copy>
 		<footer><![CDATA[TAF SPC, p2, Section 4.1]]></footer>
 	</rootCaption>
 
@@ -19,8 +19,7 @@
 		<!-- Efficacy -->	
 		<item id="1" contentID="0"><![CDATA[EFFICACY]]></item>
 			<item id="1.0"  contentID="0"><![CDATA[BREAK-3 EFFICACY]]></item>
-			<item id="1.1"  contentID="0"><![CDATA[DR. HAUSCHILD ON BREAK-3 EFFICACY (2011 DATA CUTOFF) VIDEO]]></item>
-			<item id="1.2"  contentID="0"><![CDATA[DR. HAUSCHILD ON BREAK-3 EFFICACY (2012 FATA CUTOFF) VIDEO]]></item>
+			<item id="1.1"  contentID="0"><![CDATA[DR. HAUSCHILD ON BREAK-3 EFFICACY (2012 DATA CUTOFF) VIDEO]]></item>
 			
 		<!-- Safety -->
 		<item id="2" contentID="0"><![CDATA[SAFETY]]></item>
@@ -43,18 +42,24 @@
 		<item id="5" contentID="0"><![CDATA[MECHANISM OF ACTION]]></item>
 			<item id="5.0"  contentID="0"><![CDATA[MOA OVERVIEW]]></item>
 			<item id="5.1"  contentID="0"><![CDATA[MOA ANIMATION]]></item>
+			
+		<!-- PRESCRIBING INFORMATION -->
+		<!-- where is the content for this? -->
+		<item id="5" contentID="0"><![CDATA[PRESCRIBING INFORMATION]]></item>
 	</menu>
 	
 	<content>
-		<content id="0" action="video-bg" videoID="taflinlar-root" cuePointSet="tafinlar-root" cartLink="somecontent.zip" cartTitleAlt="" />
+		<content id="0" action="video-bg" videoID="taflinlar-level-1" cuePointSet="tafinlar-root" cartLink="somecontent.zip" cartTitleAlt="" />
 	</content>
 	
 	<videos>
 		<video id="taflinlar-root" filename="brain_move_longer_1920.mov" loopInFrame="51" loopOutFrame="348" />
+		<video id="taflinlar-level-1" filename="Tafinlar_L1_popups.mov"/>
 	</videos>
 	
 	<cuePointSets>
-		<cuePointSet id="tafinlar-root">
+		
+		<cuePointSet id="tafinlar-level-1">
 			<cuePoint id="cue1" inFrame="60" outFrame="187" boxXY="49,272" boxWidth="321">
 				<body><![CDATA[NOW LICENSED - TAFINLAR is indicated in monotherapy for the treatment of adult patients with unresectable or metastatic melanoma with a BRAFV600 mutation]]></body>
 				<footer>GlaxoSmithKline. TAFINLAR Summary of Product Characteristics.</footer>
