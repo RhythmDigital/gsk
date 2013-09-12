@@ -1,22 +1,14 @@
 package com.wehaverhythm.gsk.oncology.content
 {
-	import com.greensock.TweenMax;
-	import com.greensock.easing.Quad;
-	import com.greensock.layout.ScaleMode;
-	import com.greensock.loading.VideoLoader;
 	import com.wehaverhythm.gsk.oncology.Constants;
 	import com.wehaverhythm.gsk.oncology.cart.Cart;
 	import com.wehaverhythm.gsk.oncology.menu.Menu;
-	import com.wehaverhythm.utils.CustomEvent;
 	import com.wehaverhythm.utils.IdleTimeout;
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.events.NetStatusEvent;
-	import flash.filesystem.File;
 	import flash.geom.Rectangle;
-	import flash.net.NetStream;
 	
 	public class ContentBox extends Sprite
 	{
