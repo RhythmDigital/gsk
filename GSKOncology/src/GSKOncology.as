@@ -50,7 +50,7 @@ package
 				fs.close();
 				contentFolderFound();
 			} else {
-				contentFolder.browseForDirectory("CHOOSE CONTENT FOLDER");
+				contentFolder.browseForDirectory("Select the content folder...");
 				contentFolder.addEventListener(Event.SELECT, onDirectorySelected);
 			}
 		}

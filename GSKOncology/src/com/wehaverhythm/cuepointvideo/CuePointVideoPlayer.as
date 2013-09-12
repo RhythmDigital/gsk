@@ -94,7 +94,6 @@ package com.wehaverhythm.cuepointvideo
 				if(verbose) trace("play " + file + " / contentID: " + contentID);
 				resetPlayer();
 				var videoFile:String = videoPath+file;
-				trace("video file: " + videoFile);
 				ns.play(videoFile);
 			}
 			
@@ -221,17 +220,11 @@ package com.wehaverhythm.cuepointvideo
 		protected function onEnterFrame(e:Event):void
 		{
 			if(listenForLooping && useLooping) {
-				//trace("loopEnabled: " + loopOut);
-			//	if(verbose) trace(stream.time + " / " + vidInfo.duration);
-				// loop code
 				if(ns.time >= loopOut) {
-					//trace(stream.time + " / " + vidInfo.duration);
 					listenForLooping = false;
 					listenForCuePoints = false;
-				//	trace("goto > loopIn: " + loopIn);
 					ns.pause();
-					ns.seek(loopIn);//+0.8);
-					
+					ns.seek(loopIn);
 				}
 			}
 			

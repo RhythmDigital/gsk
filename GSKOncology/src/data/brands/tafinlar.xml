@@ -49,7 +49,7 @@
 	</menu>
 	
 	<content>
-		<content id="0" action="video-bg" videoID="taflinlar-level-1" cuePointSet="tafinlar-root" cartLink="somecontent.zip" cartTitleAlt="" />
+		<content id="0" action="video-bg" videoID="taflinlar-level-1" cartLink="somecontent.zip" cartTitleAlt="" />
 	</content>
 	
 	<videos>
