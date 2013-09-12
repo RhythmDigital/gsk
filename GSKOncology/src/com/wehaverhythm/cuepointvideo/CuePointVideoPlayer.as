@@ -11,7 +11,7 @@ package com.wehaverhythm.cuepointvideo
 	{
 		public static const MODE_SINGLE:String = "MODE_SINGLE";
 		public static const MODE_PLAYLIST:String = "MODE_PLAYLIST";
-		private const verbose:Boolean = true;
+		private const verbose:Boolean = false;
 		
 		private var settings:XML;
 		private var cuePoints:Vector.<CuePoint>;
@@ -141,7 +141,7 @@ package com.wehaverhythm.cuepointvideo
 		private function playNextVideo():void
 		{
 			var url:String = videoPath+playlist[currentVideo];
-			trace(url);
+			if(verbose) trace(url);
 			ns.play(url);
 			dispatchEvent(new CuePointVideoEvent(CuePointVideoEvent.NEXT_VIDEO_PLAYING, true, false, {id:currentVideo}));
 			

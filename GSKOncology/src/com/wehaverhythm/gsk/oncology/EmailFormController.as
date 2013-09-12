@@ -19,16 +19,16 @@ package com.wehaverhythm.gsk.oncology
 		public static var FAILED:String = "FAILED";
 		public static var SUCCESS:String = "SUCCESS";
 		
-		private const ASK_MAIL_SCRIPT_LIVE:String = "http://www.gsk-downloads.com/scripts/ask_mail.php";
-		private const CART_MAIL_SCRIPT_LIVE:String = "http://www.gsk-downloads.com/scripts/cart_mail.php";
-		private const CART_MAIL_SCRIPT_LOCAL:String = "http://gsk.local/scripts/cart_mail.php";
+		private const SCRIPT_LIVE:String = "http://www.gsk-downloads.com/scripts/";
+		private const SCRIPT_LOCAL:String = "http://gsk.local/scripts/";
 		
 		private var settings:XML;
 		private var loader:URLLoader;
+		private var useLocal:Boolean;
 		
 		public function EmailFormController()
 		{
-			
+			useLocal = Constants.DEBUG;
 		}
 		
 		public function emailCart(theirName:String, emailAddress:String):void
@@ -53,10 +53,10 @@ package com.wehaverhythm.gsk.oncology
 			
 			var vars:URLVariables = new URLVariables();
 			vars.theirName = encodeURIComponent(theirName);
-			vars.theirEmail = encodeURIComponent(Constants.DEBUG ? "hello@jamie-white.com" : emailAddress);
+			vars.theirEmail = encodeURIComponent(emailAddress); //Constants.DEBUG ? "hello@jamie-white.com" : emailAddress);
 			vars.theirMessage = encodeURIComponent(message);
 			
-			doSend(vars, CART_MAIL_SCRIPT_LIVE);
+			doSend(vars, (useLocal ? SCRIPT_LOCAL : SCRIPT_LIVE)+"cart.php");
 			
 			trace("Emailing cart: ", vars.toString());
 		}
@@ -69,7 +69,7 @@ package com.wehaverhythm.gsk.oncology
 			vars.product = encodeURIComponent(product);
 			vars.message = encodeURIComponent(message);
 			
-			doSend(vars, ASK_MAIL_SCRIPT_LIVE);
+			doSend(vars, (useLocal ? SCRIPT_LOCAL : SCRIPT_LIVE)+"ask.php");
 			
 			trace("ASKING GSK: ", vars.toString());
 		}
@@ -93,6 +93,7 @@ package com.wehaverhythm.gsk.oncology
 		
 		protected function onIOError(e:IOErrorEvent):void
 		{
+			trace("IO Error, email failed.");
 			destroyLoader();
 			dispatchEvent(new Event(EmailFormController.FAILED, true));
 		}

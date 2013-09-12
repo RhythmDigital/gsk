@@ -108,7 +108,14 @@ package com.wehaverhythm.gsk.oncology.ask
 			if(validateForm()) {
 				trace("Email validation success!");
 				showSpinner = true;
-				//sendEmail();
+				
+				emailer.emailAsk(
+					nameBox.textfield.text, 
+					emailBox.textfield.text, 
+					productsBox.text, 
+					messageText.textfield.text
+				);
+				
 			} else {
 				trace("Email validation FAILED!!");
 				showSpinner = false;
@@ -160,11 +167,14 @@ package com.wehaverhythm.gsk.oncology.ask
 		
 		protected function onSuccess(event:Event):void
 		{
-			dispatchEvent(new Event(EmailFormController.SUCCESS, true));
+			showSpinner = false;
+			btnSend.visible = true;
+			//dispatchEvent(new Event(EmailFormController.SUCCESS, true));
 		}
 		
 		protected function onFailed(event:Event):void
 		{
+			trace("Failed.");
 			showSpinner = false;
 			btnSend.visible = true;
 			dispatchEvent(new Event(EmailFormController.FAILED, true));
