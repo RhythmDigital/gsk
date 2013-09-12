@@ -94,6 +94,7 @@ package com.wehaverhythm.cuepointvideo
 				if(verbose) trace("play " + file + " / contentID: " + contentID);
 				resetPlayer();
 				var videoFile:String = videoPath+file;
+				ns.close();
 				ns.play(videoFile);
 			}
 			
@@ -128,15 +129,7 @@ package com.wehaverhythm.cuepointvideo
 			useCuePoints = false;
 			useLooping = listenForLooping = false;
 			
-			playing = false;
-			
-			// die cuepoints!
-			if(cuePoints) {
-				while(cuePoints.length) {
-					cuePoints[0] = null;
-					cuePoints.shift();
-				}
-			}
+			destroyCuePoints();
 		}
 		
 		private function playNextVideo():void
@@ -249,6 +242,20 @@ package com.wehaverhythm.cuepointvideo
 		public function set listenForCuePoints(listen:Boolean):void
 		{
 			listeningForCuePoints = listen;
+		}
+		
+		public function destroyCuePoints():void
+		{
+			listenForCuePoints = useCuePoints = false;
+			
+			// die cuepoints!
+			if(cuePoints) {
+				while(cuePoints.length) {
+					cuePoints[0] = null;
+					cuePoints.shift();
+				}
+			}
+			numCuePoints = 0;
 		}
 		
 		private function processCuePoint(cuePoint:CuePoint, type:String):void
