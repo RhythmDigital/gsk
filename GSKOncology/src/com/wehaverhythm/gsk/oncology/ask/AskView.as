@@ -93,15 +93,21 @@ package com.wehaverhythm.gsk.oncology.ask
 			TweenMax.to(current, .4, {autoAlpha:0, ease:Quad.easeOut, onComplete:onCurrentHidden, onCompleteParams:[thenShow, onComplete]});
 		}
 		
-		public function hide():void
+		public function hide(canReset:Boolean = false):void
 		{
-			TweenMax.to(this, .3, {autoAlpha:0, ease:Quad.easeOut, onComplete:onHidden});
+			TweenMax.to(this, .3, {autoAlpha:0, ease:Quad.easeOut, onComplete:onHidden, onCompleteParams:[canReset]});
 			dispatchEvent(new Event(AskView.CLOSING, true)); 
 		}
 		
-		private function onHidden():void
+		private function reset():void
 		{
-			if(current) removeChild(current);
+			email.reset();
+		}
+		
+		private function onHidden(canReset:Boolean):void
+		{
+			if(current && this.contains(current)) removeChild(current);
+			if(canReset) reset();
 		}
 		
 		private function onCurrentHidden(showScreen:*, onComplete:Function = null):void

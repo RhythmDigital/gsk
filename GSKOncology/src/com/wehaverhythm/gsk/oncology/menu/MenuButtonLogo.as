@@ -101,7 +101,7 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		override public function destroy():void
 		{
-			d.bg.logo.removeChild(logo);
+			if(d.bg.logo.contains(logo)) d.bg.logo.removeChild(logo);
 			logo = null;
 			
 			TweenMax.killTweensOf(caption);

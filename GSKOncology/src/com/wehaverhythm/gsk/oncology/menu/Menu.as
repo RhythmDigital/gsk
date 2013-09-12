@@ -39,7 +39,7 @@ package com.wehaverhythm.gsk.oncology.menu
 		private var currentSubMenu:int = -1;
 		private var prevSubMenu:int = -1;
 		private var brandColour:uint;
-		private var type:String = "";
+		public var type:String = "";
 		private var isSubMenu:Boolean
 		
 		public var overlay:MenuOverlay;
@@ -97,7 +97,7 @@ package com.wehaverhythm.gsk.oncology.menu
 			menuLookup.push(nextMenu);
 		}
 		
-		private function showRootMenu():void
+		public function showRootMenu():void
 		{
 			//trace("render buttons for main menu");
 			var newButtons:Array = new Array();

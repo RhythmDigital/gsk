@@ -2,6 +2,7 @@ package com.wehaverhythm.cuepointvideo
 {
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Quad;
+	import com.wehaverhythm.gsk.oncology.Constants;
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -55,7 +56,7 @@ package com.wehaverhythm.cuepointvideo
 				vidContainer = new Sprite();
 				with(vidContainer.graphics) {
 					beginFill(0x000000, 1);
-					drawRect(0,0,stage.stageWidth*1.1, stage.stageHeight*1.1); // overlap to hide dirty edge
+					drawRect(0,0,Constants.WIDTH*1.1, Constants.HEIGHT*1.1); // overlap to hide dirty edge
 					endFill();
 				}
 				
@@ -113,19 +114,20 @@ package com.wehaverhythm.cuepointvideo
 			playMode = MODE_PLAYLIST;
 			useCuePoints = false;
 			useLooping = listenForLooping = false;
-			
 			playlist = files;
 			currentVideo = 0;
+			
 			playNextVideo();
 		}
 		
 		private function resetPlayer():void
 		{
 			if(verbose) trace("RESET PLAYER");
+			
 			TweenMax.killTweensOf(vidContainer);
+			
 			vidContainer.alpha = 1;
 			vidContainer.visible = true;
-			
 			useCuePoints = false;
 			useLooping = listenForLooping = false;
 			
@@ -203,11 +205,6 @@ package com.wehaverhythm.cuepointvideo
 		{
 			dispatchEvent(new CuePointVideoEvent(CuePointVideoEvent.HIDE_CURRENT_CAPTION, true, false, {id:currentVideo}));
 			TweenMax.to(vidContainer, 1, {alpha: 1, ease:Quad.easeOut, onComplete:playNextVideo});
-		}
-		
-		public function reset():void
-		{
-			
 		}
 		
 		protected function onEnterFrame(e:Event):void

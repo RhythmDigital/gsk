@@ -3,6 +3,7 @@ package com.wehaverhythm.gsk.oncology.content
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Quad;
 	import com.greensock.loading.VideoLoader;
+	import com.wehaverhythm.utils.IdleTimeout;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -56,10 +57,12 @@ package com.wehaverhythm.gsk.oncology.content
 				case "NetStream.Buffer.Full":
 					TweenMax.to(content, .4, {autoAlpha:1, ease:Quad.easeOut});
 					content.addEventListener(Event.ENTER_FRAME, onVideoRender, false, 0, true);
+					IdleTimeout.stopListening();
 					isPlaying = true;
 					break;
 				case "NetStream.Pause.Notify":
 					content.removeEventListener(Event.ENTER_FRAME, onVideoRender);
+					IdleTimeout.startListening();
 					isPlaying = false;
 					break;
 				case "NetStream.Play.Stop":
@@ -67,9 +70,11 @@ package com.wehaverhythm.gsk.oncology.content
 					netStream.pause();
 					netStream.seek(0);
 					isPlaying = false;
+					IdleTimeout.startListening();
 					break;
 				case "NetStream.Seek.Complete":
 					isPlaying = false;
+					IdleTimeout.startListening();
 					break;
 			}
 		}

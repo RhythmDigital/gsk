@@ -76,7 +76,7 @@ package com.wehaverhythm.utils.keyboard.input
 			overlay.visible = false;
 			txtDefault.visible = txtMain.text.length ? false : true;	
 			txtMain.visible = true;
-			stage.focus = txtMain;
+			if(stage) stage.focus = txtMain;
 			selectedBox.visible = true;
 			// remove old selection state and place carat at end.
 			txtMain.setSelection(txtMain.text.length,txtMain.text.length);

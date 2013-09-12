@@ -92,19 +92,12 @@ package
 		
 		protected function onAddedToStage(e:Event):void
 		{
-			IdleTimeout.init(stage, 10000, onIdleTimeout);
-			
 			startup = new StartupDisplay();
 			addChild(startup);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			
 			if(!Constants.DEBUG && !Constants.DEV_MODE) stage.addEventListener(FullScreenEvent.FULL_SCREEN, onFullScreen);
 			else onFullScreen(null);
-		}
-		
-		public function onIdleTimeout():void
-		{
-			trace("TIMEOUT TRIGGGER!!!!");
 		}
 		
 		private function onKeyDown(e:KeyboardEvent):void

@@ -8,6 +8,7 @@ package com.wehaverhythm.gsk.oncology.content
 	import com.wehaverhythm.gsk.oncology.cart.Cart;
 	import com.wehaverhythm.gsk.oncology.menu.Menu;
 	import com.wehaverhythm.utils.CustomEvent;
+	import com.wehaverhythm.utils.IdleTimeout;
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -57,6 +58,7 @@ package com.wehaverhythm.gsk.oncology.content
 		
 		public function reset():void
 		{
+			IdleTimeout.startListening();
 			stopVideo();
 			slideshow.destroy();
 		}
@@ -116,6 +118,7 @@ package com.wehaverhythm.gsk.oncology.content
 		 */
 		protected function onCloseClicked(e:MouseEvent):void
 		{
+			IdleTimeout.startListening();
 			dispatchEvent(new Event(ContentBox.CLOSE, true));
 		}
 		

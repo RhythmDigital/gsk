@@ -139,7 +139,7 @@ package com.wehaverhythm.gsk.oncology.cart
 		
 		private function onHidden():void
 		{
-			if(current) removeChild(current);
+			if(current && contains(current)) removeChild(current);
 		}
 			
 		private function onCurrentHidden(showScreen:*, onComplete:Function = null):void

@@ -1,5 +1,6 @@
 package com.wehaverhythm.gsk.oncology
 {
+	import com.greensock.TweenMax;
 	import com.wehaverhythm.gsk.oncology.ask.AskView;
 	import com.wehaverhythm.gsk.oncology.cart.Cart;
 	import com.wehaverhythm.gsk.oncology.cart.CartView;
@@ -7,10 +8,13 @@ package com.wehaverhythm.gsk.oncology
 	import com.wehaverhythm.gsk.oncology.content.ContentEvent;
 	import com.wehaverhythm.gsk.oncology.content.ContentManager;
 	import com.wehaverhythm.gsk.oncology.menu.Menu;
+	import com.wehaverhythm.utils.IdleTimeout;
 	
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
+	import flash.display.Stage;
 	import flash.events.Event;
+	import flash.ui.Mouse;
 	
 	public class OncologyMain extends Sprite
 	{
@@ -62,6 +66,24 @@ package com.wehaverhythm.gsk.oncology
 			footer = new MenuFooter();
 			footer.y = Constants.HEIGHT - footer.height;
 			addChild(footer);
+			
+			IdleTimeout.init(stage, Constants.IDLE_TIMEOUT_MS, onIdleTimeout);
+		}
+		
+		private function onIdleTimeout():void
+		{
+			trace("Timeout!");
+			mouseEnabled = mouseChildren = false;
+			Cart.view.hide();
+			askView.hide(true);
+			Cart.reset();
+			if(menu.type != "root-menu") menu.showRootMenu();
+			TweenMax.delayedCall(1, timeoutTransitionComplete);
+		}
+		
+		private function timeoutTransitionComplete():void
+		{
+			mouseEnabled = mouseChildren = true;
 		}
 		
 		protected function onAskViewShow(e:Event):void
