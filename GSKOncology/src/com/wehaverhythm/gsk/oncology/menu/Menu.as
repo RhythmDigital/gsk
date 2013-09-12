@@ -11,6 +11,7 @@ package com.wehaverhythm.gsk.oncology.menu
 	import com.wehaverhythm.gsk.oncology.ask.AskView;
 	import com.wehaverhythm.gsk.oncology.cart.Cart;
 	import com.wehaverhythm.gsk.oncology.content.ContentEvent;
+	import com.wehaverhythm.utils.IdleTimeout;
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -355,6 +356,8 @@ package com.wehaverhythm.gsk.oncology.menu
 				else renderButtonsFor(currentMenu, currentMenu, null);
 				return;
 			}
+			
+			IdleTimeout.startListening();
 			
 			switch(id) {
 				case "back":
