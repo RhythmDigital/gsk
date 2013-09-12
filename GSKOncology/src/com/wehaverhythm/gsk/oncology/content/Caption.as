@@ -5,12 +5,9 @@ package com.wehaverhythm.gsk.oncology.content
 	import com.greensock.events.LoaderEvent;
 	import com.greensock.loading.ImageLoader;
 	import com.greensock.loading.LoaderMax;
-	import com.greensock.loading.LoaderStatus;
 	import com.wehaverhythm.gsk.oncology.Constants;
 	
-	import flash.display.DisplayObject;
 	import flash.display.Sprite;
-	import flash.filesystem.File;
 	import flash.geom.Point;
 	
 	public class Caption extends Sprite
@@ -30,11 +27,12 @@ package com.wehaverhythm.gsk.oncology.content
 		private var loader:LoaderMax;
 		
 		public var ready:Boolean;
-		private var verbose:Boolean;
+		private var verbose:Boolean = true;
 		
 		public function Caption()
 		{
 			super();
+			alpha = 0;
 		}
 		
 		public function setup(xml:XML, col:String):void

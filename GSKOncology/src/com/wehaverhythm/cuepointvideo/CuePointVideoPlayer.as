@@ -246,7 +246,7 @@ package com.wehaverhythm.cuepointvideo
 			}
 		}
 		
-		private function set listenForCuePoints(listen:Boolean):void
+		public function set listenForCuePoints(listen:Boolean):void
 		{
 			listeningForCuePoints = listen;
 		}
@@ -256,7 +256,7 @@ package com.wehaverhythm.cuepointvideo
 			dispatchEvent(new CuePointEvent(CuePointEvent.CUE_POINT_TRIGGER, type, cuePoint.id, {}));
 		}
 		
-		private function get listenForCuePoints():Boolean
+		public function get listenForCuePoints():Boolean
 		{
 			return listeningForCuePoints;
 		}

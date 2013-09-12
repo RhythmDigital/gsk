@@ -28,7 +28,7 @@ package com.wehaverhythm.gsk.oncology
 		
 		public function EmailFormController()
 		{
-			useLocal = Constants.DEBUG;
+			useLocal = false;//Constants.DEBUG;
 		}
 		
 		public function emailCart(theirName:String, emailAddress:String):void

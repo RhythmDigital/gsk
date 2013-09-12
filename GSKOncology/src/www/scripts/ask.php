@@ -1,31 +1,22 @@
 <?php
-	//$to = "jamie@wehaverhythm.com";
+	$to = "jamie@wehaverhythm.com";
 	$name = urldecode($_POST['name']);
 	$from = urldecode($_POST['email']);
 	$product = urldecode($_POST['product']);
 	$subject = "GSK Oncology Question Regarding: ".$product;
 	$message = urldecode($_POST['message']);
 	
-	$headers = "From: ".$name."<".$from.">\r\n";
+	$headers = "From: GSK Oncology ESMO2013 <noreply@gsk-downloads.com>\r\n";
 	$headers .= "Reply-To: ".$from."\r\n";
 	$headers .= "MIME-Version: 1.0\r\n";
 	$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
-	//$result = mail ("hello@jamie-white.com", $subject, $message, $headers);
+	$result = mail ($to, $subject, $message, $headers);
+
 	
 
-	$con=mysqli_connect("localhost","root","root","gsk");
-	// Check connection
-	if (mysqli_connect_errno())
-	{
-	  echo "result=db_connect_error";
-	  die();
-	}
-
 	// WRITE TO DB.
-	writeQuestionTODB("VOTRIENT", "Jamie", "hello@jamie-white.com", "Hello there.");
-
-	mysqli_close($con);
+	writeQuestionToDB($product, $name, $from, $message);
 
 	if($result) {
 		echo "result=mail_ok";
@@ -33,46 +24,40 @@
 		echo "result=mail_error";
 	}
 
-
-
 	die();
 
-	function writeQuestionTODB($product, $name, $email, $message) {
 
-		$product_id = -1;
-		$product_id = findProductID($product);
+	function writeQuestionToDB($con, $product, $name, $email, $message) {
 
-		if($product_id == -1) {
-			echo "couln't find product.";
-			mysqli_query($con,"INSERT INTO products (name) VALUES ('".$product."')");
-			echo "inserted!";
-			$product_id = findProductID($product);
-			echo "new product id for ".$product." = ".$product_id;
+		$con=mysqli_connect("localhost","root","root","gsk");
+
+		if (mysqli_connect_errno())
+		{
+		  echo "result=db_connect_error";
+		  die();
 		}
 
+		$product_id;
+		$product_id = findProductID($con, $product);
 
-		echo "found product ".$product." with id ".$product_id;
+		if(!isset($product_id)) {
+			mysqli_query($con,"INSERT INTO products (name) VALUES ('".$product."')");
+			$product_id = findProductID($con, $product);
+		}
+
+		mysqli_query($con,"INSERT INTO questions (name,email,message,product_id,date) VALUES ('".$name."','".$email."','".$message."',".$product_id.",NOW())");
+		mysqli_close($con);
 	}
 
-	function findProductID($product) {
-		$query="SELECT id from products where name='".$product."' LIMIT 1";
+	function findProductID($con, $product) {
+		$query="SELECT id FROM products WHERE name='".$product."'";
 		$product_search = mysqli_query($con,$query);
-		$found = false;
-		$product_id = null;
+		$id;
 
-		if(mysql_fetch_array($product_search) == false) {
-			echo "No product for ".$product;
-			return -1;
-		} else {
-			while($row = mysqli_fetch_array($product_search)) {
-				$product_id = $row['id'];
-				$found = true;
-				echo $product_id;
-				echo "Found ".$product." with id: ".$product_id;
-				return $product_id;
-			}
+		while($row = mysqli_fetch_array($product_search)) {
+			if($row == false) return $id;
+			$id = $row['id'];
+			return $id;
 		}
-
-		
 	}
 ?>

@@ -133,6 +133,8 @@ package com.wehaverhythm.gsk.oncology.content
 					var videoXML:XML = XML(xml.videos.video.(@id == contentSettings["videoID"]));
 					if(verbose) trace("video: " + videoXML.@filename);
 					
+					video.listenForCuePoints = false;
+					clearOldAnnotations();
 					var cuePoints:Vector.<CuePoint>;
 					
 					if(contentSettings.hasOwnProperty("cuePointSet")) {
