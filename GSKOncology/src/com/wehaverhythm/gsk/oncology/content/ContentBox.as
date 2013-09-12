@@ -146,19 +146,9 @@ package com.wehaverhythm.gsk.oncology.content
 			//dispatchEvent(new CustomEvent(ContentBox.ADD_TO_CART, true, false, {contentID:contentSettings["id"], brandID:brandID}));
 		}
 		
-		
-		/**
-		 * SLIDESHOW EVENTS
-		 */
-		
-		protected function onNextClicked(e:MouseEvent):void
+		public function close():void
 		{
-			// TODO Auto-generated method stub
-		}
-		
-		protected function onPrevClicked(e:MouseEvent):void
-		{
-			
+			onCloseClicked(null);
 		}
 	}
 }

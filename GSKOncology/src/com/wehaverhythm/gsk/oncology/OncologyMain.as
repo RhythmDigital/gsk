@@ -34,9 +34,15 @@ package com.wehaverhythm.gsk.oncology
 			menu = new Menu();
 			menu.addEventListener(Menu.ASSETS_LOADED, onAssetsLoaded);
 			menu.addEventListener(ContentEvent.CONTENT_TRIGGER, onContentTrigger);
+			menu.addEventListener(Menu.CLOSE_CURRENT_CONTENT, onCloseCurrentContent);
 			menu.x = 29;
 			addChild(menu);
 			menu.init(settingsXML);
+		}
+		
+		protected function onCloseCurrentContent(e:Event):void
+		{
+			contentMan.content.close();
 		}
 		
 		protected function onAssetsLoaded(event:Event):void

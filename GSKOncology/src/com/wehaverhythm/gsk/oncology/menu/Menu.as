@@ -15,6 +15,7 @@ package com.wehaverhythm.gsk.oncology.menu
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.filesystem.File;
 	import flash.text.TextField;
 	
@@ -22,6 +23,7 @@ package com.wehaverhythm.gsk.oncology.menu
 	{
 		public static var SELECTED_BUTTON_COPY:String = "";
 		public static var ASSETS_LOADED:String = "ASSETS_LOADED";
+		public static const CLOSE_CURRENT_CONTENT:String = "CLOSE_CURRENT_CONTENT";
 		
 		private const BUTTON_MARGIN:int = 9;
 		private const START_Y_LOGO_BUTTONS:int = 1206;
@@ -260,6 +262,13 @@ package com.wehaverhythm.gsk.oncology.menu
 			el.title.y = (el.bg.height >> 1) - (el.title.height >> 1);
 			
 			TweenMax.to(overlay.display.titleBar.bg, 0, {immediateRender:true, tint:brandColour});
+			
+			el.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+		}
+		
+		private function onMouseDown(e:MouseEvent):void
+		{
+			dispatchEvent(new Event(Menu.CLOSE_CURRENT_CONTENT, true));
 		}
 		
 		private function animateButtons(showTitle:Boolean = false):void
