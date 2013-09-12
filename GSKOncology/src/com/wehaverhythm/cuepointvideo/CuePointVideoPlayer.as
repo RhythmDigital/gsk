@@ -93,7 +93,9 @@ package com.wehaverhythm.cuepointvideo
 			if(this.contentID != contentID || !playing) {
 				if(verbose) trace("play " + file + " / contentID: " + contentID);
 				resetPlayer();
-				ns.play(videoPath+"/"+file);
+				var videoFile:String = videoPath+file;
+				trace("video file: " + videoFile);
+				ns.play(videoFile);
 			}
 			
 			playMode = MODE_SINGLE;

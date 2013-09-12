@@ -62,10 +62,12 @@ package com.wehaverhythm.gsk.oncology.content
 			
 			var i:int = 0;
 			for each(var f:File in files) {
-				props.name = String(i);
-				images.push(props.name);
-				loader.append(new ImageLoader(f.url, props));
-				i++;
+				if(f.extension.toLowerCase() == "jpg" || f.extension.toLowerCase() == "png") {
+					props.name = String(i);
+					images.push(props.name);
+					loader.append(new ImageLoader(f.url, props));
+					i++;
+				}
 			}
 			
 			loader.load(true);

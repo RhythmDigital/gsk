@@ -33,7 +33,7 @@ package com.wehaverhythm.gsk.oncology.menu
 		private var imageLoader:LoaderMax;
 		private var pickOne:PickOne;
 		private var logoHolder:*;
-		private var currentID:String = null;
+		
 		private var currentMenu:int = -1;
 		private var currentXML:XMLList;
 		private var currentSubMenu:int = -1;
@@ -44,6 +44,7 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		public var overlay:MenuOverlay;
 		public var currentButton:MenuButton;
+		public var currentID:String = null;
 		public static var menus:Array;
 		
 		public function Menu()
@@ -139,6 +140,8 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		public function hideRootCaptions():void
 		{
+			if(currentSubMenu != -1) return;
+			
 			for(var i:int = 0; i < buttons.length; ++i) {
 				MenuButtonLogo(buttons[i]).hideCaption();
 			}
@@ -212,7 +215,7 @@ package com.wehaverhythm.gsk.oncology.menu
 			
 			if(currentID == null || isSubMenu) {
 				type = "sub-menu";
-				dispatchEvent(new ContentEvent(ContentEvent.CONTENT_TRIGGER, {type:type, mid:currentMenu}));//xml: menus[mid].content}));
+				dispatchEvent(new ContentEvent(ContentEvent.CONTENT_TRIGGER, {type:type, mid:currentMenu, xml: currentXML}));//xml: menus[mid].content}));
 			} else {
 				type = "sub-menu-button";
 				dispatchEvent(new ContentEvent(ContentEvent.CONTENT_TRIGGER, {type:type, mid:currentMenu, xml: currentXML}));

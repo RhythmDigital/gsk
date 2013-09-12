@@ -6,6 +6,7 @@ package
 	import com.wehaverhythm.gsk.oncology.Constants;
 	import com.wehaverhythm.gsk.oncology.OncologyMain;
 	
+	import flash.desktop.NativeApplication;
 	import flash.display.Screen;
 	import flash.display.Sprite;
 	import flash.display.StageDisplayState;
@@ -18,6 +19,8 @@ package
 	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
 	import flash.text.Font;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
 	import flash.ui.Keyboard;
 	import flash.ui.Mouse;
 	
@@ -93,7 +96,7 @@ package
 			addChild(startup);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			
-			if(!Constants.DEBUG) stage.addEventListener(FullScreenEvent.FULL_SCREEN, onFullScreen);
+			if(!Constants.DEBUG && !Constants.DEV_MODE) stage.addEventListener(FullScreenEvent.FULL_SCREEN, onFullScreen);
 			else onFullScreen(null);
 		}
 		
@@ -111,7 +114,7 @@ package
 		
 		protected function onFullScreen(e:FullScreenEvent):void
 		{
-			if(!Constants.DEBUG) Mouse.hide();
+			if(!Constants.DEBUG && !Constants.DEV_MODE) Mouse.hide();
 			removeChild(startup);
 			launchApp(null);
 		}
@@ -128,6 +131,17 @@ package
 			var lm:LoaderMax = new LoaderMax({onComplete:onXMLLoaded});
 			lm.insert(new XMLLoader(Constants.CONTENT_DIR.url+"/data/settings.xml", {name:"settings"}));
 			lm.load(); 
+			
+			if(Constants.DEV_MODE) {
+				var tf:TextField = new TextField();
+				tf.defaultTextFormat = new TextFormat("Helvetica", 60, 0xff0000, true);
+				tf.text = "ED MODE ON";
+				tf.selectable = false;
+				tf.autoSize = "left";
+				addChild(tf);
+				tf.x = Constants.WIDTH - (tf.width + 20);
+				tf.y = 20;
+			}
 		}
 		
 		private function onXMLLoaded(e:LoaderEvent):void

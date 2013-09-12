@@ -26,7 +26,7 @@ package com.wehaverhythm.gsk.oncology.content
 		private var contentSettings:Object;
 		private var contentNode:XML;
 		private var brandID:int;
-		private var verbose:Boolean;
+		private var verbose:Boolean = true;
 		
 		public var content:ContentBox;
 		
@@ -133,8 +133,13 @@ package com.wehaverhythm.gsk.oncology.content
 					var videoXML:XML = XML(xml.videos.video.(@id == contentSettings["videoID"]));
 					if(verbose) trace("video: " + videoXML.@filename);
 					
-					cuePointSet = XML(xml.cuePointSets.cuePointSet.(@id == contentSettings["cuePointSet"]));
-					var cuePoints:Vector.<CuePoint> = parseCuePointXML(cuePointSet);
+					var cuePoints:Vector.<CuePoint>;
+					
+					if(contentSettings.hasOwnProperty("cuePointSet")) {
+						cuePointSet = XML(xml.cuePointSets.cuePointSet.(@id == contentSettings["cuePointSet"]));
+						cuePoints = parseCuePointXML(cuePointSet);
+					}
+					
 					
 					video.play(videoXML.@filename, contentID);
 					

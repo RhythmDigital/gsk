@@ -58,7 +58,7 @@ package com.wehaverhythm.gsk.oncology
 			
 			doSend(vars, (useLocal ? SCRIPT_LOCAL : SCRIPT_LIVE)+"cart.php");
 			
-			trace("Emailing cart: ", vars.toString());
+			trace(this, "Emailing cart: ", vars.toString());
 		}
 		
 		public function emailAsk(theirName:String, theirEmail:String, product:String, message:String):void
@@ -71,11 +71,12 @@ package com.wehaverhythm.gsk.oncology
 			
 			doSend(vars, (useLocal ? SCRIPT_LOCAL : SCRIPT_LIVE)+"ask.php");
 			
-			trace("ASKING GSK: ", vars.toString());
+			trace(this, "ASKING GSK: ", vars.toString());
 		}
 		
 		public function doSend(vars:URLVariables, url:String):void
 		{
+			trace(this, "URL: " + url);
 			//var request:URLRequest = new URLRequest(Constants.DEBUG ? CART_MAIL_SCRIPT_LOCAL : CART_MAIL_SCRIPT_LIVE);
 			var request:URLRequest = new URLRequest(url);
 			request.method = URLRequestMethod.POST;
@@ -93,14 +94,14 @@ package com.wehaverhythm.gsk.oncology
 		
 		protected function onIOError(e:IOErrorEvent):void
 		{
-			trace("IO Error, email failed.");
+			trace(this, "IO Error, email failed.");
 			destroyLoader();
 			dispatchEvent(new Event(EmailFormController.FAILED, true));
 		}
 		
 		protected function onComplete(e:Event):void
 		{
-			trace("Done: " + e.target.data.result);
+			trace(this, "Done: " + e.target.data.result);
 			destroyLoader();
 			Cart.reset();
 			dispatchEvent(new Event(EmailFormController.SUCCESS, true));
@@ -119,6 +120,11 @@ package com.wehaverhythm.gsk.oncology
 				loader.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
 				loader = null;
 			}
+		}
+		
+		override public function toString():String
+		{
+			return "EmailFormController :: ";
 		}
 	}
 }
