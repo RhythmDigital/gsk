@@ -10,15 +10,16 @@ package com.wehaverhythm.cuepointvideo
 		public var outTimeSeconds:Number;
 		public var inFrame:int;
 		public var outFrame:int;
+		public var pauseTimeMS:int;
 		public var flagged:Boolean;
 		public var visible:Boolean;
 		
-		public function CuePoint(id:String, inFrame:int, outFrame:int)
+		public function CuePoint(id:String, inFrame:int, outFrame:int, pauseTimeMS:int = -1)
 		{
 			this.id = id;
 			this.inFrame = inFrame;
 			this.outFrame = outFrame;
-			
+			this.pauseTimeMS = pauseTimeMS;	
 			/*clock = new Date();
 			clock.time = 0;
 			timecodeRegExp = new RegExp ( "[:\.]" , "gi" );*/

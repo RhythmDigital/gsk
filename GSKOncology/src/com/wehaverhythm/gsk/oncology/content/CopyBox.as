@@ -10,11 +10,12 @@ package com.wehaverhythm.gsk.oncology.content
 	public class CopyBox extends Sprite
 	{
 		private var d:CopyBoxDisplay;
-		public function CopyBox(text:String, size:Number = 30, w:Number = 250)
+		public function CopyBox(text:String, size:Number = 30, w:Number = 250, multiline:Boolean = false)
 		{
 			super();
 			
 			d = new CopyBoxDisplay();
+			d.txtCopy.multiline = multiline;
 			d.txtCopy.htmlText = text;
 			d.txtCopy.setTextFormat(new TextFormat(Constants.FONT_GILL_SANS, size));
 			d.txtCopy.autoSize = TextFieldAutoSize.LEFT;

@@ -90,10 +90,10 @@ package com.wehaverhythm.gsk.oncology.content
 			
 			switch(type) {
 				case TYPE_TITLE:
-					el = createTextField(data, 30);
+					el = createTextField(data, 30, true);
 					break;
 				case TYPE_TEXT:
-					el = createTextField(data, 28);
+					el = createTextField(data, 28, true);
 					break;
 				case TYPE_IMAGE:
 					var imgLoader:ImageLoader = addImage(data);
@@ -101,7 +101,7 @@ package com.wehaverhythm.gsk.oncology.content
 					el = imgLoader.content;
 					break;
 				case TYPE_FOOTER:
-					el =  createTextField(data, 15);
+					el =  createTextField(data, 15, true);
 					break;
 			}
 			
@@ -124,9 +124,9 @@ package com.wehaverhythm.gsk.oncology.content
 			return new ImageLoader(Constants.CONTENT_DIR.url+"/"+Menu.getBrandXML(brandID).name+"/images/"+data);
 		}
 		
-		private function createTextField(text:String, size:Number = 30):CopyBox
+		private function createTextField(text:String, size:Number = 30, multiline:Boolean = false):CopyBox
 		{
-			var tf:CopyBox = new CopyBox(text, size, boxWidth-(PADDING.x*2));
+			var tf:CopyBox = new CopyBox(text, size, boxWidth-(PADDING.x*2), multiline);
 			tf.x = 10;
 			return tf;
 		}

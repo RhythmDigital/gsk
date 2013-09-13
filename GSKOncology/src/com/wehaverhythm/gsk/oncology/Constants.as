@@ -4,7 +4,7 @@ package com.wehaverhythm.gsk.oncology
 
 	public class Constants
 	{
-		public static var DEV_MODE:Boolean = true;
+		public static var DEV_MODE:Boolean = false;
 		public static var DEBUG:Boolean = false;
 		public static var CONTENT_DIR:File;
 		
