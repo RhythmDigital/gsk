@@ -128,7 +128,7 @@ package
 			var lm:LoaderMax = new LoaderMax({onComplete:onXMLLoaded});
 			lm.insert(new XMLLoader(Constants.CONTENT_DIR.url+"/settings.xml", {name:"settings"}));
 			lm.load(); 
-			
+			/*
 			if(Constants.DEV_MODE) {
 				var tf:TextField = new TextField();
 				tf.defaultTextFormat = new TextFormat("Helvetica", 60, 0xff0000, true);
@@ -138,7 +138,7 @@ package
 				addChild(tf);
 				tf.x = Constants.WIDTH - (tf.width + 20);
 				tf.y = 20;
-			}
+			}*/
 		}
 		
 		private function onXMLLoaded(e:LoaderEvent):void
