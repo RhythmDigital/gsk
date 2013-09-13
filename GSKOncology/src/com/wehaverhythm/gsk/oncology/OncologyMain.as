@@ -14,6 +14,7 @@ package com.wehaverhythm.gsk.oncology
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.ui.Mouse;
 	
 	public class OncologyMain extends Sprite
@@ -74,17 +75,36 @@ package com.wehaverhythm.gsk.oncology
 			addChild(footer);
 			
 			IdleTimeout.init(stage, Constants.IDLE_TIMEOUT_MS, onIdleTimeout);
+			waitForUser();
 		}
 		
 		private function onIdleTimeout():void
 		{
-			trace("Timeout!");
+			trace("SESSION ENDED!");
 			mouseEnabled = mouseChildren = false;
 			Cart.view.hide();
 			askView.hide(true);
 			Cart.reset();
 			if(menu.type != "root-menu") menu.showRootMenu();
 			TweenMax.delayedCall(1, timeoutTransitionComplete);
+			
+			Stats.track(GSKOncology.sessionID, Menu.PAGE_HOME, Stats.ACTION_SESSION_END);
+			waitForUser();
+		}
+		
+		private function waitForUser():void
+		{
+			stage.addEventListener(MouseEvent.MOUSE_MOVE, onSessionStartTrigger);
+			stage.addEventListener(MouseEvent.MOUSE_MOVE, onSessionStartTrigger);
+		}
+		
+		protected function onSessionStartTrigger(e:MouseEvent):void
+		{
+			GSKOncology.sessionID = new Date().time;
+			trace("SESSION STARTED >> " + GSKOncology.sessionID);
+			stage.removeEventListener(MouseEvent.MOUSE_MOVE, onSessionStartTrigger);
+			stage.removeEventListener(MouseEvent.MOUSE_MOVE, onSessionStartTrigger);
+			Stats.track(GSKOncology.sessionID, Menu.PAGE_HOME, Stats.ACTION_SESSION_START);
 		}
 		
 		private function timeoutTransitionComplete():void

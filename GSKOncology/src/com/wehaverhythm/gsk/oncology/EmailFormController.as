@@ -56,6 +56,7 @@ package com.wehaverhythm.gsk.oncology
 			vars.theirEmail = encodeURIComponent(emailAddress); //Constants.DEBUG ? "hello@jamie-white.com" : emailAddress);
 			vars.theirMessage = encodeURIComponent(message);
 			
+			Stats.track(GSKOncology.sessionID, "cart", "email");
 			doSend(vars, (useLocal ? SCRIPT_LOCAL : SCRIPT_LIVE)+"cart.php");
 			
 			trace(this, "Emailing cart: ", vars.toString());
@@ -69,9 +70,11 @@ package com.wehaverhythm.gsk.oncology
 			vars.product = encodeURIComponent(product);
 			vars.message = encodeURIComponent(message);
 			
-			doSend(vars, (useLocal ? SCRIPT_LOCAL : SCRIPT_LIVE)+"ask.php");
-			
 			trace(this, "ASKING GSK: ", vars.toString());
+			
+			Stats.track(GSKOncology.sessionID, "ask", "email");
+			
+			doSend(vars, (useLocal ? SCRIPT_LOCAL : SCRIPT_LIVE)+"ask.php");
 		}
 		
 		public function doSend(vars:URLVariables, url:String):void

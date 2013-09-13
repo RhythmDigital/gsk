@@ -6,6 +6,7 @@ package com.wehaverhythm.gsk.oncology.content
 	import com.greensock.loading.ImageLoader;
 	import com.greensock.loading.LoaderMax;
 	import com.wehaverhythm.gsk.oncology.Constants;
+	import com.wehaverhythm.gsk.oncology.Stats;
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -82,6 +83,7 @@ package com.wehaverhythm.gsk.oncology.content
 			
 			prevVisible = nextVisible = true;
 			checkButtonStates();
+			trackSlide();
 		}
 		
 		protected function onEnterFrame(e:Event):void
@@ -98,6 +100,7 @@ package com.wehaverhythm.gsk.oncology.content
 				current ++;
 				targetX -= slideWidth;
 				checkButtonStates();
+				trackSlide();
 			}
 		}
 		
@@ -107,7 +110,13 @@ package com.wehaverhythm.gsk.oncology.content
 				current --;
 				targetX += slideWidth;
 				checkButtonStates();
+				trackSlide();
 			}
+		}
+		
+		private function trackSlide():void
+		{
+			Stats.track(GSKOncology.sessionID, "slideshow: " + folder.name, "slide " + String(current));
 		}
 		
 		private function checkButtonStates():void

@@ -8,6 +8,7 @@ package com.wehaverhythm.gsk.oncology.menu
 	import com.greensock.loading.LoaderMax;
 	import com.greensock.loading.XMLLoader;
 	import com.wehaverhythm.gsk.oncology.Constants;
+	import com.wehaverhythm.gsk.oncology.Stats;
 	import com.wehaverhythm.gsk.oncology.ask.AskView;
 	import com.wehaverhythm.gsk.oncology.cart.Cart;
 	import com.wehaverhythm.gsk.oncology.content.ContentEvent;
@@ -24,6 +25,10 @@ package com.wehaverhythm.gsk.oncology.menu
 		public static var SELECTED_BUTTON_COPY:String = "";
 		public static var ASSETS_LOADED:String = "ASSETS_LOADED";
 		public static const CLOSE_CURRENT_CONTENT:String = "CLOSE_CURRENT_CONTENT";
+		
+		public static var PAGE_HOME:String = "home";
+		public static var PAGE_ASK:String = "ask";
+		public static var PAGE_CART:String = "cart";
 		
 		private const BUTTON_MARGIN:int = 9;
 		private const START_Y_LOGO_BUTTONS:int = 1206;
@@ -153,6 +158,8 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		private function renderButtonsFor(m:int, mid:int, id:String = null):void
 		{			
+			//./ tafinlar/content title?
+			
 			var newButtons:Array = new Array();
 			type = "";
 			
@@ -212,9 +219,18 @@ package com.wehaverhythm.gsk.oncology.menu
 				if(currentID != null) { 
 					setTitle();
 					animateButtons(true);
+					
 				} else {
 					animateButtons(false);
+					
 				}
+			}
+			
+			if(currentID == null && isSubMenu) {
+				trace("BRAND MENU");
+				Stats.track(GSKOncology.sessionID, Menu.getBrandXML(mid).name, Stats.ACTION_NAVIGATE);
+			} else {
+				Stats.track(GSKOncology.sessionID, Menu.getBrandXML(mid).menu.item.(@id == currentID), Stats.ACTION_NAVIGATE);
 			}
 			
 			if(currentID == null || isSubMenu) {
@@ -385,13 +401,13 @@ package com.wehaverhythm.gsk.oncology.menu
 						}
 					}
 					break;
-				case "home":
+				case Menu.PAGE_HOME:
 					showRootMenu();
 					break;
-				case "cart":
+				case Menu.PAGE_CART:
 					Cart.showCart();
 					break;
-				case "ask":
+				case Menu.PAGE_ASK:
 					dispatchEvent(new Event(AskView.SHOW, true));
 					break;
 			}

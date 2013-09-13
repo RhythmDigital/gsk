@@ -1,6 +1,7 @@
 package com.wehaverhythm.gsk.oncology.content
 {
 	import com.wehaverhythm.gsk.oncology.Constants;
+	import com.wehaverhythm.gsk.oncology.Stats;
 	import com.wehaverhythm.gsk.oncology.cart.Cart;
 	import com.wehaverhythm.gsk.oncology.menu.Menu;
 	import com.wehaverhythm.utils.IdleTimeout;
@@ -12,6 +13,9 @@ package com.wehaverhythm.gsk.oncology.content
 	
 	public class ContentBox extends Sprite
 	{
+		public static var TYPE_VIDEO:String = "video";
+		public static var TYPE_SLIDESHOW:String = "slideshow";
+		
 		public static var CLOSE:String = "CLOSE_CONTENT";
 		public static var ADD_TO_CART:String = "ADD_TO_CART";
 		
@@ -22,6 +26,9 @@ package com.wehaverhythm.gsk.oncology.content
 		private var video:ContentBoxVideo;
 		private var slideshow:ContentBoxSlideshow;
 		private var brandID:int;
+		public var type:String;
+
+		private var vidName:String;
 		
 		public function ContentBox()
 		{
@@ -68,8 +75,10 @@ package com.wehaverhythm.gsk.oncology.content
 				case "video-box":
 					initVideo();
 					d.vidPlayer.visible = true;
+					type = ContentBox.TYPE_VIDEO;
 					break;
 				case "slideshow-box":
+					type = ContentBox.TYPE_SLIDESHOW;
 					initSlideshow();
 					d.slideshow.visible = true;
 					break;
@@ -80,7 +89,8 @@ package com.wehaverhythm.gsk.oncology.content
 		
 		private function initVideo():void
 		{
-			var url:String = Constants.CONTENT_DIR.url + "/"+brandXML.name+"/videos/content/"+brandXML.videos.video.(@id == contentSettings["videoID"]).@filename;
+			vidName = brandXML.videos.video.(@id == contentSettings["videoID"]).@filename;
+			var url:String = Constants.CONTENT_DIR.url + "/"+brandXML.name+"/videos/content/"+vidName;
 			video = new ContentBoxVideo(d, url, {width:area.width, height:area.height, autoPlay:true, scaleMode:"proportionalInside"});
 			addChild(video.content);
 		}
@@ -110,6 +120,17 @@ package com.wehaverhythm.gsk.oncology.content
 		 */
 		protected function onCloseClicked(e:MouseEvent):void
 		{
+			switch(type) {
+				case TYPE_VIDEO:
+					var vidPercent:String = String(Math.ceil(video.playProgress*100))+"%";
+					Stats.track(GSKOncology.sessionID, "video: " + vidName, vidPercent + " complete");
+					break;
+				case TYPE_SLIDESHOW:
+					
+					break;
+			}
+			type = "";
+			
 			IdleTimeout.startListening();
 			dispatchEvent(new Event(ContentBox.CLOSE, true));
 		}

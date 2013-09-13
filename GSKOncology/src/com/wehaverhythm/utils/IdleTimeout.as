@@ -15,6 +15,8 @@ package com.wehaverhythm.utils
 		
 		public static var resetCount:int;
 		
+		public static var newSession:Boolean = true;
+		
 		public function IdleTimeout()
 		{
 		}

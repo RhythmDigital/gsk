@@ -5,7 +5,9 @@ package
 	import com.greensock.loading.XMLLoader;
 	import com.wehaverhythm.gsk.oncology.Constants;
 	import com.wehaverhythm.gsk.oncology.OncologyMain;
+	import com.wehaverhythm.gsk.oncology.Stats;
 	
+	import flash.desktop.NativeApplication;
 	import flash.display.Screen;
 	import flash.display.Sprite;
 	import flash.display.StageDisplayState;
@@ -31,8 +33,13 @@ package
 		private var contentFolder:File;
 		private var contentDefinitionFile:File;
 		
+		public static var sessionID:int;
+		
 		public function GSKOncology()
 		{
+			var appXML:XML =  NativeApplication.nativeApplication.applicationDescriptor;
+			var ns:Namespace = appXML.namespace();
+			stage.nativeWindow.title = "GSK ESMO 2013 - Version " + appXML.ns::versionNumber;
 			findContentDirectory();
 		}
 		
@@ -130,16 +137,16 @@ package
 			lm.insert(new XMLLoader(Constants.CONTENT_DIR.url+"/settings.xml", {name:"settings"}));
 			lm.load(); 
 			
-			if(Constants.DEV_MODE) {
-				var tf:TextField = new TextField();
-				tf.defaultTextFormat = new TextFormat("Helvetica", 60, 0xf20000, true);
-				tf.text = "DEBUG MODE";
-				tf.selectable = false;
-				tf.autoSize = "left";
-				addChild(tf);
-				tf.x = Constants.WIDTH - (tf.width + 20);
-				tf.y = 20;
-			}
+//			if(Constants.DEV_MODE) {
+//				var tf:TextField = new TextField();
+//				tf.defaultTextFormat = new TextFormat("Helvetica", 60, 0xf20000, true);
+//				tf.text = "DEBUG MODE";
+//				tf.selectable = false;
+//				tf.autoSize = "left";
+//				addChild(tf);
+//				tf.x = Constants.WIDTH - (tf.width + 20);
+//				tf.y = 20;
+//			}
 			
 		}
 		
