@@ -5,6 +5,7 @@ package
 	import com.greensock.loading.XMLLoader;
 	import com.wehaverhythm.gsk.oncology.Constants;
 	import com.wehaverhythm.gsk.oncology.OncologyMain;
+	
 	import flash.display.Screen;
 	import flash.display.Sprite;
 	import flash.display.StageDisplayState;
@@ -131,14 +132,15 @@ package
 			
 			if(Constants.DEV_MODE) {
 				var tf:TextField = new TextField();
-				tf.defaultTextFormat = new TextFormat("Helvetica", 60, 0xff0000, true);
-				tf.text = "ED MODE ON";
+				tf.defaultTextFormat = new TextFormat("Helvetica", 60, 0xf20000, true);
+				tf.text = "DEBUG MODE";
 				tf.selectable = false;
 				tf.autoSize = "left";
 				addChild(tf);
 				tf.x = Constants.WIDTH - (tf.width + 20);
 				tf.y = 20;
 			}
+			
 		}
 		
 		private function onXMLLoaded(e:LoaderEvent):void
