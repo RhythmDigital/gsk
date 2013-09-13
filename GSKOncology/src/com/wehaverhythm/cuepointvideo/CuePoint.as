@@ -1,5 +1,7 @@
 package com.wehaverhythm.cuepointvideo
 {
+	import com.greensock.TweenMax;
+
 	public class CuePoint
 	{
 		public static const CUE_IN:String = "in";
@@ -13,13 +15,16 @@ package com.wehaverhythm.cuepointvideo
 		public var pauseTimeMS:int;
 		public var flagged:Boolean;
 		public var visible:Boolean;
+		public var enabled:Boolean;
+		public var playedThisLoop:Boolean;
 		
-		public function CuePoint(id:String, inFrame:int, outFrame:int, pauseTimeMS:int = -1)
+		public function CuePoint(id:String, inFrame:int, outFrame:int = -1, pauseTimeMS:int = -1)
 		{
 			this.id = id;
 			this.inFrame = inFrame;
-			this.outFrame = outFrame;
+			this.outFrame = pauseTimeMS == -1 ? outFrame : inFrame+30;
 			this.pauseTimeMS = pauseTimeMS;	
+			this.enabled = true;
 			/*clock = new Date();
 			clock.time = 0;
 			timecodeRegExp = new RegExp ( "[:\.]" , "gi" );*/
@@ -50,6 +55,18 @@ package com.wehaverhythm.cuepointvideo
 		{
 			inTimeSeconds = inFrame / frameRate;
 			outTimeSeconds = outFrame / frameRate;
+		}
+		
+		public function disableFor(numFrames:int):void
+		{
+			enabled = false;
+			TweenMax.killDelayedCallsTo(enableMe);
+			TweenMax.delayedCall(numFrames, enableMe, null, true);
+		}
+		
+		private function enableMe():void
+		{
+			enabled = true;
 		}
 	}
 }

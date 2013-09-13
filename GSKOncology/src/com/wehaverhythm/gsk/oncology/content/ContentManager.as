@@ -241,9 +241,19 @@ package com.wehaverhythm.gsk.oncology.content
 				for(var i:int = 0; i < xml.cuePoint.length(); ++i) {
 					var next:XML = xml.cuePoint[i];
 					var inTime:int = int(next.@inFrame);
-					var outTime:int = int(next.@outFrame);
+					var outTime:int = -1;
+					var pauseTimeMS:int = -1;
+					
+					if(next.hasOwnProperty("@outFrame")) {
+						outTime = int(next.@outFrame);
+					}
+					
+					if(next.hasOwnProperty("@pauseTimeMS")) {
+						pauseTimeMS = next.@pauseTimeMS;
+					}
+				
 					if(verbose) trace("Add cue point " + inTime + "," +outTime);
-					cuePoints.push(new CuePoint(next.@id, inTime, outTime));
+					cuePoints.push(new CuePoint(next.@id, inTime, outTime, pauseTimeMS));
 				}
 			
 				return cuePoints;

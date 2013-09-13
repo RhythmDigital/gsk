@@ -37,6 +37,7 @@ package com.wehaverhythm.cuepointvideo
 		private var videoFrameRate:Number;
 		private var numCuePoints:int;
 		private var playing:Boolean;
+		private var pausedForCuePoint:Boolean;
 		
 		public function CuePointVideoPlayer(width:int, height:int)
 		{
@@ -118,18 +119,40 @@ package com.wehaverhythm.cuepointvideo
 			playNextVideo();
 		}
 		
+		private function cancelCuePointPause():void
+		{
+			TweenMax.killDelayedCallsTo(cuePointResumeVideo);
+			pausedForCuePoint = false;
+		}
+		
 		private function resetPlayer():void
 		{
 			if(verbose) trace("RESET PLAYER");
 			
 			TweenMax.killTweensOf(vidContainer);
-			
+			cancelCuePointPause();
 			vidContainer.alpha = 1;
 			vidContainer.visible = true;
 			useCuePoints = false;
 			useLooping = listenForLooping = false;
 			
 			destroyCuePoints();
+		}
+		
+		private function cuePointPauseVideo(cuePoint:CuePoint):void
+		{
+			ns.pause();
+			pausedForCuePoint = true;
+			trace("PAAAUSSEE");
+			TweenMax.delayedCall(cuePoint.pauseTimeMS/1000, cuePointResumeVideo, [cuePoint]);
+		}
+		
+		private function cuePointResumeVideo(cuePoint:CuePoint):void
+		{
+			cuePoint.visible = false;
+			processCuePoint(cuePoint, CuePoint.CUE_OUT);
+			cuePoint.disableFor(50);
+			ns.resume();
 		}
 		
 		private function playNextVideo():void
@@ -164,6 +187,11 @@ package com.wehaverhythm.cuepointvideo
 						setLoopTime();
 						listenForLooping = true;
 						ns.resume();
+						resetCuePointShownState();
+					}
+					
+					if(pausedForCuePoint) {
+						pausedForCuePoint = false;
 					}
 					
 					playing = true;
@@ -176,7 +204,9 @@ package com.wehaverhythm.cuepointvideo
 					
 					break;
 				case "NetStream.Play.Stop":
+					trace("END");
 					listenForCuePoints = false;
+					resetCuePointShownState();
 					if(playMode == MODE_PLAYLIST) {
 						freezeFrame();
 					}
@@ -185,6 +215,15 @@ package com.wehaverhythm.cuepointvideo
 			
 			for(var s:String in e.info) {
 				if(verbose) trace(s+": " + e.info[s]);
+			}
+		}
+		
+		private function resetCuePointShownState():void
+		{
+			if(cuePoints) {
+				for(var i:int = 0; i < cuePoints.length; ++i) {
+					cuePoints[i].playedThisLoop = false;
+				}
 			}
 		}
 		
@@ -221,12 +260,23 @@ package com.wehaverhythm.cuepointvideo
 				
 				for(i; i < numCuePoints; ++i)
 				{
-					if(ns.time >= cuePoints[i].inTimeSeconds && ns.time < cuePoints[i].outTimeSeconds) {
-						if(!cuePoints[i].visible) {
+					if(((ns.time >= cuePoints[i].inTimeSeconds && ns.time < cuePoints[i].outTimeSeconds) ||
+						(ns.time >= cuePoints[i].inTimeSeconds && cuePoints[i].pauseTimeMS > -1)) &&
+						cuePoints[i].enabled) {
+						
+						
+						
+						if(!cuePoints[i].visible && !cuePoints[i].playedThisLoop) {
 							cuePoints[i].visible = true;
+							cuePoints[i].playedThisLoop = true;
 							processCuePoint(cuePoints[i], CuePoint.CUE_IN);
+						} else {
+							cuePoints[i].playedThisLoop = true;
 						}
-					} else if(cuePoints[i].visible) {
+						
+						
+						
+					} else if(cuePoints[i].visible && cuePoints[i].pauseTimeMS == -1) {
 						cuePoints[i].visible = false;
 						processCuePoint(cuePoints[i], CuePoint.CUE_OUT);
 					}
@@ -255,6 +305,9 @@ package com.wehaverhythm.cuepointvideo
 		
 		private function processCuePoint(cuePoint:CuePoint, type:String):void
 		{		
+			if(cuePoint.pauseTimeMS > -1) {
+				cuePointPauseVideo(cuePoint);
+			}
 			dispatchEvent(new CuePointEvent(CuePointEvent.CUE_POINT_TRIGGER, type, cuePoint.id, {}));
 		}
 		
