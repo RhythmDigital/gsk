@@ -27,7 +27,6 @@ package com.wehaverhythm.cuepointvideo
 		private var currentVideo:int;
 		private var vidContainer:Sprite;
 		private var canFade:Boolean;
-		private var videoPath:String;
 		private var contentID:String;
 		private var useLooping:Boolean;
 		private var listenForLooping:Boolean;
@@ -39,9 +38,8 @@ package com.wehaverhythm.cuepointvideo
 		private var numCuePoints:int;
 		private var playing:Boolean;
 		
-		public function CuePointVideoPlayer(width:int, height:int, path:String)
+		public function CuePointVideoPlayer(width:int, height:int)
 		{
-			this.videoPath = path;
 			contentID = "";
 			clock = new Date();
 			
@@ -94,7 +92,7 @@ package com.wehaverhythm.cuepointvideo
 			if(this.contentID != contentID || !playing) {
 				if(verbose) trace("play " + file + " / contentID: " + contentID);
 				resetPlayer();
-				var videoFile:String = videoPath+file;
+				var videoFile:String = file;
 				ns.close();
 				ns.play(videoFile);
 			}
@@ -136,7 +134,7 @@ package com.wehaverhythm.cuepointvideo
 		
 		private function playNextVideo():void
 		{
-			var url:String = videoPath+playlist[currentVideo];
+			var url:String = playlist[currentVideo];
 			if(verbose) trace(url);
 			ns.play(url);
 			dispatchEvent(new CuePointVideoEvent(CuePointVideoEvent.NEXT_VIDEO_PLAYING, true, false, {id:currentVideo}));

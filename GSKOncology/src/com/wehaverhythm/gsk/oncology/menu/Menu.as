@@ -75,7 +75,8 @@ package com.wehaverhythm.gsk.oncology.menu
 			buttons = new Array();
 			
 			for(var i:int = 0; i < settingsXML.mainMenus.menu.length(); ++i) {
-				var nextXML:XMLLoader = new XMLLoader(Constants.CONTENT_DIR.url+"/"+settingsXML.mainMenus.menu[i].@file);
+				var xmlPath:String = Constants.CONTENT_DIR.url+"/"+settingsXML.mainMenus.menu[i].@file;
+				var nextXML:XMLLoader = new XMLLoader(xmlPath);
 				menuXML.insert(nextXML);
 				menus.push(nextXML);
 			}
@@ -226,7 +227,7 @@ package com.wehaverhythm.gsk.oncology.menu
 			
 			brandColour = uint("0x"+String(menus[currentMenu].content.colour).substr(1));
 			
-			logoHolder.logoHolder.logo.addChild(LoaderMax.getContent(String(menus[mid].content.logo)));
+			logoHolder.logoHolder.logo.addChild(LoaderMax.getContent("logo"+mid));
 			overlay.display.addChild(logoHolder);
 			TweenMax.to(logoHolder.leftBar, 0, {tint:brandColour, immediateRender:true});
 			TweenMax.to(logoHolder, .3, {autoAlpha:1, ease:Quad.easeOut});
@@ -336,7 +337,7 @@ package com.wehaverhythm.gsk.oncology.menu
 			for(var i:int = 0; i < menus.length; ++i)
 				imageLoader.insert(
 					new ImageLoader(
-						Constants.CONTENT_DIR.url+"/assets/images/"+menus[i].content.logo, {name:menus[i].content.logo}
+						Constants.CONTENT_DIR.url+"/"+menus[i].content.name+"/images/logo.png", {name:"logo"+i}
 					)
 				);
 			

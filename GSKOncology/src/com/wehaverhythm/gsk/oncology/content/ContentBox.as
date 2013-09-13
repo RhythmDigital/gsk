@@ -80,14 +80,14 @@ package com.wehaverhythm.gsk.oncology.content
 		
 		private function initVideo():void
 		{
-			var filename:String = brandXML.videos.video.(@id == contentSettings["videoID"]).@filename;
-			video = new ContentBoxVideo(d, Constants.CONTENT_DIR.url + "/assets/video/"+filename, {width:area.width, height:area.height, autoPlay:true, scaleMode:"proportionalInside"});
+			var url:String = Constants.CONTENT_DIR.url + "/"+brandXML.name+"/videos/content/"+brandXML.videos.video.(@id == contentSettings["videoID"]).@filename;
+			video = new ContentBoxVideo(d, url, {width:area.width, height:area.height, autoPlay:true, scaleMode:"proportionalInside"});
 			addChild(video.content);
 		}
 		
 		private function initSlideshow():void
 		{
-			slideshow.init("assets/images/slideshows/"+contentSettings["slideshowFolderID"]);
+			slideshow.init(brandXML.name+"/images/slideshows/"+contentSettings["slideshowFolderID"]);
 		}
 		
 		public function checkItemInCart():Boolean

@@ -47,7 +47,7 @@ package com.wehaverhythm.gsk.oncology.content
 			content.y = 180;
 			content.addEventListener(ContentBox.CLOSE, onContentBoxClosed);
 			
-			video = new CuePointVideoPlayer(GlobalSettings.STAGE_WIDTH, GlobalSettings.STAGE_HEIGHT, Constants.CONTENT_DIR.url+"/assets/video/");
+			video = new CuePointVideoPlayer(GlobalSettings.STAGE_WIDTH, GlobalSettings.STAGE_HEIGHT);
 			video.addEventListener(CuePointEvent.CUE_POINT_TRIGGER, onCuePointTriggered);
 			video.addEventListener(CuePointVideoEvent.NEXT_VIDEO_PLAYING, onNextVideoPlaying);
 			video.addEventListener(CuePointVideoEvent.HIDE_CURRENT_CAPTION, onHideCurrentCaption);
@@ -89,7 +89,8 @@ package com.wehaverhythm.gsk.oncology.content
 				
 				// get video files.
 				for(var i:int = 0; i < xmlFiles.length; ++i) {
-					rootVideos.push(String(xmlFiles[i].content.rootVideo));
+					var url:String = Constants.CONTENT_DIR.url+"/"+xmlFiles[i].content.name+"/videos/bg/"+xmlFiles[i].content.rootVideo;
+					rootVideos.push(url);
 				}
 			}
 			
@@ -142,8 +143,9 @@ package com.wehaverhythm.gsk.oncology.content
 						cuePoints = parseCuePointXML(cuePointSet);
 					}
 					
-					
-					video.play(videoXML.@filename, contentID);
+					var url:String = Constants.CONTENT_DIR.url+"/"+Menu.getBrandXML(brandID).name+"/videos/bg/"+videoXML.@filename;
+					if(verbose) trace(this+": ", url);
+					video.play(url, contentID);
 					
 					var looped:Boolean = (videoXML.hasOwnProperty("@loopInFrame") && videoXML.hasOwnProperty("@loopOutFrame"));
 					if(looped) {
@@ -209,7 +211,7 @@ package com.wehaverhythm.gsk.oncology.content
 		{
 			if(!captions[id]) {
 				var a:Caption = new Caption();
-				a.setup(XML(cuePointSet.cuePoint.(@id == id)), currentBrandXML.colour);
+				a.setup(XML(cuePointSet.cuePoint.(@id == id)), currentBrandXML.colour, brandID);
 				captions[id] = a;
 			}
 			

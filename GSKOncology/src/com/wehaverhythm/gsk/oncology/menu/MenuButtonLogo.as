@@ -23,7 +23,7 @@ package com.wehaverhythm.gsk.oncology.menu
 			super(buttonID, xmlID, menu, label, xml, menuXML);
 			
 			d = MenuButtonLogoDisplay(display);
-			logo = LoaderMax.getContent(menuXML.logo);
+			logo = LoaderMax.getContent("logo"+menu);
 			logo.x = int(-(logo.width>>1));
 			logo.y = int(-(logo.height>>1));
 			d.bg.logo.addChild(logo);

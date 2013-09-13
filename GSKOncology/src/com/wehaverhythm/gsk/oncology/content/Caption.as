@@ -6,6 +6,7 @@ package com.wehaverhythm.gsk.oncology.content
 	import com.greensock.loading.ImageLoader;
 	import com.greensock.loading.LoaderMax;
 	import com.wehaverhythm.gsk.oncology.Constants;
+	import com.wehaverhythm.gsk.oncology.menu.Menu;
 	
 	import flash.display.Sprite;
 	import flash.geom.Point;
@@ -28,6 +29,8 @@ package com.wehaverhythm.gsk.oncology.content
 		
 		public var ready:Boolean;
 		private var verbose:Boolean = true;
+		private var xml:XML;
+		private var brandID:int;
 		
 		public function Caption()
 		{
@@ -35,9 +38,10 @@ package com.wehaverhythm.gsk.oncology.content
 			alpha = 0;
 		}
 		
-		public function setup(xml:XML, col:String):void
+		public function setup(xml:XML, col:String, brandID:int):void
 		{
-			
+			this.brandID = brandID;
+			this.xml = xml;
 			this.colour = uint("0x"+String(col).substr(1));
 			this.boxWidth = int(xml.@boxWidth);
 			
@@ -117,7 +121,7 @@ package com.wehaverhythm.gsk.oncology.content
 		
 		private function addImage(data:String):ImageLoader
 		{
-			return new ImageLoader(Constants.CONTENT_DIR.url+"/assets/images/"+data);
+			return new ImageLoader(Constants.CONTENT_DIR.url+"/"+Menu.getBrandXML(brandID).name+"/images/"+data);
 		}
 		
 		private function createTextField(text:String, size:Number = 30):CopyBox
@@ -192,6 +196,7 @@ package com.wehaverhythm.gsk.oncology.content
 			
 			removeChild(bg);
 			bg = null;
+			xml = null;
 		}
 	}
 }

@@ -5,9 +5,6 @@ package
 	import com.greensock.loading.XMLLoader;
 	import com.wehaverhythm.gsk.oncology.Constants;
 	import com.wehaverhythm.gsk.oncology.OncologyMain;
-	import com.wehaverhythm.utils.IdleTimeout;
-	
-	import flash.desktop.NativeApplication;
 	import flash.display.Screen;
 	import flash.display.Sprite;
 	import flash.display.StageDisplayState;
@@ -129,7 +126,7 @@ package
 			
 			// load xml.
 			var lm:LoaderMax = new LoaderMax({onComplete:onXMLLoaded});
-			lm.insert(new XMLLoader(Constants.CONTENT_DIR.url+"/data/settings.xml", {name:"settings"}));
+			lm.insert(new XMLLoader(Constants.CONTENT_DIR.url+"/settings.xml", {name:"settings"}));
 			lm.load(); 
 			
 			if(Constants.DEV_MODE) {

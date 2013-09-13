@@ -54,7 +54,13 @@ package com.wehaverhythm.gsk.oncology.content
 			targetX = 0;
 			alpha = 0;
 			
-			var files:Array = folder.getDirectoryListing();
+			var files:Array;
+			try {
+				files = folder.getDirectoryListing();
+			} catch(e:Error) {
+				files = [];
+			}
+			
 			var props:Object = new Object();
 			props.width = d.slideshow.slideHolder.width;
 			props.height = d.slideshow.slideHolder.height;
