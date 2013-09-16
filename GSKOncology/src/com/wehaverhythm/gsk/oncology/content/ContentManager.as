@@ -29,6 +29,7 @@ package com.wehaverhythm.gsk.oncology.content
 		private var verbose:Boolean = false;
 		
 		public var content:ContentBox;
+		public static var boxOpen:Boolean;
 		
 		public function ContentManager(menu:Menu)
 		{
@@ -179,6 +180,8 @@ package com.wehaverhythm.gsk.oncology.content
 		
 		private function showContentBox():void
 		{
+			ContentManager.boxOpen = true;
+			
 			if(contains(content)) {
 				hideContentBox(true);
 			} else {
@@ -193,11 +196,13 @@ package com.wehaverhythm.gsk.oncology.content
 
 		private function hideContentBox(showAgain:Boolean = false):void
 		{
+			ContentManager.boxOpen = false;
 			TweenMax.to(content, .4, {autoAlpha:0, onComplete:hideContentComplete, onCompleteParams:[showAgain]});
 		}
 		
 		private function hideContentComplete(showAgain:Boolean):void
 		{
+			
 			if(contains(content)) {
 				content.reset();
 				removeChild(content);

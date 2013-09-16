@@ -29,7 +29,7 @@ package com.wehaverhythm.gsk.oncology.content
 		public var type:String;
 
 		private var vidName:String;
-		public static var showing:Boolean;
+	//	public static var showing:Boolean;
 		
 		public function ContentBox()
 		{
@@ -61,7 +61,7 @@ package com.wehaverhythm.gsk.oncology.content
 			IdleTimeout.startListening();
 			stopVideo();
 			slideshow.destroy();
-			showing = false;
+			//showing = false;
 		}
 		
 		public function setup(contentSettings:Object, brandXML:XML, brandID:int):void
@@ -85,7 +85,7 @@ package com.wehaverhythm.gsk.oncology.content
 					d.slideshow.visible = true;
 					break;
 			}
-			showing = true;
+			//showing = true;
 			checkItemInCart();
 		}
 		
@@ -134,7 +134,7 @@ package com.wehaverhythm.gsk.oncology.content
 			type = "";
 			
 			IdleTimeout.startListening();
-			showing = false;
+		//	showing = false;
 			dispatchEvent(new Event(ContentBox.CLOSE, true));
 		}
 		

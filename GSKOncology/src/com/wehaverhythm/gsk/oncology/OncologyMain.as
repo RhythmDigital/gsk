@@ -43,7 +43,7 @@ package com.wehaverhythm.gsk.oncology
 		
 		protected function onCloseCurrentContent(e:Event):void
 		{
-			menu.contentOpen = false;
+		//	menu.contentOpen = false;
 			contentMan.content.close();
 		}
 		
@@ -134,7 +134,7 @@ package com.wehaverhythm.gsk.oncology
 		{
 			if(menu.currentButton) {
 				menu.currentButton.deselect();
-				menu.contentOpen = false;
+			//	menu.contentOpen = false;
 			}
 		}
 		
@@ -171,8 +171,8 @@ package com.wehaverhythm.gsk.oncology
 			
 			if(contentID != null && contentID.length) {
 				contentMan.showContent(contentID, e.params.mid, Menu.getBrandXML(e.params.mid));
-				if(ContentBox.showing) {
-					menu.contentOpen = true;
+				if(ContentManager.boxOpen) {
+				//	menu.contentOpen = true;
 				}
 			} else {
 				trace("No content for this node");

@@ -64,7 +64,8 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		protected function selectButton():void
 		{
-			TweenMax.to(this, .2, {onComplete:dispatchSelectEvent, overwrite:2});
+			dispatchSelectEvent();
+			//TweenMax.to(this, .2, {onComplete:dispatchSelectEvent, overwrite:2});
 		}
 		
 		private function dispatchSelectEvent():void

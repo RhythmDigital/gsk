@@ -13,6 +13,7 @@ package com.wehaverhythm.gsk.oncology.menu
 	import com.wehaverhythm.gsk.oncology.cart.Cart;
 	import com.wehaverhythm.gsk.oncology.content.ContentBox;
 	import com.wehaverhythm.gsk.oncology.content.ContentEvent;
+	import com.wehaverhythm.gsk.oncology.content.ContentManager;
 	import com.wehaverhythm.utils.IdleTimeout;
 	
 	import flash.display.Sprite;
@@ -57,7 +58,7 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		private var menuLevel:int;
 		private var breadcrumb:Array;
-		public var contentOpen:Boolean;
+	//	public var contentOpen:Boolean;
 		private var prevItem:Object;
 		
 		public function Menu()
@@ -128,7 +129,8 @@ package com.wehaverhythm.gsk.oncology.menu
 			}
 			
 			if(!newButtons.length) {
-				//trace("There are no buttons for this item!");
+				trace("There are no buttons for this item!");
+				mouseEnabled = mouseChildren = true;
 			} else {
 				currentID = null;
 				currentMenu = -1;
@@ -141,7 +143,7 @@ package com.wehaverhythm.gsk.oncology.menu
 			overlay.showButtons(MenuOverlay.TYPE_ROOTNAV);
 			type = "root-menu";
 			isSubMenu = false;
-			contentOpen = false;
+		//	contentOpen = false;
 			dispatchEvent(new ContentEvent(ContentEvent.CONTENT_TRIGGER, {type:type, brandsXML:menus}));
 		}
 		
@@ -165,7 +167,7 @@ package com.wehaverhythm.gsk.oncology.menu
 		private function renderButtonsFor(m:int, mid:int, id:String = null, menuSelection:Boolean = false):void
 		{			
 			trace("%%%% RENDER FOR : " + id);
-			contentOpen = false;
+		//	contentOpen = false;
 			var newButtons:Array = new Array();
 			type = "";
 			
@@ -202,11 +204,11 @@ package com.wehaverhythm.gsk.oncology.menu
 				currentID = id;
 				currentMenu = mid;
 				isSubMenu = false;
+				mouseEnabled = mouseChildren = true;
 			} else {
 				currentID = id;
 				currentMenu = mid;
 				isSubMenu = true;
-				
 				destroyButtons();
 				buttons = newButtons;
 				if(menuSelection) breadcrumbLevelUp();
@@ -263,8 +265,13 @@ package com.wehaverhythm.gsk.oncology.menu
 			}
 			
 			endProps.delay = delay;
-			
+			endProps.onComplete = onMenuTransitionComplete;
 			TweenMax.staggerFromTo(buttons, time, startProps, endProps, .07);
+		}
+		
+		private function onMenuTransitionComplete():void
+		{
+			mouseEnabled = mouseChildren = true;
 		}
 		
 		private function addButton(btns:Array, buttonID:int, xmlID:String, menuID:int, label:String, xml:XMLList = null, logo:Boolean = false, startY:int = 0):void
@@ -337,8 +344,8 @@ package com.wehaverhythm.gsk.oncology.menu
 			var renderButtons:Boolean;
 			var renderContentID:String;
 			
-			trace("contentOpen: " + ContentBox.showing);
-			if(id == "back" && !ContentBox.showing) {
+			//trace("contentOpen: " + ContentManager.boxOpen);
+			if(id == "back" && !ContentManager.boxOpen) {
 				breadcrumbLevelDown();
 			}
 			
@@ -365,7 +372,7 @@ package com.wehaverhythm.gsk.oncology.menu
 									renderButtons = true;
 									renderContentID = null;
 								} else {
-									if(contentOpen) {
+									if(ContentManager.boxOpen) {
 										renderButtons = true;
 										renderContentID = prevItem.parent;
 									} else {
@@ -411,6 +418,7 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		protected function onMenuItemSelected(e:MenuEvent):void
 		{
+			mouseEnabled = mouseChildren = false;
 			currentButton = MenuButton(e.target);
 			
 			if(e.target.textField) Menu.SELECTED_BUTTON_COPY = e.target.textField.text;
