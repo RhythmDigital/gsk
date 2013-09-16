@@ -205,7 +205,7 @@ package com.wehaverhythm.gsk.oncology.menu
 				buttons = newButtons;
 				if(menuSelection) breadcrumbLevelUp();
 				positionMenuElements();
-				animateButtons(breadcrumb.length ? true : false);
+				animateButtons(breadcrumb.length ? true : false, menuSelection);
 			}
 			
 			if(currentID == null && isSubMenu) {
@@ -235,7 +235,7 @@ package com.wehaverhythm.gsk.oncology.menu
 			// trace(" >>> BUTTON TYPE : " + type);
 		}
 		
-		private function animateButtons(showTitles:Boolean = false):void
+		private function animateButtons(showTitles:Boolean = false, menuSelection:Boolean = false):void
 		{
 			var startProps:Object = {x:-100, autoAlpha:0};
 			var endProps:Object = {autoAlpha:1, x:0, ease:Quad.easeOut};
@@ -248,11 +248,11 @@ package com.wehaverhythm.gsk.oncology.menu
 				TweenMax.fromTo(logoHolder, time, startProps,{delay:delay, x:endProps.x, autoAlpha:endProps.autoAlpha});
 			}
 			
-			if(showTitles) {
-				for(var i:int = 0; i < breadcrumb.length; ++i) {
+			if(showTitles && (breadcrumb.length > 1 || menuSelection)) {
+				//for(var i:int = 0; i < breadcrumb.length; ++i) {
 					delay += .07;
-					TweenMax.fromTo(breadcrumb[i], time, startProps,{delay:delay, x:endProps.x, autoAlpha:endProps.autoAlpha});
-				}
+					TweenMax.fromTo(breadcrumb[breadcrumb.length-1], time, startProps,{delay:delay, x:endProps.x, autoAlpha:endProps.autoAlpha});
+				//}
 			}
 			
 			endProps.delay = delay;
@@ -426,6 +426,7 @@ package com.wehaverhythm.gsk.oncology.menu
 			}
 		}
 		
+		[Inline]
 		private function addBreadcrumbItem():void
 		{
 			var titleText:String;
@@ -462,6 +463,7 @@ package com.wehaverhythm.gsk.oncology.menu
 			}
 		}
 		
+		[Inline]
 		private function removeBreadcrumbItem():void
 		{
 			removeChild(breadcrumb[breadcrumb.length-1]);
@@ -471,21 +473,13 @@ package com.wehaverhythm.gsk.oncology.menu
 		public function breadcrumbLevelUp():void
 		{
 			menuLevel++;
-			trace("*** -> ","breadcrumb level " + menuLevel);
-			
-			if(menuLevel > 1) {
-				addBreadcrumbItem();
-			}
+			if(menuLevel > 1) addBreadcrumbItem();
 		}
 		
 		public function breadcrumbLevelDown():void
 		{
-			if(menuLevel > 1) {
-				removeBreadcrumbItem();
-			}
-			
+			if(menuLevel > 1) removeBreadcrumbItem();
 			menuLevel--;
-			trace("*** -> ","breadcrumb level " + menuLevel);
 		}
 		
 		private function resetBreadcrumb():void
