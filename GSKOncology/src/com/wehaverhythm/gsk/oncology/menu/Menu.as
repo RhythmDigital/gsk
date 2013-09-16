@@ -58,7 +58,6 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		private var menuLevel:int;
 		private var breadcrumb:Array;
-	//	public var contentOpen:Boolean;
 		private var prevItem:Object;
 		
 		public function Menu()
@@ -213,7 +212,12 @@ package com.wehaverhythm.gsk.oncology.menu
 				buttons = newButtons;
 				if(menuSelection) breadcrumbLevelUp();
 				positionMenuElements();
-				animateButtons(breadcrumb.length ? true : false, menuSelection);
+				trace("ContentManager.boxOpen : "  + ContentManager.boxOpen);
+				if(!ContentManager.boxOpen) {
+					animateButtons(breadcrumb.length ? true : false, menuSelection);
+				} else {
+					mouseEnabled = mouseChildren = true;
+				}
 			}
 			
 			if(currentID == null && isSubMenu) {
