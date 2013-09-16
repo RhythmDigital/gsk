@@ -79,8 +79,8 @@ package com.wehaverhythm.cuepointvideo
 			}
 			
 			videoFrameRate = vidInfo.videoframerate;
-			vidContainer.width = vidInfo.width*1.3;
-			vidContainer.height = vidInfo.height*1.3;
+//			vidContainer.width = vidInfo.width*1.3;
+//			vidContainer.height = vidInfo.height*1.3;
 			
 			if(useLooping) {
 				setLoopTime();
@@ -204,7 +204,7 @@ package com.wehaverhythm.cuepointvideo
 					
 					break;
 				case "NetStream.Play.Stop":
-					trace("END");
+					if(verbose) trace("END");
 					listenForCuePoints = false;
 					resetCuePointShownState();
 					if(playMode == MODE_PLAYLIST) {

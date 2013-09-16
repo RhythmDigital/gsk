@@ -81,6 +81,7 @@ package
 			
 			if(Constants.DEBUG) {
 				stage.nativeWindow.x = Screen.screens[Screen.screens.length-1].bounds.x;
+				stage.nativeWindow.width = Screen.screens[Screen.screens.length-1].bounds.height*(1080/1920);
 				trace("********************************");
 				trace("********************************");
 				trace("         DEBUG ENABLED");

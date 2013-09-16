@@ -17,7 +17,6 @@ package com.wehaverhythm.gsk.oncology.menu
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.filesystem.File;
 	import flash.text.TextField;
 	
 	public class Menu extends Sprite
@@ -54,6 +53,9 @@ package com.wehaverhythm.gsk.oncology.menu
 		public var currentButton:MenuButton;
 		public var currentID:String = null;
 		public static var menus:Array;
+		
+		private var menuLevel:int;
+		private var breadcrumb:Array;
 		
 		public function Menu()
 		{
@@ -108,6 +110,8 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		public function showRootMenu():void
 		{
+			resetBreadcrumb();
+			
 			//trace("render buttons for main menu");
 			var newButtons:Array = new Array();
 			
@@ -131,8 +135,6 @@ package com.wehaverhythm.gsk.oncology.menu
 			}
 			
 			pickOne.visible = true;
-			hideTitle();
-			overlay.display.titleBar.visible = false;
 			overlay.showButtons(MenuOverlay.TYPE_ROOTNAV);
 			type = "root-menu";
 			isSubMenu = false;
@@ -156,9 +158,9 @@ package com.wehaverhythm.gsk.oncology.menu
 			}
 		}
 		
-		private function renderButtonsFor(m:int, mid:int, id:String = null):void
+		private function renderButtonsFor(m:int, mid:int, id:String = null, menuSelection:Boolean = false):void
 		{			
-			//./ tafinlar/content title?
+			trace("%%%% RENDER FOR : " + id);
 			
 			var newButtons:Array = new Array();
 			type = "";
@@ -172,23 +174,9 @@ package com.wehaverhythm.gsk.oncology.menu
 
 			for(var i:int = 0; i < menuLookup[mid].length; ++i) {
 				
-				var startY:int;
-				
-				if(id == null) {
-					startY = START_Y_NORMAL_BUTTONS;
-					hideTitle();
-				} else {
-					startY = START_Y_NORMAL_BUTTONS_TITLED;
-				}
-				
+				var startY:int = START_Y_NORMAL_BUTTONS;
 				var valid:Boolean;
 				var itemIdLen:int = menuLookup[mid][i].id.split(".").length;
-				
-				if(id == null || itemIdLen == 1) {
-					startY = START_Y_NORMAL_BUTTONS;
-				} else {
-					startY = START_Y_NORMAL_BUTTONS_TITLED;
-				}
 				
 				if(id == null && itemIdLen == 1) {
 					// root item.
@@ -204,30 +192,24 @@ package com.wehaverhythm.gsk.oncology.menu
 			}
 			
 			if(!newButtons.length) {
-				trace("There are no buttons for this item!");
-				trace(currentXML.toXMLString());
+				// There are no buttons for this item!
 				currentID = id;
 				currentMenu = mid;
 				isSubMenu = false;
 			} else {
 				currentID = id;
-				trace("currentID: " + currentID);
 				currentMenu = mid;
 				isSubMenu = true;
+				
 				destroyButtons();
 				buttons = newButtons;
-				if(currentID != null) { 
-					setTitle();
-					animateButtons(true);
-					
-				} else {
-					animateButtons(false);
-					
-				}
+				if(menuSelection) breadcrumbLevelUp();
+				positionMenuElements();
+				animateButtons(breadcrumb.length ? true : false);
 			}
 			
 			if(currentID == null && isSubMenu) {
-				trace("BRAND MENU");
+				// BRAND MENU
 				Stats.track(GSKOncology.sessionID, Menu.getBrandXML(mid).name, Stats.ACTION_NAVIGATE);
 			} else {
 				Stats.track(GSKOncology.sessionID, Menu.getBrandXML(mid).menu.item.(@id == currentID), Stats.ACTION_NAVIGATE);
@@ -250,45 +232,10 @@ package com.wehaverhythm.gsk.oncology.menu
 			
 			overlay.showButtons(MenuOverlay.TYPE_SUBNAV);
 			
-			trace(" >>> BUTTON TYPE : " + type);
+			// trace(" >>> BUTTON TYPE : " + type);
 		}
 		
-		private function hideTitle():void
-		{
-			overlay.display.titleBar.alpha = 0;
-			TweenMax.killTweensOf(overlay.display.titleBar);
-		}
-		
-		private function setTitle():void
-		{
-			var title:String;
-			
-			if(currentID == null) {
-				title = String(menus[currentMenu].content.title);
-			} else {
-				title = String(currentXML);
-			}
-			
-			var el:* =  overlay.display.titleBar;
-			var tf:TextField = overlay.display.titleBar.title.txtLabel;
-			tf.autoSize = "left";
-			tf.text = title;
-			tf.width = 630;
-			tf.height = tf.textHeight;
-			
-			el.title.y = (el.bg.height >> 1) - (el.title.height >> 1);
-			
-			TweenMax.to(overlay.display.titleBar.bg, 0, {immediateRender:true, tint:brandColour});
-			
-			el.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
-		}
-		
-		private function onMouseDown(e:MouseEvent):void
-		{
-			dispatchEvent(new Event(Menu.CLOSE_CURRENT_CONTENT, true));
-		}
-		
-		private function animateButtons(showTitle:Boolean = false):void
+		private function animateButtons(showTitles:Boolean = false):void
 		{
 			var startProps:Object = {x:-100, autoAlpha:0};
 			var endProps:Object = {autoAlpha:1, x:0, ease:Quad.easeOut};
@@ -301,9 +248,11 @@ package com.wehaverhythm.gsk.oncology.menu
 				TweenMax.fromTo(logoHolder, time, startProps,{delay:delay, x:endProps.x, autoAlpha:endProps.autoAlpha});
 			}
 			
-			if(showTitle) {
-				delay += .07;
-				TweenMax.fromTo(overlay.display.titleBar, time, startProps,{delay:delay, x:endProps.x, autoAlpha:endProps.autoAlpha});
+			if(showTitles) {
+				for(var i:int = 0; i < breadcrumb.length; ++i) {
+					delay += .07;
+					TweenMax.fromTo(breadcrumb[i], time, startProps,{delay:delay, x:endProps.x, autoAlpha:endProps.autoAlpha});
+				}
 			}
 			
 			endProps.delay = delay;
@@ -377,16 +326,23 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		private function processNavEvent(id:String, itm:Object):void
 		{
+			if(id == "back") {
+				breadcrumbLevelDown();
+			}
+			
 			if(id == "back" && type == "sub-menu-button") {
-				if(itm.parent == null) showRootMenu();
-				else renderButtonsFor(currentMenu, currentMenu, null);
+				if(itm.parent == null) {
+					showRootMenu();
+				} else {
+					renderButtonsFor(currentMenu, currentMenu, null);
+				}
 				return;
 			}
 			
 			IdleTimeout.startListening();
 			
 			switch(id) {
-				case "back":
+				case "back":					
 					if(currentMenu == -1) {
 						//trace("don't go anywhere, i'm already root.");
 					} else {
@@ -430,13 +386,15 @@ package com.wehaverhythm.gsk.oncology.menu
 		{
 			currentButton = MenuButton(e.target);
 			
+			if(e.target.textField) Menu.SELECTED_BUTTON_COPY = e.target.textField.text;
+			/*
 			if(e.target.textField) {
 				Menu.SELECTED_BUTTON_COPY = e.target.textField.text;
 				trace("Item selected: " + e.target.menu + " / " + e.target.xmlID + " / " + Menu.SELECTED_BUTTON_COPY);
 			} else {
 				trace("Item selected: " + e.target.menu + " / " + e.target.xmlID);
 			}
-
+			*/
 			// deselect old buttons
 			for(var i:int = 0; i < buttons.length; ++i) {
 				if(buttons[i] !== e.target) buttons[i].deselect();
@@ -446,7 +404,104 @@ package com.wehaverhythm.gsk.oncology.menu
 			if(e.target.hasOwnProperty("menu") && e.target.hasOwnProperty("xmlID") && e.target.xmlID !== null)
 				currentXML = menus[e.target.menu].content.menu.item.(@id == e.target.xmlID);
 			
-			renderButtonsFor(menuLookup[e.target.menu], e.target.menu, e.target.xmlID);
+			renderButtonsFor(menuLookup[e.target.menu], e.target.menu, e.target.xmlID, true);
+		}
+		
+		/**
+		 * BREADCRUMB
+		 */
+		
+		private function positionMenuElements():void
+		{
+			var nextY:int = START_Y_NORMAL_BUTTONS;
+			var i:int;
+			
+			for(i = 0; i < breadcrumb.length; ++i) {
+				breadcrumb[i].y = nextY;
+				nextY += breadcrumb[i].height + BUTTON_MARGIN;
+			}
+			
+			for(i = 0; i < buttons.length; ++i) {
+				buttons[i].y += (nextY-START_Y_NORMAL_BUTTONS) + BUTTON_MARGIN;
+			}
+		}
+		
+		private function addBreadcrumbItem():void
+		{
+			var titleText:String;
+			
+			if(currentID == null) {
+				titleText = String(menus[currentMenu].content.title);
+			} else {
+				titleText = String(currentXML);
+			}
+			
+			var title:SubMenuTitle = new SubMenuTitle(currentID, getButtonData(menuLookup[currentMenu], currentID).parent, titleText, brandColour);
+			title.addEventListener(MouseEvent.MOUSE_DOWN, onTitleClicked, false, 0, true);
+			breadcrumb.push(title);
+			addChild(title);
+		}
+		
+		protected function onTitleClicked(e:MouseEvent):void
+		{
+			var moveUpChain:int;
+			var breadcrumbDepth:int;
+			var i:int = 0;
+			
+			for(i; i < breadcrumb.length; ++i)
+				if(breadcrumb[i] == e.target) break;
+			
+			breadcrumbDepth = i;
+			moveUpChain = (breadcrumb.length-breadcrumbDepth)-1;
+			
+			if(breadcrumbDepth == breadcrumb.length-1) {
+				dispatchEvent(new Event(Menu.CLOSE_CURRENT_CONTENT, true));
+			} else {
+				for(i = 0; i < moveUpChain; i++) breadcrumbLevelDown();
+				renderButtonsFor(currentMenu, currentMenu, e.target.id, false);
+			}
+		}
+		
+		private function removeBreadcrumbItem():void
+		{
+			removeChild(breadcrumb[breadcrumb.length-1]);
+			breadcrumb.pop();
+		}
+		
+		public function breadcrumbLevelUp():void
+		{
+			menuLevel++;
+			trace("*** -> ","breadcrumb level " + menuLevel);
+			
+			if(menuLevel > 1) {
+				addBreadcrumbItem();
+			}
+		}
+		
+		public function breadcrumbLevelDown():void
+		{
+			if(menuLevel > 1) {
+				removeBreadcrumbItem();
+			}
+			
+			menuLevel--;
+			trace("*** -> ","breadcrumb level " + menuLevel);
+		}
+		
+		private function resetBreadcrumb():void
+		{
+			menuLevel = 0;
+			
+			if(!breadcrumb) {
+				breadcrumb = new Array();
+			} else {
+				while(breadcrumb.length) {
+					removeChild(breadcrumb[0]);
+					breadcrumb.shift();
+				}
+			}
+			
+			trace("*** -> ", "Reset breadcrumb :: " + menuLevel);
 		}
 	}
 }

@@ -26,7 +26,7 @@ package com.wehaverhythm.gsk.oncology.content
 		private var contentSettings:Object;
 		private var contentNode:XML;
 		private var brandID:int;
-		private var verbose:Boolean = true;
+		private var verbose:Boolean = false;
 		
 		public var content:ContentBox;
 		
