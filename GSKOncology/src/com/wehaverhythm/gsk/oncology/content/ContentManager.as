@@ -89,7 +89,7 @@ package com.wehaverhythm.gsk.oncology.content
 				
 				// get video files.
 				for(var i:int = 0; i < xmlFiles.length; ++i) {
-					var url:String = Constants.CONTENT_DIR.url+"/"+xmlFiles[i].content.name+"/videos/bg/"+xmlFiles[i].content.rootVideo;
+					var url:String = Constants.CONTENT_DIR.url+"/"+xmlFiles[i].content.name+Constants.PATH_VIDEO_BG+xmlFiles[i].content.rootVideo;
 					rootVideos.push(url);
 				}
 			}
@@ -143,7 +143,7 @@ package com.wehaverhythm.gsk.oncology.content
 						cuePoints = parseCuePointXML(cuePointSet);
 					}
 					
-					var url:String = Constants.CONTENT_DIR.url+"/"+Menu.getBrandXML(brandID).name+"/videos/bg/"+videoXML.@filename;
+					var url:String = Constants.CONTENT_DIR.url+"/"+Menu.getBrandXML(brandID).name+Constants.PATH_VIDEO_BG+videoXML.@filename;
 					if(verbose) trace(this+": ", url);
 					video.play(url, contentID);
 					

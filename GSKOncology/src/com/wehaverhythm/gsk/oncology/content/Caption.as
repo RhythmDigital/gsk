@@ -121,7 +121,7 @@ package com.wehaverhythm.gsk.oncology.content
 		
 		private function addImage(data:String):ImageLoader
 		{
-			return new ImageLoader(Constants.CONTENT_DIR.url+"/"+Menu.getBrandXML(brandID).name+"/images/"+data);
+			return new ImageLoader(Constants.CONTENT_DIR.url+"/"+Menu.getBrandXML(brandID).name+Constants.PATH_CAPTION_IMAGES+data);
 		}
 		
 		private function createTextField(text:String, size:Number = 30, multiline:Boolean = false):CopyBox
