@@ -1,5 +1,6 @@
 package com.wehaverhythm.gsk.oncology
 {
+	import flash.events.IOErrorEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 
@@ -19,6 +20,11 @@ package com.wehaverhythm.gsk.oncology
 		{
 			var url:String = SCRIPT + "?session_id="+session+"&page="+page+"&action="+action;
 			var l:URLLoader = new URLLoader(new URLRequest(url));
+			l.addEventListener(IOErrorEvent.IO_ERROR, onIOErrorEvent, false, 0, true);
+		}
+		
+		protected static function onIOErrorEvent(e:IOErrorEvent):void
+		{
 			
 		}
 	}
