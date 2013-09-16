@@ -57,7 +57,7 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		private var menuLevel:int;
 		private var breadcrumb:Array;
-		//public var contentOpen:Boolean;
+		public var contentOpen:Boolean;
 		private var prevItem:Object;
 		
 		public function Menu()
@@ -141,7 +141,7 @@ package com.wehaverhythm.gsk.oncology.menu
 			overlay.showButtons(MenuOverlay.TYPE_ROOTNAV);
 			type = "root-menu";
 			isSubMenu = false;
-			//contentOpen = false;
+			contentOpen = false;
 			dispatchEvent(new ContentEvent(ContentEvent.CONTENT_TRIGGER, {type:type, brandsXML:menus}));
 		}
 		
@@ -165,7 +165,7 @@ package com.wehaverhythm.gsk.oncology.menu
 		private function renderButtonsFor(m:int, mid:int, id:String = null, menuSelection:Boolean = false):void
 		{			
 			trace("%%%% RENDER FOR : " + id);
-			//contentOpen = false;
+			contentOpen = false;
 			var newButtons:Array = new Array();
 			type = "";
 			
@@ -365,7 +365,7 @@ package com.wehaverhythm.gsk.oncology.menu
 									renderButtons = true;
 									renderContentID = null;
 								} else {
-									if(ContentBox.showing) {
+									if(contentOpen) {
 										renderButtons = true;
 										renderContentID = prevItem.parent;
 									} else {
@@ -526,22 +526,6 @@ package com.wehaverhythm.gsk.oncology.menu
 			}
 			
 			trace("*** -> ", "Reset breadcrumb :: " + menuLevel);
-		}
-		
-		public function removeUnwatedTitles():void
-		{
-			//var removeThem:Boolean = !contentOpen;
-			trace("removeUnwatedTitles > "+ menuLevel);
-			
-			/*if(navEvent != null && navEvent == "back" && !contentOpen) {
-				navEvent = null;
-				breadcrumbLevelDown();
-				positionMenuElements();
-			}*/
-			
-			//if(menuLevel) {
-			//	resetBreadcrumb();
-			//}
 		}
 	}
 }
