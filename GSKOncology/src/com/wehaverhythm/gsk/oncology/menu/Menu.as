@@ -11,6 +11,7 @@ package com.wehaverhythm.gsk.oncology.menu
 	import com.wehaverhythm.gsk.oncology.Stats;
 	import com.wehaverhythm.gsk.oncology.ask.AskView;
 	import com.wehaverhythm.gsk.oncology.cart.Cart;
+	import com.wehaverhythm.gsk.oncology.content.ContentBox;
 	import com.wehaverhythm.gsk.oncology.content.ContentEvent;
 	import com.wehaverhythm.utils.IdleTimeout;
 	
@@ -56,6 +57,8 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		private var menuLevel:int;
 		private var breadcrumb:Array;
+		//public var contentOpen:Boolean;
+		private var prevItem:Object;
 		
 		public function Menu()
 		{
@@ -138,6 +141,7 @@ package com.wehaverhythm.gsk.oncology.menu
 			overlay.showButtons(MenuOverlay.TYPE_ROOTNAV);
 			type = "root-menu";
 			isSubMenu = false;
+			//contentOpen = false;
 			dispatchEvent(new ContentEvent(ContentEvent.CONTENT_TRIGGER, {type:type, brandsXML:menus}));
 		}
 		
@@ -161,12 +165,14 @@ package com.wehaverhythm.gsk.oncology.menu
 		private function renderButtonsFor(m:int, mid:int, id:String = null, menuSelection:Boolean = false):void
 		{			
 			trace("%%%% RENDER FOR : " + id);
-			
+			//contentOpen = false;
 			var newButtons:Array = new Array();
 			type = "";
 			
 			prevSubMenu = currentSubMenu;
 			currentSubMenu = mid;
+			
+		//	trace("PREVIOUS ITEM: " , prevItem ? prevItem.id : null);
 			
 			if(id != null){
 				var idLen:int = id.split(".").length;
@@ -233,6 +239,7 @@ package com.wehaverhythm.gsk.oncology.menu
 			overlay.showButtons(MenuOverlay.TYPE_SUBNAV);
 			
 			// trace(" >>> BUTTON TYPE : " + type);
+			prevItem = getButtonData(menuLookup[mid], id);
 		}
 		
 		private function animateButtons(showTitles:Boolean = false, menuSelection:Boolean = false):void
@@ -320,52 +327,72 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		protected function onNavButtonClicked(e:MenuEvent):void
 		{
+			
 			//trace(e.target.id + " clicked at id: " + currentID + " / menu: " + currentMenu);
 			processNavEvent(e.target.id, getButtonData(menuLookup[currentMenu], currentID));
 		}
 		
 		private function processNavEvent(id:String, itm:Object):void
 		{
-			if(id == "back") {
+			var renderButtons:Boolean;
+			var renderContentID:String;
+			
+			trace("contentOpen: " + ContentBox.showing);
+			if(id == "back" && !ContentBox.showing) {
 				breadcrumbLevelDown();
 			}
 			
-			if(id == "back" && type == "sub-menu-button") {
+			if(id == "back" && type == "sub-menu-button" && !itm.parent) {
 				if(itm.parent == null) {
 					showRootMenu();
 				} else {
-					renderButtonsFor(currentMenu, currentMenu, null);
+					renderButtons = true;
+					renderContentID = null;
 				}
-				return;
-			}
-			
-			IdleTimeout.startListening();
-			
-			switch(id) {
-				case "back":					
-					if(currentMenu == -1) {
-						//trace("don't go anywhere, i'm already root.");
-					} else {
-						if(currentID == null) {
-							showRootMenu();
+			} else {
+				
+				IdleTimeout.startListening();
+				
+				switch(id) {
+					case "back":					
+						if(currentMenu == -1) {
+							//trace("don't go anywhere, i'm already root.");
 						} else {
-							if(itm.parent == "") {
-								renderButtonsFor(currentMenu, currentMenu);
+							if(currentID == null) {
+								showRootMenu();
 							} else {
-								renderButtonsFor(currentMenu, currentMenu, itm.parent);
+								if(itm.parent == "") {
+									renderButtons = true;
+									renderContentID = null;
+								} else {
+									if(ContentBox.showing) {
+										renderButtons = true;
+										renderContentID = prevItem.parent;
+									} else {
+										renderButtons = true;
+										renderContentID = itm.parent;
+									}
+								}
 							}
 						}
-					}
-					break;
-				case Menu.PAGE_HOME:
-					showRootMenu();
-					break;
-				case Menu.PAGE_CART:
-					Cart.showCart();
-					break;
-				case Menu.PAGE_ASK:
-					dispatchEvent(new Event(AskView.SHOW, true));
-					break;
+						
+						break;
+					case Menu.PAGE_HOME:
+						showRootMenu();
+						break;
+					case Menu.PAGE_CART:
+						Cart.showCart();
+						break;
+					case Menu.PAGE_ASK:
+						dispatchEvent(new Event(AskView.SHOW, true));
+						break;
+				}
+				
+			}
+			
+			
+			if(renderButtons) {
+				renderButtonsFor(currentMenu, currentMenu, renderContentID);
 			}
 		}
 		
@@ -422,7 +449,8 @@ package com.wehaverhythm.gsk.oncology.menu
 			}
 			
 			for(i = 0; i < buttons.length; ++i) {
-				buttons[i].y += (nextY-START_Y_NORMAL_BUTTONS) + BUTTON_MARGIN;
+				buttons[i].y = nextY;// + BUTTON_MARGIN;
+				nextY += buttons[i].height + BUTTON_MARGIN;
 			}
 		}
 		
@@ -474,12 +502,14 @@ package com.wehaverhythm.gsk.oncology.menu
 		{
 			menuLevel++;
 			if(menuLevel > 1) addBreadcrumbItem();
+			trace("\n\nLEEEEVELING UUUP!!! >>> menuLevel: " + menuLevel + " / array: " + breadcrumb.length+"\n\n");
 		}
 		
 		public function breadcrumbLevelDown():void
 		{
 			if(menuLevel > 1) removeBreadcrumbItem();
 			menuLevel--;
+			trace("\n\nLEEEEVELING DOWWN!!! >>> menuLevel: " + menuLevel + " / array: " + breadcrumb.length+"\n\n");
 		}
 		
 		private function resetBreadcrumb():void
@@ -496,6 +526,22 @@ package com.wehaverhythm.gsk.oncology.menu
 			}
 			
 			trace("*** -> ", "Reset breadcrumb :: " + menuLevel);
+		}
+		
+		public function removeUnwatedTitles():void
+		{
+			//var removeThem:Boolean = !contentOpen;
+			trace("removeUnwatedTitles > "+ menuLevel);
+			
+			/*if(navEvent != null && navEvent == "back" && !contentOpen) {
+				navEvent = null;
+				breadcrumbLevelDown();
+				positionMenuElements();
+			}*/
+			
+			//if(menuLevel) {
+			//	resetBreadcrumb();
+			//}
 		}
 	}
 }

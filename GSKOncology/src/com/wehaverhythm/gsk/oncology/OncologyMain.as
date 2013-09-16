@@ -43,6 +43,7 @@ package com.wehaverhythm.gsk.oncology
 		
 		protected function onCloseCurrentContent(e:Event):void
 		{
+		//	menu.contentOpen = false;
 			contentMan.content.close();
 		}
 		
@@ -131,7 +132,10 @@ package com.wehaverhythm.gsk.oncology
 		*/
 		protected function onCloseContent(e:Event):void
 		{
-			if(menu.currentButton) menu.currentButton.deselect();
+			if(menu.currentButton) {
+				menu.currentButton.deselect();
+			//	menu.contentOpen = false;
+			}
 		}
 		
 		protected function onContentTrigger(e:ContentEvent):void
@@ -150,26 +154,32 @@ package com.wehaverhythm.gsk.oncology
 					contentID = String(Menu.menus[e.params.mid].content.menu.item.(@id == menu.currentID).attribute("contentID"));
 					
 					if(!contentID.length) {
-						// fall back to product menu content id
+						//	fall back to product menu content id
 						contentID = String(Menu.menus[e.params.mid].content.menu.attribute("contentID"));
-						trace("sub-menu -> fall back to product menu content id : ", contentID);
+						//	trace("sub-menu -> fall back to product menu content id : ", contentID);
 					} else {
-						trace("sub-menu -> using content id : ", contentID);
+						//	trace("sub-menu -> using content id : ", contentID);
 					}
 					
 				break;
 				
 				case "sub-menu-button":
-					trace(e.params.xml.toXMLString());
+					//	trace(e.params.xml.toXMLString());
 					contentID = String(e.params.xml.attribute("contentID"));
 				break;
 			}
 			
 			if(contentID != null && contentID.length) {
 				contentMan.showContent(contentID, e.params.mid, Menu.getBrandXML(e.params.mid));
+//				if(ContentBox.showing) {
+//					menu.contentOpen = true;
+//				}
 			} else {
 				trace("No content for this node");
+				//menu.contentOpen = true;
 			}
+			
+			menu.removeUnwatedTitles();
 		}
 	}
 }
