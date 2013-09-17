@@ -163,7 +163,7 @@ package com.wehaverhythm.gsk.oncology.menu
 			}
 		}
 		
-		private function renderButtonsFor(m:int, mid:int, id:String = null, menuSelection:Boolean = false):void
+		private function renderButtonsFor(m:int, mid:int, id:String = null, menuSelection:Boolean = false, forceAnimateButtons:Boolean = false):void
 		{			
 			trace("%%%% RENDER FOR : " + id);
 		//	contentOpen = false;
@@ -213,8 +213,8 @@ package com.wehaverhythm.gsk.oncology.menu
 				if(menuSelection) breadcrumbLevelUp();
 				positionMenuElements();
 				trace("ContentManager.boxOpen : "  + ContentManager.boxOpen);
-				if(!ContentManager.boxOpen) {
-					animateButtons(breadcrumb.length ? true : false, menuSelection);
+				if(!ContentManager.boxOpen || forceAnimateButtons) {
+					animateButtons(breadcrumb.length ? true : false, menuSelection, forceAnimateButtons);
 				} else {
 					mouseEnabled = mouseChildren = true;
 				}
@@ -229,6 +229,7 @@ package com.wehaverhythm.gsk.oncology.menu
 			
 			if(currentID == null || isSubMenu) {
 				type = "sub-menu";
+				prevItem = getButtonData(menuLookup[mid], id);
 				dispatchEvent(new ContentEvent(ContentEvent.CONTENT_TRIGGER, {type:type, mid:currentMenu, xml: currentXML}));//xml: menus[mid].content}));
 			} else {
 				type = "sub-menu-button";
@@ -245,11 +246,13 @@ package com.wehaverhythm.gsk.oncology.menu
 			overlay.showButtons(MenuOverlay.TYPE_SUBNAV);
 			
 			// trace(" >>> BUTTON TYPE : " + type);
-			prevItem = getButtonData(menuLookup[mid], id);
+			
 		}
 		
-		private function animateButtons(showTitles:Boolean = false, menuSelection:Boolean = false):void
+		private function animateButtons(showTitles:Boolean = false, menuSelection:Boolean = false, forceAnimateButtons:Boolean = false):void
 		{
+			trace("breadcrumb:", breadcrumb);
+			
 			var startProps:Object = {x:-100, autoAlpha:0};
 			var endProps:Object = {autoAlpha:1, x:0, ease:Quad.easeOut};
 			var delay:Number = 0;//.1;
@@ -261,7 +264,7 @@ package com.wehaverhythm.gsk.oncology.menu
 				TweenMax.fromTo(logoHolder, time, startProps,{delay:delay, x:endProps.x, autoAlpha:endProps.autoAlpha});
 			}
 			
-			if(showTitles && (breadcrumb.length > 1 || menuSelection)) {
+			if(showTitles && (breadcrumb.length > 1 || menuSelection || forceAnimateButtons)) {
 				//for(var i:int = 0; i < breadcrumb.length; ++i) {
 					delay += .07;
 					TweenMax.fromTo(breadcrumb[breadcrumb.length-1], time, startProps,{delay:delay, x:endProps.x, autoAlpha:endProps.autoAlpha});
@@ -347,6 +350,7 @@ package com.wehaverhythm.gsk.oncology.menu
 		{
 			var renderButtons:Boolean;
 			var renderContentID:String;
+			var forceAnimateButtons:Boolean;
 			
 			//trace("contentOpen: " + ContentManager.boxOpen);
 			if(id == "back" && !ContentManager.boxOpen) {
@@ -377,6 +381,8 @@ package com.wehaverhythm.gsk.oncology.menu
 									renderContentID = null;
 								} else {
 									if(ContentManager.boxOpen) {
+										breadcrumbLevelDown();
+										forceAnimateButtons = true;
 										renderButtons = true;
 										renderContentID = prevItem.parent;
 									} else {
@@ -403,7 +409,7 @@ package com.wehaverhythm.gsk.oncology.menu
 			
 			
 			if(renderButtons) {
-				renderButtonsFor(currentMenu, currentMenu, renderContentID);
+				renderButtonsFor(currentMenu, currentMenu, renderContentID, false, forceAnimateButtons);
 			}
 		}
 		
@@ -443,7 +449,7 @@ package com.wehaverhythm.gsk.oncology.menu
 			if(e.target.hasOwnProperty("menu") && e.target.hasOwnProperty("xmlID") && e.target.xmlID !== null)
 				currentXML = menus[e.target.menu].content.menu.item.(@id == e.target.xmlID);
 			
-			renderButtonsFor(menuLookup[e.target.menu], e.target.menu, e.target.xmlID, true);
+			renderButtonsFor(menuLookup[e.target.menu], e.target.menu, e.target.xmlID, true, true);
 		}
 		
 		/**
@@ -499,7 +505,7 @@ package com.wehaverhythm.gsk.oncology.menu
 				dispatchEvent(new Event(Menu.CLOSE_CURRENT_CONTENT, true));
 			} else {
 				for(i = 0; i < moveUpChain; i++) breadcrumbLevelDown();
-				renderButtonsFor(currentMenu, currentMenu, e.target.id, false);
+				renderButtonsFor(currentMenu, currentMenu, e.target.id, false, true);
 			}
 		}
 		
