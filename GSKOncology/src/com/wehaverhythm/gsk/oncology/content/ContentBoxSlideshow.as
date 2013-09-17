@@ -20,6 +20,7 @@ package com.wehaverhythm.gsk.oncology.content
 		private var folder:File;
 		private var loader:LoaderMax;
 		private var images:Array;
+		private var imageNames:Array;
 		private var current:int;
 		private var numSlides:int;
 		private var slideWidth:int;
@@ -28,7 +29,8 @@ package com.wehaverhythm.gsk.oncology.content
 		private var spring:Number = .4;
 		private var velX:Number = 0;
 		private var targetX:Number = 0;
-		
+		private var slideshowLinkSet:XMLList;
+		private var links:Vector.<SlideshowLink>;
 		
 		public function ContentBoxSlideshow(display:ContentBoxDisplay)
 		{
@@ -36,19 +38,19 @@ package com.wehaverhythm.gsk.oncology.content
 			
 			d = display;
 			slideWidth = d.slideshow.slideHolder.width;
-			
 			d.slideshow.scrollRect = new Rectangle(0, 0, d.slideshow.width, d.slideshow.height);
-			
 			d.slideshow.btnNext.addEventListener(MouseEvent.MOUSE_DOWN, onNextClicked);
 			d.slideshow.btnPrev.addEventListener(MouseEvent.MOUSE_DOWN, onPrevClicked);
 			d.slideshow.btnNext.buttonMode = d.slideshow.btnPrev.buttonMode = true;
 		}
 		
-		public function init(path:String):void
+		public function init(path:String, slideshowLinkSet:XMLList = null):void
 		{
+			this.slideshowLinkSet = slideshowLinkSet;
 			folder = Constants.CONTENT_DIR.resolvePath(path);
 			loader = new LoaderMax({onComplete:onLoadComplete});
 			images = new Array();
+			imageNames = new Array();
 			
 			x=0;
 			current = 0;
@@ -72,6 +74,7 @@ package com.wehaverhythm.gsk.oncology.content
 				if(f.extension.toLowerCase() == "jpg" || f.extension.toLowerCase() == "png") {
 					props.name = String(i);
 					images.push(props.name);
+					imageNames.push(f.name);
 					loader.append(new ImageLoader(f.url, props));
 					i++;
 				}
@@ -132,6 +135,62 @@ package com.wehaverhythm.gsk.oncology.content
 			} else if(numSlides > 0) {
 				nextVisible = true;
 			}
+			
+			if(slideshowLinkSet) drawLinks();//trace(imageNames[current]);
+		}
+		
+		private function drawLinks():void
+		{	
+			destroyLinks();
+			links = new Vector.<SlideshowLink>();
+			
+			for each(var item:XML in slideshowLinkSet.slide) {
+				if(item.(@fileFrom == imageNames[current]).length()) {
+					links.push(makeLink(item, loader.getContent(String(current))));
+				}
+			}
+		}
+		
+		private function makeLink(item:XML, targ:*):Sprite
+		{
+			var link:Sprite = new SlideshowLink(current, item);
+			link.addEventListener(MouseEvent.MOUSE_DOWN, onLinkClicked, false, 0, true);
+			targ.addChild(link);
+			return link;
+		}
+		
+		private function destroyLinks():void
+		{
+			if(!links) return;
+			while(links.length) {
+				links[0].destroy();
+				links[0].removeEventListener(MouseEvent.MOUSE_DOWN, onLinkClicked);
+				links[0].parent.removeChild(links[0]);
+				links[0] = null;
+				links.shift();
+			}
+			links = null;
+		}
+		
+		protected function onLinkClicked(e:MouseEvent):void
+		{
+			var gotoID:int = 0;
+			for(var i:int = 0; i < imageNames.length; ++i) {
+				if(imageNames[i] == e.target.targ) {
+					gotoID = i;
+					break;
+				}
+			}
+			
+			trace("Slideshow link clicked: " + current + " : > goto: " + gotoID);
+			
+			var diff:int = current-gotoID;
+			targetX += (diff*slideWidth);
+			current = gotoID;
+			checkButtonStates();
+			trackSlide();
+			
+			trace("diff: " + diff, " / targetX: " +targetX);
 		}
 		
 		private function set prevVisible(visible:Boolean):void
@@ -162,10 +221,20 @@ package com.wehaverhythm.gsk.oncology.content
 		
 		public function destroy():void
 		{
+			destroyLinks();
+			
+			TweenMax.killTweensOf(this);
 			removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 			while(numChildren) removeChildAt(0);
+			
 			if(images)
 				while(images.length) images.shift();
+			images = null;
+			
+			if(imageNames)
+				while(imageNames.length) imageNames.shift();
+			imageNames = null;
+			
 			if(loader) {
 				loader.dispose(true);
 				loader = null;

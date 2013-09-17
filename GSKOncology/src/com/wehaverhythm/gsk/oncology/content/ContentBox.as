@@ -99,7 +99,20 @@ package com.wehaverhythm.gsk.oncology.content
 		
 		private function initSlideshow():void
 		{
-			slideshow.init(brandXML.name+Constants.PATH_SLIDESHOW+contentSettings["slideshowFolderID"]);
+			var slideshowLinkSet:XMLList = null;
+			var result:XMLList = null;
+			
+			if(brandXML.hasOwnProperty("slideshowLinkSets") && brandXML.slideshowLinkSets.slideshowLinkSet.length() > 0) {
+			//if(brandXML.slideshowLinkSets.slideshowLinkSet.hasOwnProperty("@conte"+contentSettings["slideshowFolderID"])) {
+					slideshowLinkSet = brandXML.slideshowLinkSets.slideshowLinkSet.(@slideshowFolderID == contentSettings["slideshowFolderID"]);
+					//	result.(@slideshowFolderID == contentSettings["slideshowFolderID"]);
+			//	}
+			//	if(result.length()) {
+				//	slideshowLinkSet = XML(result);
+			//	}
+			}
+			
+			slideshow.init(brandXML.name+Constants.PATH_SLIDESHOW+contentSettings["slideshowFolderID"], slideshowLinkSet);
 		}
 		
 		public function checkItemInCart():Boolean
