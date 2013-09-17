@@ -6,7 +6,6 @@ package com.wehaverhythm.gsk.oncology
 
 	public class Stats
 	{
-		public static var SCRIPT:String = "http://gsk.local/scripts/stats.php";
 		public static var ACTION_NAVIGATE:String = "navigate";
 		public static var ACTION_SESSION_START:String = "start";
 		public static var ACTION_SESSION_END:String = "end";
@@ -18,14 +17,14 @@ package com.wehaverhythm.gsk.oncology
 		
 		public static function track(session:int, page:String, action:String):void
 		{
-			var url:String = SCRIPT + "?session_id="+session+"&page="+page+"&action="+action;
+			var url:String = Constants.SCRIPT_PATH+"stats.php?session_id="+session+"&page="+page+"&action="+action;
 			var l:URLLoader = new URLLoader(new URLRequest(url));
 			l.addEventListener(IOErrorEvent.IO_ERROR, onIOErrorEvent, false, 0, true);
 		}
 		
 		protected static function onIOErrorEvent(e:IOErrorEvent):void
 		{
-			
+			trace(e);
 		}
 	}
 }

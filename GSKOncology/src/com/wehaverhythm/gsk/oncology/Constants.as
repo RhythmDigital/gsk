@@ -18,7 +18,8 @@ package com.wehaverhythm.gsk.oncology
 		public static const WIDTH:Number = 1080;
 		public static const HEIGHT:Number = 1920;
 		public static const CONTENT_LOCATION_FILENAME:String = "GSKContentLocation.txt";
-		public static const SHOW_SLIDESHOW_LINKS:Boolean = false;
+		public static const SHOW_SLIDESHOW_LINKS:Boolean = true;
+		public static const SCRIPT_PATH:String = "http://www.gsk-downloads.com/scripts/";
 		
 		public function Constants()
 		{

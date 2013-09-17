@@ -1,4 +1,6 @@
 <?php
+	include "config.php";
+
 	$to = urldecode($_POST['theirEmail']);
 	$from = "noreply@gsk-downloads.com";
 	$subject = "GSK Oncology Cart Email";

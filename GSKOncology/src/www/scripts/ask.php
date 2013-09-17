@@ -1,4 +1,6 @@
 <?php
+	include "config.php";
+
 	$to = "jamie@wehaverhythm.com";
 	$name = urldecode($_POST['name']);
 	$from = urldecode($_POST['email']);
@@ -29,7 +31,7 @@
 
 	function writeQuestionToDB($con, $product, $name, $email, $message) {
 
-		$con=mysqli_connect("localhost","root","root","gsk");
+		$con=mysqli_connect($host, $db, $user $pass);
 
 		if (mysqli_connect_errno())
 		{
