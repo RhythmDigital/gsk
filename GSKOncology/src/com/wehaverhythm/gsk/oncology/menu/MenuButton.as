@@ -75,6 +75,7 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		public function deselect():void
 		{
+			if(!display) return;
 			tint(display.copy, 0xffffff, true);
 			tint(display.bg, 0x000000, true);
 			tint(display.arrow, brandColour, true);
