@@ -45,16 +45,20 @@ package com.wehaverhythm.gsk.oncology.content
 			this.colour = uint("0x"+String(col).substr(1));
 			this.boxWidth = int(xml.@boxWidth);
 			
+			var showBG:Boolean = !(xml.hasOwnProperty("@noBG") && xml.@noBG == "true") ;
+			
 			loader = new LoaderMax({onComplete:onLoadComplete});
 			
 			// fill bg
-			bg = new Sprite();
-			with(bg.graphics) {
-				beginFill(colour);
-				drawRect(0,0,int(xml.@boxWidth),500);
-				endFill();
+			if(showBG) {
+				bg = new Sprite();
+				with(bg.graphics) {
+					beginFill(colour);
+					drawRect(0,0,int(xml.@boxWidth),500);
+					endFill();
+				}
+				addChild(bg);
 			}
-			addChild(bg);
 			
 			if(verbose) trace("-------------------------");
 			if(verbose) trace("Add caption: ");
@@ -143,7 +147,7 @@ package com.wehaverhythm.gsk.oncology.content
 				pt.y += el.height+gap;
 			}
 			
-			bg.height = pt.y;
+			if(bg) bg.height = pt.y;
 		}
 		
 		public function showCaption():void
@@ -194,8 +198,10 @@ package com.wehaverhythm.gsk.oncology.content
 			
 			TweenMax.killTweensOf(this);
 			
-			removeChild(bg);
-			bg = null;
+			if(bg) {
+				removeChild(bg);
+				bg = null;
+			}
 			xml = null;
 		}
 	}

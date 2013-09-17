@@ -165,14 +165,14 @@ package com.wehaverhythm.gsk.oncology.menu
 			trace("\n******************");
 			trace("* CLOSE CURRENT CONTENT *");
 			trace("******************\n");
-			trace("prevItem -> " , prevItem);
+			// trace("prevItem -> " , prevItem);
 			closedContent = true;
 			currentButton.deselect();
 		}
 		
 		private function renderButtonsFor(m:int, mid:int, id:String = null, menuSelection:Boolean = false, forceAnimateButtons:Boolean = false):void
 		{			
-			trace("%%%% RENDER FOR : " + id);
+			//	trace("%%%% RENDER FOR : " + id);
 			var newButtons:Array = new Array();
 			type = "";
 			
@@ -190,7 +190,6 @@ package com.wehaverhythm.gsk.oncology.menu
 				var itemIdLen:int = menuLookup[mid][i].id.split(".").length;
 				
 				if(id == null && itemIdLen == 1) {
-					// root item.
 					valid = true;
 				} else {
 					valid = (String(menuLookup[mid][i].id).indexOf(id) == 0) && itemIdLen == idLen+1;
@@ -225,7 +224,6 @@ package com.wehaverhythm.gsk.oncology.menu
 			}
 			
 			if(currentID == null && isSubMenu) {
-				// BRAND MENU
 				Stats.track(GSKOncology.sessionID, Menu.getBrandXML(mid).name, Stats.ACTION_NAVIGATE);
 			} else {
 				Stats.track(GSKOncology.sessionID, Menu.getBrandXML(mid).menu.item.(@id == currentID), Stats.ACTION_NAVIGATE);
@@ -237,7 +235,6 @@ package com.wehaverhythm.gsk.oncology.menu
 				dispatchEvent(new ContentEvent(ContentEvent.CONTENT_TRIGGER, {type:type, mid:currentMenu, xml: currentXML}));//xml: menus[mid].content}));
 			} else {
 				type = "sub-menu-button";
-		//		prevItem = getButtonData(menuLookup[mid], id);
 				dispatchEvent(new ContentEvent(ContentEvent.CONTENT_TRIGGER, {type:type, mid:currentMenu, xml: currentXML}));
 			}
 			
@@ -249,9 +246,6 @@ package com.wehaverhythm.gsk.oncology.menu
 			TweenMax.to(logoHolder, .3, {autoAlpha:1, ease:Quad.easeOut});
 			
 			overlay.showButtons(MenuOverlay.TYPE_SUBNAV);
-			
-			// trace(" >>> BUTTON TYPE : " + type);
-			
 		}
 		
 		private function animateButtons(showTitles:Boolean = false, menuSelection:Boolean = false, forceAnimateButtons:Boolean = false):void
@@ -270,10 +264,8 @@ package com.wehaverhythm.gsk.oncology.menu
 			}
 			
 			if(showTitles && (breadcrumb.length > 1 || menuSelection) || (breadcrumb.length > 1 && forceAnimateButtons)) {
-				//for(var i:int = 0; i < breadcrumb.length; ++i) {
-					delay += .07;
-					TweenMax.fromTo(breadcrumb[breadcrumb.length-1], time, startProps,{delay:delay, x:endProps.x, autoAlpha:endProps.autoAlpha});
-				//}
+				delay += .07;
+				TweenMax.fromTo(breadcrumb[breadcrumb.length-1], time, startProps,{delay:delay, x:endProps.x, autoAlpha:endProps.autoAlpha});
 			}
 			
 			endProps.delay = delay;
