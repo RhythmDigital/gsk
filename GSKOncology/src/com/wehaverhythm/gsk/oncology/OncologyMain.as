@@ -12,10 +12,8 @@ package com.wehaverhythm.gsk.oncology
 	
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
-	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.ui.Mouse;
 	
 	public class OncologyMain extends Sprite
 	{
@@ -43,7 +41,6 @@ package com.wehaverhythm.gsk.oncology
 		
 		protected function onCloseCurrentContent(e:Event):void
 		{
-		//	menu.contentOpen = false;
 			contentMan.content.close();
 		}
 		
@@ -51,8 +48,6 @@ package com.wehaverhythm.gsk.oncology
 		{
 			Cart.init(new CartView());
 			Cart.addCounterTF(menu.overlay.buttons[2].getTextField(), "VIEW CART");
-			
-			//if(Constants.DEBUG) stage.addEventListener(KeyboardEvent.KEY_DOWN, onDebugKeyDown);
 			
 			contentMan = new ContentManager(menu);
 			contentMan.addEventListener(ContentBox.CLOSE, onCloseContent);
@@ -122,20 +117,11 @@ package com.wehaverhythm.gsk.oncology
 		{
 			contentMan.content.checkItemInCart();
 		}
-		/*
-		private var contentID:int = 0;
-		protected function onDebugKeyDown(e:KeyboardEvent):void
-		{
-			if(e.keyCode == Keyboard.SPACE) Cart.forceAdd(String(contentID), "99999", "A title " + contentID);
-			contentID++;
-		}
-		*/
+		
 		protected function onCloseContent(e:Event):void
 		{
 			if(menu.currentButton) {
 				menu.contentClose();
-			//	menu.currentButton.deselect();
-			//	menu.contentOpen = false;
 			}
 		}
 		
@@ -158,14 +144,13 @@ package com.wehaverhythm.gsk.oncology
 						//	fall back to product menu content id
 						contentID = String(Menu.menus[e.params.mid].content.menu.attribute("contentID"));
 						//	trace("sub-menu -> fall back to product menu content id : ", contentID);
-					} else {
+					}/* else {
 						//	trace("sub-menu -> using content id : ", contentID);
-					}
+					}*/
 					
 				break;
 				
 				case "sub-menu-button":
-					//	trace(e.params.xml.toXMLString());
 					contentID = String(e.params.xml.attribute("contentID"));
 				break;
 			}
@@ -173,12 +158,10 @@ package com.wehaverhythm.gsk.oncology
 			if(contentID != null && contentID.length) {
 				contentMan.showContent(contentID, e.params.mid, Menu.getBrandXML(e.params.mid));
 				if(ContentManager.boxOpen) {
-				//	menu.contentOpen = true;
 				}
-			} else {
+			}/* else {
 				trace("No content for this node");
-				//menu.contentOpen = true;
-			}
+			}*/
 		}
 	}
 }

@@ -27,12 +27,12 @@ package
 	[SWF (width="1080", height="1920", frameRate="30", backgroundColor="#000000")]
 	public class GSKOncology extends Sprite
 	{
+		public static var sessionID:int;
+		
 		private var startup:StartupDisplay;
 		private var main:OncologyMain;
 		private var contentFolder:File;
 		private var contentDefinitionFile:File;
-		
-		public static var sessionID:int;
 		
 		public function GSKOncology()
 		{
