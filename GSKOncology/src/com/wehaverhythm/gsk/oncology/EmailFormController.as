@@ -19,16 +19,11 @@ package com.wehaverhythm.gsk.oncology
 		public static var FAILED:String = "FAILED";
 		public static var SUCCESS:String = "SUCCESS";
 		
-		private const SCRIPT_LIVE:String = "http://www.gsk-downloads.com/scripts/";
-		private const SCRIPT_LOCAL:String = "http://gsk.local/scripts/";
-		
 		private var settings:XML;
 		private var loader:URLLoader;
-		private var useLocal:Boolean;
 		
 		public function EmailFormController()
 		{
-			useLocal = false;//Constants.DEBUG;
 		}
 		
 		public function emailCart(theirName:String, emailAddress:String):void
@@ -57,7 +52,7 @@ package com.wehaverhythm.gsk.oncology
 			vars.theirMessage = encodeURIComponent(message);
 			
 			Stats.track(GSKOncology.sessionID, "cart", "email");
-			doSend(vars, (useLocal ? SCRIPT_LOCAL : SCRIPT_LIVE)+"cart.php");
+			doSend(vars, Constants.SCRIPT_PATH+"cart.php");
 			
 			trace(this, "Emailing cart: ", vars.toString());
 		}
@@ -74,7 +69,7 @@ package com.wehaverhythm.gsk.oncology
 			
 			Stats.track(GSKOncology.sessionID, "ask", "email");
 			
-			doSend(vars, (useLocal ? SCRIPT_LOCAL : SCRIPT_LIVE)+"ask.php");
+			doSend(vars, Constants.SCRIPT_PATH+"ask.php");
 		}
 		
 		public function doSend(vars:URLVariables, url:String):void
