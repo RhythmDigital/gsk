@@ -59,6 +59,8 @@ package com.wehaverhythm.gsk.oncology.menu
 		private var menuLevel:int;
 		private var breadcrumb:Array;
 		private var prevItem:Object;
+		private var previousNavAction:String;
+		private var closedContent:Boolean;
 		
 		public function Menu()
 		{
@@ -113,6 +115,7 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		public function showRootMenu():void
 		{
+			closedContent = false;
 			resetBreadcrumb();
 			
 			//trace("render buttons for main menu");
@@ -161,6 +164,17 @@ package com.wehaverhythm.gsk.oncology.menu
 			for(var i:int = 0; i < buttons.length; ++i) {
 				MenuButtonLogo(buttons[i]).hideCaption();
 			}
+		}
+		
+		public function contentClose():void
+		{
+			trace("\n******************");
+			trace("* CLOSE CURRENT CONTENT *");
+			trace("******************\n");
+			trace("prevItem -> " , prevItem);
+			closedContent = true;
+			currentButton.deselect();
+			//dispatchEvent(new Event(Menu.CLOSE_CURRENT_CONTENT, true));
 		}
 		
 		private function renderButtonsFor(m:int, mid:int, id:String = null, menuSelection:Boolean = false, forceAnimateButtons:Boolean = false):void
@@ -233,6 +247,7 @@ package com.wehaverhythm.gsk.oncology.menu
 				dispatchEvent(new ContentEvent(ContentEvent.CONTENT_TRIGGER, {type:type, mid:currentMenu, xml: currentXML}));//xml: menus[mid].content}));
 			} else {
 				type = "sub-menu-button";
+		//		prevItem = getButtonData(menuLookup[mid], id);
 				dispatchEvent(new ContentEvent(ContentEvent.CONTENT_TRIGGER, {type:type, mid:currentMenu, xml: currentXML}));
 			}
 			
@@ -380,8 +395,8 @@ package com.wehaverhythm.gsk.oncology.menu
 									renderButtons = true;
 									renderContentID = null;
 								} else {
-									if(ContentManager.boxOpen) {
-										breadcrumbLevelDown();
+									if(ContentManager.boxOpen || closedContent) {
+										if(!closedContent) breadcrumbLevelDown();
 										forceAnimateButtons = true;
 										renderButtons = true;
 										renderContentID = prevItem.parent;
@@ -428,6 +443,7 @@ package com.wehaverhythm.gsk.oncology.menu
 		
 		protected function onMenuItemSelected(e:MenuEvent):void
 		{
+			closedContent = false;
 			mouseEnabled = mouseChildren = false;
 			currentButton = MenuButton(e.target);
 			
@@ -448,6 +464,8 @@ package com.wehaverhythm.gsk.oncology.menu
 			// set current xml if exists.
 			if(e.target.hasOwnProperty("menu") && e.target.hasOwnProperty("xmlID") && e.target.xmlID !== null)
 				currentXML = menus[e.target.menu].content.menu.item.(@id == e.target.xmlID);
+			
+			//trace(currentButton.
 			
 			renderButtonsFor(menuLookup[e.target.menu], e.target.menu, e.target.xmlID, true, true);
 		}

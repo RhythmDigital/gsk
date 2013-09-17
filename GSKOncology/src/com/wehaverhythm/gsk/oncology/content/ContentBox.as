@@ -131,7 +131,7 @@ package com.wehaverhythm.gsk.oncology.content
 					
 					break;
 			}
-			type = "";
+			//type = "";
 			
 			IdleTimeout.startListening();
 		//	showing = false;

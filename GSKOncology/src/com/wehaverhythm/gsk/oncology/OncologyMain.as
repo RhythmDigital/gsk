@@ -133,7 +133,8 @@ package com.wehaverhythm.gsk.oncology
 		protected function onCloseContent(e:Event):void
 		{
 			if(menu.currentButton) {
-				menu.currentButton.deselect();
+				menu.contentClose();
+			//	menu.currentButton.deselect();
 			//	menu.contentOpen = false;
 			}
 		}
