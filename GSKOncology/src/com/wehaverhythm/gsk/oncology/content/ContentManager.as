@@ -283,7 +283,6 @@ package com.wehaverhythm.gsk.oncology.content
 		protected function onNextVideoPlaying(e:CuePointVideoEvent):void
 		{
 			currentBrandXML = brandsXMLArray[e.params.id].content;
-			//trace(currentBrandXML.rootCaption);
 			menu.showRootCaption(e.params.id);
 		}
 		

@@ -131,7 +131,7 @@ package com.wehaverhythm.gsk.oncology.content
 		private function createTextField(text:String, size:Number = 30, multiline:Boolean = false):CopyBox
 		{
 			var tf:CopyBox = new CopyBox(text, size, boxWidth-(PADDING.x*2), multiline);
-			tf.x = 10;
+			tf.x = PADDING.x;
 			return tf;
 		}
 		

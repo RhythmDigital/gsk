@@ -31,25 +31,37 @@ package com.wehaverhythm.gsk.oncology
 			settings = XML(LoaderMax.getContent("settings"));
 			var path:String = settings.downloadsURL;
 			var cart:Dictionary = Cart.cart;
-			var message:String = "<h3>Hello " + theirName + ", \nHere are your GSK Oncology items as requested:\n\n</h3><br/><p>";
+			//var message:String = "<h3>Hello " + theirName + ", \nHere are your GSK Oncology items as requested:\n\n</h3><br/><p>";
 			var brands:Array = new Array();
+			
+			var cartJson:Object = new Object();
+			cartJson['path'] = path;
+			cartJson['cart'] = [];
 			
 			for(var b:String in Cart.cart) {
 				var brand:Vector.<Object> = Cart.cart[b];
 				var brandData:XML = Menu.getBrandXML(int(b));
+				var items:Array = new Array();
+				
+				cartJson.cart.push({brand:String(brandData.name), items:items});
+				
 				for(var i:int = 0; i < brand.length; ++i) {
 					var node:XML = XML(brandData.content.content.(@id == brand[i].contentID));
-					var link:String = path+"/"+brandData.name+"/"+node.@cartLink;
-					message += "<a href='"+link+"'>"+brand[i].title+": " + link +"</a><br/>"; 
+					items.push({
+						file:String(node.@cartLink),
+						title:String(brand[i].title)
+					});
 				}
 			}
 			
-			message += "</p>";
+			//message += "</p>";
 			
 			var vars:URLVariables = new URLVariables();
 			vars.theirName = encodeURIComponent(theirName);
 			vars.theirEmail = encodeURIComponent(emailAddress); //Constants.DEBUG ? "hello@jamie-white.com" : emailAddress);
-			vars.theirMessage = encodeURIComponent(message);
+			vars.cart = encodeURIComponent(JSON.stringify(cartJson));
+			vars.sessionID = GSKOncology.sessionID;
+			//trace(vars.cart);
 			
 			Stats.track(GSKOncology.sessionID, "cart", "email");
 			doSend(vars, Constants.SCRIPT_PATH+"cart.php");
@@ -64,6 +76,7 @@ package com.wehaverhythm.gsk.oncology
 			vars.email = encodeURIComponent(theirEmail);
 			vars.product = encodeURIComponent(product);
 			vars.message = encodeURIComponent(message);
+			vars.sessionID = GSKOncology.sessionID;
 			
 			trace(this, "ASKING GSK: ", vars.toString());
 			
@@ -101,7 +114,6 @@ package com.wehaverhythm.gsk.oncology
 		{
 			trace(this, "Done: " + e.target.data.result);
 			destroyLoader();
-			Cart.reset();
 			dispatchEvent(new Event(EmailFormController.SUCCESS, true));
 		}
 		
