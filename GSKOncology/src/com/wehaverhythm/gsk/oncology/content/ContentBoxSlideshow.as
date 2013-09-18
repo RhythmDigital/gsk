@@ -84,7 +84,12 @@ package com.wehaverhythm.gsk.oncology.content
 			
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			
-			prevVisible = nextVisible = true;
+			if(images.length == 1) {
+				nextVisible = prevVisible = false;
+			} else {
+				nextVisible = true;
+			}
+			
 			checkButtonStates();
 			trackSlide();
 		}

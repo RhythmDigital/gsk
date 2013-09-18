@@ -5,6 +5,7 @@ package
 	import com.greensock.loading.XMLLoader;
 	import com.wehaverhythm.gsk.oncology.Constants;
 	import com.wehaverhythm.gsk.oncology.OncologyMain;
+	import com.wehaverhythm.gsk.oncology.Settings;
 	
 	import flash.desktop.NativeApplication;
 	import flash.display.Screen;
@@ -101,7 +102,7 @@ package
 			addChild(startup);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			
-			if(!Constants.DEBUG && !Constants.DEV_MODE) stage.addEventListener(FullScreenEvent.FULL_SCREEN, onFullScreen);
+			if(!Constants.DEBUG && Settings.data.startupScreenSelector == "true") stage.addEventListener(FullScreenEvent.FULL_SCREEN, onFullScreen);
 			else onFullScreen(null);
 		}
 		
@@ -119,7 +120,6 @@ package
 		
 		protected function onFullScreen(e:FullScreenEvent):void
 		{
-			if(!Constants.DEBUG && !Constants.DEV_MODE) Mouse.hide();
 			removeChild(startup);
 			launchApp(null);
 		}
@@ -136,25 +136,27 @@ package
 			var lm:LoaderMax = new LoaderMax({onComplete:onXMLLoaded});
 			lm.insert(new XMLLoader(Constants.CONTENT_DIR.url+"/settings.xml", {name:"settings"}));
 			lm.load();
-			
-			
-			if(Constants.DEV_MODE) {
-				var tf:TextField = new TextField();
-				tf.defaultTextFormat = new TextFormat("Helvetica", 60, 0xf20000, true);
-				tf.text = "DEBUG MODE";
-				tf.selectable = false;
-				tf.autoSize = "left";
-				addChild(tf);
-				tf.x = Constants.WIDTH - (tf.width + 20);
-				tf.y = 20;
-			}
+//			
+//			
+//			if(Constants.DEV_MODE) {
+//				var tf:TextField = new TextField();
+//				tf.defaultTextFormat = new TextFormat("Helvetica", 60, 0xf20000, true);
+//				tf.text = "DEBUG MODE";
+//				tf.selectable = false;
+//				tf.autoSize = "left";
+//				addChild(tf);
+//				tf.x = Constants.WIDTH - (tf.width + 20);
+//				tf.y = 20;
+//			}
 			
 			
 		}
 		
 		private function onXMLLoaded(e:LoaderEvent):void
 		{
-			main.init(XML(LoaderMax.getContent("settings")));
+			Settings.data = XML(LoaderMax.getContent("settings"));
+			if(Settings.data.showMouse == "false") Mouse.hide();
+			main.init(Settings.data);
 		}
 	}
 }
