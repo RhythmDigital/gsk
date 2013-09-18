@@ -101,9 +101,9 @@ package
 			startup = new StartupDisplay();
 			addChild(startup);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-			
-			if(!Constants.DEBUG && Settings.data.startupScreenSelector == "true") stage.addEventListener(FullScreenEvent.FULL_SCREEN, onFullScreen);
-			else onFullScreen(null);
+			stage.addEventListener(FullScreenEvent.FULL_SCREEN, onFullScreen);
+			//if(!Constants.DEBUG && Settings.data.startupScreenSelector == "true") stage.addEventListener(FullScreenEvent.FULL_SCREEN, onFullScreen);
+			//else onFullScreen(null);
 		}
 		
 		private function onKeyDown(e:KeyboardEvent):void

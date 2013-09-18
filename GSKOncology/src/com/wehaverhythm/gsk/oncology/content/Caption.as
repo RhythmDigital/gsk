@@ -28,7 +28,8 @@ package com.wehaverhythm.gsk.oncology.content
 		private var loader:LoaderMax;
 		
 		public var ready:Boolean;
-		private var verbose:Boolean = false;
+		private var verbose:Boolean = false
+			;
 		private var xml:XML;
 		private var brandID:int;
 		
