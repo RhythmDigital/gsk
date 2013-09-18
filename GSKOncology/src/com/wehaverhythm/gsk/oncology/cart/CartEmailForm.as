@@ -60,6 +60,7 @@ package com.wehaverhythm.gsk.oncology.cart
 		
 		protected function onSuccess(event:Event):void
 		{
+			Cart.reset();
 			dispatchEvent(new Event(EmailFormController.SUCCESS, true));
 		}
 		

@@ -20,7 +20,7 @@ package com.wehaverhythm.gsk.oncology.content
 			d.txtCopy.setTextFormat(new TextFormat(Constants.FONT_GILL_SANS, size));
 			d.txtCopy.autoSize = TextFieldAutoSize.LEFT;
 			d.txtCopy.wordWrap = true;    // prevent width-resize!
-
+			d.txtCopy.width = w;
 			//tf.height = tf.textHeight+5;
 			addChild(d);
 		}

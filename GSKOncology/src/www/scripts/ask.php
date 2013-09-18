@@ -7,59 +7,36 @@
 	$product = urldecode($_POST['product']);
 	$subject = "GSK Oncology Question Regarding: ".$product;
 	$message = urldecode($_POST['message']);
+	$sessionID = urldecode($_POST['sessionID']);
+	$gskNoReply = "GSK ESMO 2013 <noreply@gsk-downloads.com>";
 	
-	$headers = "From: GSK Oncology ESMO2013 <noreply@gsk-downloads.com>\r\n";
-	$headers .= "Reply-To: ".$from."\r\n";
+
+	$con=mysql_connect($host, $user, $pass);
+
+	if (!$con) {
+		echo "result=db_connect_error";
+		die();
+	}
+
+	mysql_select_db($db) or die(mysql_error());
+
+	// WRITE TO DB.
+	mysql_query("INSERT INTO questions (name,email,message,brand,session_id,time) VALUES ('".$name."','".$from."','".$message."','".$product."',".$sessionID.",NOW())");
+	mysql_close($con);
+	
+	$headers = "From: ".$gskNoReply."\r\n";
+	$headers .= "Reply-To: ".$gskNoReply."\r\n";
 	$headers .= "MIME-Version: 1.0\r\n";
 	$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
-	$result = mail ($to, $subject, $message, $headers);
+	$emailMessage = "<b>Name: </b>".$name."<br/>";
+	$emailMessage .= "<b>Email: </b>".$from."<br/><br/><br/>";
+	$emailMessage .= "<b>Message: </b><br/><br/>".$message;
 
-	
-
-	// WRITE TO DB.
-	writeQuestionToDB($product, $name, $from, $message);
-
+	$result = mail($to, $subject, $emailMessage, $headers);
 	if($result) {
 		echo "result=mail_ok";
 	} else {
 		echo "result=mail_error";
-	}
-
-	die();
-
-
-	function writeQuestionToDB($con, $product, $name, $email, $message) {
-
-		$con=mysqli_connect($host, $db, $user $pass);
-
-		if (mysqli_connect_errno())
-		{
-		  echo "result=db_connect_error";
-		  die();
-		}
-
-		$product_id;
-		$product_id = findProductID($con, $product);
-
-		if(!isset($product_id)) {
-			mysqli_query($con,"INSERT INTO products (name) VALUES ('".$product."')");
-			$product_id = findProductID($con, $product);
-		}
-
-		mysqli_query($con,"INSERT INTO questions (name,email,message,product_id,date) VALUES ('".$name."','".$email."','".$message."',".$product_id.",NOW())");
-		mysqli_close($con);
-	}
-
-	function findProductID($con, $product) {
-		$query="SELECT id FROM products WHERE name='".$product."'";
-		$product_search = mysqli_query($con,$query);
-		$id;
-
-		while($row = mysqli_fetch_array($product_search)) {
-			if($row == false) return $id;
-			$id = $row['id'];
-			return $id;
-		}
 	}
 ?>
