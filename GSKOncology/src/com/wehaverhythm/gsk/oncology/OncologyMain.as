@@ -70,7 +70,7 @@ package com.wehaverhythm.gsk.oncology
 			footer.y = Constants.HEIGHT - footer.height;
 			addChild(footer);
 			
-			IdleTimeout.init(stage, Constants.IDLE_TIMEOUT_MS, onIdleTimeout);
+			IdleTimeout.init(stage, int(Settings.data.idleTimeoutMS), onIdleTimeout);
 			waitForUser();
 		}
 		
