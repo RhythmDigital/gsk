@@ -127,16 +127,30 @@ package com.wehaverhythm.gsk.oncology.content
 		
 		private function checkButtonStates():void
 		{
-			if(current == 0) {
-				prevVisible = false;
-			} else if(numSlides > 1) {
-				prevVisible = true;
-			}
-			
-			if(current == (numSlides-1)) {
-				nextVisible =false;
-			} else if(numSlides > 1) {
-				nextVisible = true;
+			if(numSlides > 1)
+			{
+	
+				if(current == 0)
+				{
+					prevVisible = false;
+				}
+				else if(numSlides > 1)
+				{
+					prevVisible = true;
+				}
+				
+				if(current == (numSlides-1))
+				{
+					nextVisible =false;
+				} 
+				else if(numSlides > 1)
+				{
+					nextVisible = true;
+				}
+				
+			} else {
+				d.slideshow.prev.alpha = 0;
+				d.slideshow.next.alpha = 0;
 			}
 			
 			if(slideshowLinkSet) drawLinks();//trace(imageNames[current]);
