@@ -13,12 +13,12 @@ package com.wehaverhythm.gsk.oncology
 		public static const PATH_VIDEO_BG:String = "/videos/bg/";
 		public static const PATH_VIDEO_CONTENT:String = "/videos/content/";
 		
-		public static const IDLE_TIMEOUT_MS:int = 30000;
+		public static const IDLE_TIMEOUT_MS:int = 60000;
 		public static const FONT_GILL_SANS:String = "Gill Sans";
 		public static const WIDTH:Number = 1080;
 		public static const HEIGHT:Number = 1920;
 		public static const CONTENT_LOCATION_FILENAME:String = "GSKContentLocation.txt";
-		public static const SHOW_SLIDESHOW_LINKS:Boolean = true;
+		public static const SHOW_SLIDESHOW_LINKS:Boolean = false;
 		public static const SCRIPT_PATH:String = "http://www.gsk-downloads.com/scripts/";
 		
 		public function Constants()
