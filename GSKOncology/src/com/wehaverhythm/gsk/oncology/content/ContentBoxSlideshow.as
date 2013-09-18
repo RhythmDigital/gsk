@@ -84,14 +84,12 @@ package com.wehaverhythm.gsk.oncology.content
 			
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			
-			if(images.length == 1) {
-				nextVisible = prevVisible = false;
-			} else {
+			nextVisible = false;
+			prevVisible = false;
+			
+			if(images.length > 1) {
 				nextVisible = true;
 			}
-			
-			checkButtonStates();
-			trackSlide();
 		}
 		
 		protected function onEnterFrame(e:Event):void
@@ -131,13 +129,13 @@ package com.wehaverhythm.gsk.oncology.content
 		{
 			if(current == 0) {
 				prevVisible = false;
-			} else if(numSlides > 0) {
+			} else if(numSlides > 1) {
 				prevVisible = true;
 			}
 			
 			if(current == (numSlides-1)) {
 				nextVisible =false;
-			} else if(numSlides > 0) {
+			} else if(numSlides > 1) {
 				nextVisible = true;
 			}
 			
@@ -221,6 +219,8 @@ package com.wehaverhythm.gsk.oncology.content
 				addChild(img.content);
 			}
 			
+			checkButtonStates();
+			trackSlide();
 			TweenMax.to(this, .4, {autoAlpha:1, ease:Quad.easeOut});
 		}
 		
