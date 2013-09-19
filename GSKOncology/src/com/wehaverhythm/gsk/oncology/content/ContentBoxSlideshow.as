@@ -71,7 +71,7 @@ package com.wehaverhythm.gsk.oncology.content
 			
 			var i:int = 0;
 			for each(var f:File in files) {
-				if(f.extension.toLowerCase() == "jpg" || f.extension.toLowerCase() == "png") {
+				if((f.extension.toLowerCase() == "jpg" || f.extension.toLowerCase() == "png") && !f.isHidden) {
 					props.name = String(i);
 					images.push(props.name);
 					imageNames.push(f.name);

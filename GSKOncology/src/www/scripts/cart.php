@@ -6,8 +6,8 @@
 	$dl_path = $cart_json['path']."/";
 	$name = urldecode($_POST['theirName']);
 	$to = urldecode($_POST['theirEmail']);
-	$from = "GSK <noreply@gsk-downloads.com>";
-	$subject = "Your requested GSK information from ECCO ESMO ESTRO 2013";
+	$from = "GSK Oncology - ESMO 2013 <noreply@gsk-downloads.com>";
+	$subject = "Your requested GSK information from ESMO 2013";
 	$headers = "From: " .$from. "\r\n";
 	$headers .= "Reply-To: ".$from. "\r\n";
 	$headers .= "MIME-Version: 1.0\r\n";
