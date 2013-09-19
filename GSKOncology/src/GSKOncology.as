@@ -20,8 +20,6 @@ package
 	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
 	import flash.text.Font;
-	import flash.text.TextField;
-	import flash.text.TextFormat;
 	import flash.ui.Keyboard;
 	import flash.ui.Mouse;
 	

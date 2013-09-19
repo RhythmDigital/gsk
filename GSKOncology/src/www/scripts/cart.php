@@ -40,7 +40,7 @@ If you have any questions, please contact a GlaxoSmithKline affiliate in your co
 		}
 	}
 
-	$contents .= "<br/><br/><p>
+	$contents .= "<br/>The links within this email will be active for 60 days from receipt of this email.<br/><br/><p>
 Best regards,<br/>
 GlaxoSmithKline Oncology<br/>
 <a href='http://www.gsk.com'>www.gsk.com</a><br/><br/></p>

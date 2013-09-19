@@ -8,7 +8,7 @@
 	$subject = "GSK Oncology Question Regarding: ".$product;
 	$message = urldecode($_POST['message']);
 	$sessionID = urldecode($_POST['sessionID']);
-	$gskNoReply = "GSK ESMO 2013 <noreply@gsk-downloads.com>";
+	$gskNoReply = "GSK ESMO 2013 <downloads-noreply@gsk-downloads.com>";
 	
 
 	$con=mysql_connect($host, $user, $pass);
