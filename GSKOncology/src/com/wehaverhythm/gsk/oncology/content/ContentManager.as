@@ -30,6 +30,8 @@ package com.wehaverhythm.gsk.oncology.content
 		
 		public var content:ContentBox;
 		public static var boxOpen:Boolean;
+		public static var triggeredBy:String;
+		public static var action:String;
 		
 		public function ContentManager(menu:Menu)
 		{
@@ -53,7 +55,6 @@ package com.wehaverhythm.gsk.oncology.content
 			video.addEventListener(CuePointVideoEvent.NEXT_VIDEO_PLAYING, onNextVideoPlaying);
 			video.addEventListener(CuePointVideoEvent.HIDE_CURRENT_CAPTION, onHideCurrentCaption);
 			addChild(video);
-			//video.init();
 		}
 		
 		protected function onContentBoxClosed(e:Event):void
@@ -101,18 +102,20 @@ package com.wehaverhythm.gsk.oncology.content
 			hideContentBox();
 		}
 		
-		public function showContent(contentID:String, brandID:int, brandXML:XML):void
+		public function showContent(contentID:String, brandID:int, brandXML:XML, menuItemType:String):void
 		{
 			if(verbose) {
 				trace("---------------------");
 				trace("process content id: " + contentID + " for brand " + brandID);
 			}
-			
+			ContentManager.triggeredBy = menuItemType;
 			this.brandID = brandID;
+			
 			var xml:XML = currentBrandXML = brandXML;
 			contentNode = XML(xml.content.content.(@id == contentID));
 			var attributes:XMLList = contentNode.attributes();
 			contentSettings = {};
+			
 			
 			for each (var attr:XML in contentNode.attributes()) {
 				contentSettings[String(attr.name())] = String(attr);
@@ -123,6 +126,8 @@ package com.wehaverhythm.gsk.oncology.content
 					trace(key+": "+contentSettings[key]);
 				}
 			}
+			
+			ContentManager.action = contentSettings["action"];
 			
 			if(verbose) trace("---------------------");
 			if(verbose) trace(contentSettings["action"]);
@@ -161,6 +166,10 @@ package com.wehaverhythm.gsk.oncology.content
 					}
 					
 					hideContentBox();
+					
+					if(ContentManager.triggeredBy == "sub-menu-button") {
+						ContentManager.boxOpen = true;
+					}
 					
 					break;
 				case "slideshow-box":

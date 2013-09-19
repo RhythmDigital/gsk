@@ -120,6 +120,7 @@ package com.wehaverhythm.gsk.oncology
 		
 		protected function onCloseContent(e:Event):void
 		{
+			trace("CLOSING CONTENT IN MAIN.");
 			if(menu.currentButton) {
 				menu.contentClose();
 			}
@@ -156,7 +157,7 @@ package com.wehaverhythm.gsk.oncology
 			}
 			
 			if(contentID != null && contentID.length) {
-				contentMan.showContent(contentID, e.params.mid, Menu.getBrandXML(e.params.mid));
+				contentMan.showContent(contentID, e.params.mid, Menu.getBrandXML(e.params.mid), e.params.type);
 				if(ContentManager.boxOpen) {
 				}
 			}/* else {

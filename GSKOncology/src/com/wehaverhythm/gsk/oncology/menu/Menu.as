@@ -366,7 +366,7 @@ package com.wehaverhythm.gsk.oncology.menu
 				switch(id) {
 					case "back":					
 						if(currentMenu == -1) {
-							//trace("don't go anywhere, i'm already root.");
+							trace("don't go anywhere, i'm already root.");
 						} else {
 							if(currentID == null) {
 								showRootMenu();
@@ -375,7 +375,7 @@ package com.wehaverhythm.gsk.oncology.menu
 									renderButtons = true;
 									renderContentID = null;
 								} else {
-									if(ContentManager.boxOpen || closedContent) {
+									if((ContentManager.boxOpen || closedContent)){// && ContentManager.triggeredBy != "sub-menu-button") {
 										if(!closedContent) {
 											breadcrumbLevelDown();
 											forceAnimateButtons = true;
@@ -491,11 +491,13 @@ package com.wehaverhythm.gsk.oncology.menu
 			breadcrumbDepth = i;
 			moveUpChain = (breadcrumb.length-breadcrumbDepth)-1;
 			
-			if(breadcrumbDepth == breadcrumb.length-1) {
+			var fromBGVideo:Boolean = (ContentManager.triggeredBy == "sub-menu-button" && ContentManager.action == "video-bg");
+			
+			if(breadcrumbDepth == breadcrumb.length-1 && !fromBGVideo) {
 				dispatchEvent(new Event(Menu.CLOSE_CURRENT_CONTENT, true));
 			} else {
 				for(i = 0; i < moveUpChain; i++) breadcrumbLevelDown();
-				renderButtonsFor(currentMenu, currentMenu, e.target.id, false, true);
+				renderButtonsFor(currentMenu, currentMenu, e.target.id, false, !fromBGVideo);
 			}
 		}
 		
