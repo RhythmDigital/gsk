@@ -48,12 +48,14 @@ package com.wehaverhythm.gsk.oncology.menu
 			
 			// set copy
 			if(menuXML.rootCaption.hasOwnProperty("footer")) {
-				caption.txtFooter.text = menuXML.rootCaption.footer;
+				caption.txtFooter.htmlText = menuXML.rootCaption.footer;
 				caption.txtFooter.visible = true;
+				caption.txtFooter.autoSize = TextFieldAutoSize.LEFT;
+				caption.txtFooter.wordWrap = true; // prevent width-resize!
 			}
 			
 			var totalHeight:Number = 0;
-			caption.txtCopy.text = String(menuXML.rootCaption.copy);
+			caption.txtCopy.htmlText = String(menuXML.rootCaption.copy);
 			caption.txtCopy.autoSize = TextFieldAutoSize.LEFT;
 			caption.txtCopy.wordWrap = true; // prevent width-resize!
 			

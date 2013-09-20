@@ -7,6 +7,7 @@ package com.wehaverhythm.gsk.oncology
 		//public static var DEV_MODE:Boolean = true;
 		public static var DEBUG:Boolean = false;
 		public static var CONTENT_DIR:File;
+		public static var SCREEN_NAME:String = ""; // set from xml.
 		
 		public static const PATH_SLIDESHOW:String = "/images/slideshows/";
 		public static const PATH_CAPTION_IMAGES:String = "/images/";

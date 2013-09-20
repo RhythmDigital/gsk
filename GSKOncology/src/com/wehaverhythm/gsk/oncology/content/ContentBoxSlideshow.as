@@ -213,13 +213,13 @@ package com.wehaverhythm.gsk.oncology.content
 		private function set prevVisible(visible:Boolean):void
 		{
 			d.slideshow.btnPrev.visible = visible;
-			d.slideshow.prev.alpha = visible ? 1 : .5;
+			d.slideshow.prev.alpha = visible ? 1 : .3;
 		}
 		
 		private function set nextVisible(visible:Boolean):void
 		{
 			d.slideshow.btnNext.visible = visible;
-			d.slideshow.next.alpha = visible ? 1 : .5;
+			d.slideshow.next.alpha = visible ? 1 : .3;
 		}
 		
 		private function onLoadComplete(e:LoaderEvent):void

@@ -134,25 +134,12 @@ package
 			var lm:LoaderMax = new LoaderMax({onComplete:onXMLLoaded});
 			lm.insert(new XMLLoader(Constants.CONTENT_DIR.url+"/settings.xml", {name:"settings"}));
 			lm.load();
-//			
-//			
-//			if(Constants.DEV_MODE) {
-//				var tf:TextField = new TextField();
-//				tf.defaultTextFormat = new TextFormat("Helvetica", 60, 0xf20000, true);
-//				tf.text = "DEBUG MODE";
-//				tf.selectable = false;
-//				tf.autoSize = "left";
-//				addChild(tf);
-//				tf.x = Constants.WIDTH - (tf.width + 20);
-//				tf.y = 20;
-//			}
-			
-			
 		}
 		
 		private function onXMLLoaded(e:LoaderEvent):void
 		{
 			Settings.data = XML(LoaderMax.getContent("settings"));
+			Constants.SCREEN_NAME = Settings.data.screenName;
 			if(Settings.data.showMouse == "false") Mouse.hide();
 			main.init(Settings.data);
 		}

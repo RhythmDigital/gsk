@@ -6,7 +6,7 @@
 	$dl_path = $cart_json['path']."/";
 	$name = urldecode($_POST['theirName']);
 	$to = urldecode($_POST['theirEmail']);
-	$from = "GSK Oncology - ESMO 2013 <noreply@gsk-downloads.com>";
+	$from = "GSK ESMO 2013 <downloads-noreply@gsk-downloads.com>";
 	$subject = "Your requested GSK information from ESMO 2013";
 	$headers = "From: " .$from. "\r\n";
 	$headers .= "Reply-To: ".$from. "\r\n";
@@ -32,7 +32,7 @@ If you have any questions, please contact a GlaxoSmithKline affiliate in your co
 
 	foreach ($cart_json['cart'] as $brand) {
 		foreach ($brand['items'] as $item) {
-			$contents.="<a style='line-height:23px;' href=".$dl_path.$brand['brand']."/".$item['file'].">".$item['title']."</a><br/>";
+			$contents .= strtoupper($brand['brand']).": <a style='line-height:23px;' href=".$dl_path.$brand['brand']."/".$item['file'].">".$item['title']."</a><br/>";
 			
 			if($con) {
 				mysql_query("INSERT INTO cart (file,brand,session_id,time) VALUES ('".$item['file']."','".$brand['brand']."','".$_POST['sessionID']."',NOW())");

@@ -18,11 +18,13 @@ package com.wehaverhythm.gsk.oncology.menu
 			
 			display = new NavElementsDisplay();
 			
+			display.askBtn.visible = false;
+			
 			initButtons([
-				{id:"back", s:display.backBtn, l:"BACK", arrow:true}, 
-				{id:"home", s:display.homeBtn, l:"HOME", arrow:true}, 
-				{id:"cart", s:display.cartBtn, l:"VIEW CART"}, 
-				{id:"ask", s:display.askBtn, l:"ASK GSK"}
+				{id:"back", s:display.backBtn, l:"BACK", arrow:true}
+				, {id:"home", s:display.homeBtn, l:"HOME", arrow:true}
+				, {id:"cart", s:display.cartBtn, l:"VIEW CART"}
+				//, {id:"ask", s:display.askBtn, l:"ASK GSK"}
 			]);
 			
 			addChild(display);
@@ -36,7 +38,7 @@ package com.wehaverhythm.gsk.oncology.menu
 				buttons.push(new NavButton(params));
 			}
 			
-			hide(false, [0,1,2,3]);
+			hide(false, [0,1,2]);
 		}
 		
 		public function hide(animate:Boolean, buttonIDList:Array):void
@@ -55,11 +57,11 @@ package com.wehaverhythm.gsk.oncology.menu
 			switch(type) {
 				case TYPE_ROOTNAV:
 					hide(true, [0,1]);
-					show([2,3]);
+					show([2]);
 					break;
 				
 				case TYPE_SUBNAV:
-					show([0,1,2,3]);
+					show([0,1,2]);
 					break;
 			}
 		}
