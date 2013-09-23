@@ -16,9 +16,11 @@ package com.wehaverhythm.gsk.oncology
 			
 		}
 		
-		public static function track(session:int, page:String, action:String):void
+		public static function track(session:int, page:String, action:String, sessionDuration:String = ""):void
 		{
 			var url:String = Constants.SCRIPT_PATH+"stats.php?session_id="+session+"&page="+page+"&action="+action;
+			if(sessionDuration != "") url += "&sessionDuration="+sessionDuration;
+			
 			var l:URLLoader = new URLLoader(new URLRequest(url));
 			l.addEventListener(IOErrorEvent.IO_ERROR, onIOErrorEvent, false, 0, true);
 			l.addEventListener(Event.COMPLETE, onComplete, false, 0, true);

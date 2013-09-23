@@ -20,6 +20,14 @@ package com.wehaverhythm.utils
 			}
 		}
 		
+		public static function getTimeFromMilliseconds(ms:int):Date
+		{
+			var d:Date = new Date()
+				d.time = ms;
+				trace(d.hours, d.minutes, d.seconds);
+			return d;
+		}
+		
 		public static function frameToSeconds(frame:int, fps:int):Number
 		{
 			return frame/fps;

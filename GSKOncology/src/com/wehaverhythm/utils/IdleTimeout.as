@@ -17,6 +17,8 @@ package com.wehaverhythm.utils
 		
 		public static var newSession:Boolean = true;
 		
+		private static var listening:Boolean = false;
+		
 		public function IdleTimeout()
 		{
 		}
@@ -26,9 +28,7 @@ package com.wehaverhythm.utils
 			IdleTimeout.stage = stage;
 			IdleTimeout.timeout = timeout;
 			IdleTimeout.callback = callback;
-			
-			IdleTimeout.stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
-			resetTimeout();
+			//IdleTimeout.startListening();
 		}
 		
 		protected static function onMouseMove(event:Event):void
@@ -38,20 +38,24 @@ package com.wehaverhythm.utils
 		
 		public static function stopListening():void
 		{
+			if(!listening) return;
+			listening = false;
 			trace(IdleTimeout, "stop listening.");
 			IdleTimeout.resetTimeout();
 			IdleTimeout.delay.stop();
-			IdleTimeout.stage.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+			IdleTimeout.stage.removeEventListener(MouseEvent.MOUSE_DOWN, onMouseMove);
 		}
 		
 		public static function startListening():void
 		{
+			if(listening) return;
+			listening = true;
 			trace(IdleTimeout, "start listening.");
 			IdleTimeout.resetTimeout();
-			IdleTimeout.stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+			IdleTimeout.stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseMove);
 		}
 		
-		public static function resetTimeout():void
+		private static function resetTimeout():void
 		{
 			//trace(IdleTimeout, "reset.");
 			if(!IdleTimeout.delay) {

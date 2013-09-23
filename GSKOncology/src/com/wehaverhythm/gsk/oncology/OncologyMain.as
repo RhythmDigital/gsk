@@ -9,11 +9,13 @@ package com.wehaverhythm.gsk.oncology
 	import com.wehaverhythm.gsk.oncology.content.ContentManager;
 	import com.wehaverhythm.gsk.oncology.menu.Menu;
 	import com.wehaverhythm.utils.IdleTimeout;
+	import com.wehaverhythm.utils.Utils;
 	
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.utils.getTimer;
 	
 	public class OncologyMain extends Sprite
 	{
@@ -22,6 +24,8 @@ package com.wehaverhythm.gsk.oncology
 		private var contentMan:ContentManager;
 		private var askView:AskView
 		private var footer:MenuFooter;
+		private var startTime:int;
+		private var endTime:int;
 		
 		public function OncologyMain()
 		{
@@ -70,13 +74,26 @@ package com.wehaverhythm.gsk.oncology
 			footer.y = Constants.HEIGHT - footer.height;
 			addChild(footer);
 			
-			IdleTimeout.init(stage, int(Settings.data.idleTimeoutMS), onIdleTimeout);
+			IdleTimeout.init(stage, Constants.DEBUG ? 10000 : int(Settings.data.idleTimeoutMS), onIdleTimeout);
 			waitForUser();
 		}
 		
 		private function onIdleTimeout():void
 		{
-			trace("SESSION ENDED!");
+			var endTime:int = getTimer();
+			var duration:int = endTime - startTime - IdleTimeout.timeout;
+			
+			var hrs:int = (duration / (1000*60*60)) % 24;
+			var mins:int = (duration / (1000*60)) % 60;
+			var secs:int = (duration / 1000) % 60;
+			
+			var timeStr:String = 
+				(hrs > 9 ? hrs : "0"+hrs) + ":" + 
+				(mins > 9 ? mins : "0" + mins) + ":" + 
+				(secs > 9 ? secs : "0"  + secs);
+			
+			trace("SESSION ENDED. Total duration: " + timeStr);
+			// trace(totalTime.h, totalTime.m, totalTime.s, totalTime.ms);
 			mouseEnabled = mouseChildren = false;
 			Cart.view.hide();
 			askView.hide(true);
@@ -84,22 +101,22 @@ package com.wehaverhythm.gsk.oncology
 			if(menu.type != "root-menu") menu.showRootMenu();
 			TweenMax.delayedCall(1, timeoutTransitionComplete);
 			
-			Stats.track(GSKOncology.sessionID, Menu.PAGE_HOME, Stats.ACTION_SESSION_END);
+			Stats.track(GSKOncology.sessionID, Menu.PAGE_HOME, Stats.ACTION_SESSION_END, timeStr);
+			
 			waitForUser();
 		}
 		
 		private function waitForUser():void
 		{
-			stage.addEventListener(MouseEvent.MOUSE_MOVE, onSessionStartTrigger);
-			stage.addEventListener(MouseEvent.MOUSE_MOVE, onSessionStartTrigger);
+			stage.addEventListener(MouseEvent.MOUSE_DOWN, onSessionStartTrigger);
 		}
 		
 		protected function onSessionStartTrigger(e:MouseEvent):void
 		{
+			startTime = getTimer();
 			GSKOncology.sessionID = new Date().time;
 			trace("SESSION STARTED >> " + GSKOncology.sessionID);
-			stage.removeEventListener(MouseEvent.MOUSE_MOVE, onSessionStartTrigger);
-			stage.removeEventListener(MouseEvent.MOUSE_MOVE, onSessionStartTrigger);
+			stage.removeEventListener(MouseEvent.MOUSE_DOWN, onSessionStartTrigger);
 			Stats.track(GSKOncology.sessionID, Menu.PAGE_HOME, Stats.ACTION_SESSION_START);
 		}
 		
