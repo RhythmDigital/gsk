@@ -120,7 +120,7 @@ package com.wehaverhythm.gsk.oncology.content
 			if(!contentSettings) return false;
 			
 			var exists:Boolean = Cart.exists(contentSettings["id"], String(brandID));
-			trace("Item already in cart ? " + exists);
+			//trace("Item already in cart ? " + exists);
 			if(exists) {
 				d.addRemove.gotoAndStop("remove");
 			} else {
@@ -162,7 +162,7 @@ package com.wehaverhythm.gsk.oncology.content
 				if(contentNode.hasOwnProperty("@cartTitleAlt")) {
 					var altTitle:String = String(contentNode.@cartTitleAlt);
 					if(altTitle.length) {
-						trace(">> Using alternate title. Was: " + title + ". Now: " + altTitle);
+					//	trace(">> Using alternate title. Was: " + title + ". Now: " + altTitle);
 						title = altTitle;
 					}
 				}
@@ -171,8 +171,8 @@ package com.wehaverhythm.gsk.oncology.content
 			}
 			
 			checkItemInCart();
-			Cart.traceCart();
-			//dispatchEvent(new CustomEvent(ContentBox.ADD_TO_CART, true, false, {contentID:contentSettings["id"], brandID:brandID}));
+			// Cart.traceCart();
+			// dispatchEvent(new CustomEvent(ContentBox.ADD_TO_CART, true, false, {contentID:contentSettings["id"], brandID:brandID}));
 		}
 		
 		public function close():void

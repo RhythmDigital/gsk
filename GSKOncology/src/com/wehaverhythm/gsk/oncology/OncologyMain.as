@@ -117,7 +117,7 @@ package com.wehaverhythm.gsk.oncology
 			GSKOncology.sessionID = new Date().time;
 			trace("SESSION STARTED >> " + GSKOncology.sessionID);
 			stage.removeEventListener(MouseEvent.MOUSE_DOWN, onSessionStartTrigger);
-			Stats.track(GSKOncology.sessionID, Menu.PAGE_HOME, Stats.ACTION_SESSION_START);
+			Stats.track(GSKOncology.sessionID, Menu.PAGE_HOME, Stats.ACTION_SESSION_START, null, Settings.data.screenID);
 		}
 		
 		private function timeoutTransitionComplete():void
