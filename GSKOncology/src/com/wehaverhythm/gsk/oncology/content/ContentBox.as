@@ -40,8 +40,10 @@ package com.wehaverhythm.gsk.oncology.content
 			area = d.area.getBounds(this);
 			
 			d.btnClose.addEventListener(MouseEvent.MOUSE_DOWN, onCloseClicked);
+			d.btnClose.buttonMode = true
+					
 			d.btnAddCart.addEventListener(MouseEvent.MOUSE_DOWN, onAddToCartClicked);
-			d.btnClose.buttonMode = d.btnAddCart.buttonMode = true;
+			d.btnAddCart.buttonMode = true;
 			
 			slideshow = new ContentBoxSlideshow(d);
 			d.slideshow.addChild(slideshow);
@@ -73,6 +75,14 @@ package com.wehaverhythm.gsk.oncology.content
 			d.vidPlayer.visible = d.slideshow.visible = false;
 			d.vidPlayer.progress.scaleX = 0;
 			
+			//check if cart button should be shown
+			if(contentSettings["hideCartBtn"] && contentSettings["hideCartBtn"] == "true")
+			{
+				d.addRemove.visible = d.btnAddCart.visible = false;
+			}else{
+				d.addRemove.visible = d.btnAddCart.visible = true;				
+			}
+				
 			switch(contentSettings["action"]) {
 				case "video-box":
 					initVideo();
