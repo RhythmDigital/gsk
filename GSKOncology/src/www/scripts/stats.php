@@ -17,10 +17,11 @@
 	
 	mysql_query("INSERT INTO stats (session_id, page, action, time) VALUES ('".$_GET['session_id']."','".$_GET['page']."','".$_GET['action']."',NOW())");
 
-	if($_GET['action'] == "end") {
-		mysql_query("UPDATE sessions SET session_length='".$_GET['sessionDuration']."' WHERE session_id='".$_GET['session_id']."'");
+	if( $_GET['action'] == "end" ) {
+		mysql_query("UPDATE sessions SET session_duration='".$_GET['sessionDuration']."' WHERE session_id='".$_GET['session_id']."'");
+	} else if ( $_GET['action'] == "start" ) {
+		mysql_query("UPDATE sessions SET screen_id='".$_GET['screenID']."' WHERE session_id='".$_GET['session_id']."'");
 	}
-
 
 	mysql_close($con);
 	

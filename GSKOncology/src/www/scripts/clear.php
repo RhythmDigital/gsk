@@ -28,7 +28,7 @@
 
 	} else {
 		?>
-			<p>Entering the password will empty the following tables :</p>
+			<p>This form deletes the contents of GSK Downloads <strong>LIVE</strong> database!</p>
 			<ul>
 			<?php
 				foreach ($tables as $table) {

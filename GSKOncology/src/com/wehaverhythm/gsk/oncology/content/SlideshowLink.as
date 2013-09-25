@@ -1,6 +1,7 @@
 package com.wehaverhythm.gsk.oncology.content
 {
 	import com.wehaverhythm.gsk.oncology.Constants;
+	import com.wehaverhythm.gsk.oncology.Settings;
 	
 	import flash.display.Sprite;
 	
@@ -21,7 +22,7 @@ package com.wehaverhythm.gsk.oncology.content
 			var rect:Array = String(item.@linkRect).split(",");
 			
 			graphics.clear();
-			graphics.beginFill(0xff0000, Constants.SHOW_SLIDESHOW_LINKS ? .3 : 0);
+			graphics.beginFill(0xff0000, Settings.data.showSlideHotspots == "true" ? .3 : 0);
 			graphics.drawRect(Number(rect[0]), Number(rect[1]), Number(rect[2]), Number(rect[3]));
 			graphics.endFill();
 		}
